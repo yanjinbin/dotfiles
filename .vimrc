@@ -2,7 +2,6 @@ set nocompatible
 filetype on
 
 call plug#begin('~/.vim/plugged')
-Plug 'aperezdc/vim-template'
 Plug 'Chiel92/vim-autoformat'
 Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
