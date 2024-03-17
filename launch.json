@@ -1,0 +1,47 @@
+{
+  // 前端调试通关秘籍: https://juejin.cn/book/7070324244772716556
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "name": "启动 Chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}",
+      "userDataDir": "/Users/yanjinbin/VSCodeUserData"
+    },
+    {
+      "type": "chrome",
+      "name": "启动 Canary",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "runtimeExecutable": "canary",
+      "runtimeArgs": [
+        "--auto-open-devtools-for-tabs" // 自动打开chrome devtool
+        // "--incognito" // 无痕模式启动
+      ],
+      "userDataDir": "${workspaceFolder}/.vscode/chrome-user-data",
+      "webRoot": "${workspaceFolder}",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${workspaceFolder}/src/*", // 源代码路径
+        "webpack:///node_modules/*": "${workspaceFolder}/node_modules/*", // 依赖模块
+        "webpack:///*": "${workspaceFolder}/*", // 其他路径映射
+        "file:///*": "${workspaceFolder}/*" // 直接映射到本地文件系统
+      },
+      "pathMapping": {
+        "/@": "${workspaceFolder}/src", // Vite 中的别名 @ 映射到 src 文件夹
+        "/node_modules": "${workspaceFolder}/node_modules" // 如果需要调试依赖包
+      }
+    },
+    {
+      "name": "Attach to Chrome",
+      "port": 9222,
+      "request": "attach",
+      "type": "chrome",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}
