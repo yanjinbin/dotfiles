@@ -1,2 +1,2 @@
 # dotfiles
-emacs zsh vimrc
+emacs zsh vimrc vscode BrewFile
