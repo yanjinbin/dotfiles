@@ -1,0 +1,167 @@
+{
+	"editor.smoothScrolling": true,
+	"editor.cursorBlinking": "expand",
+	"editor.cursorSmoothCaretAnimation": "on",
+	"workbench.list.smoothScrolling": true,
+	"editor.fontFamily": "Fira Code",
+	"editor.fontLigatures": true,
+	"editor.fontSize": 17,
+	"editor.lineNumbers": "on",
+	"editor.cursorStyle": "line",
+	"editor.cursorWidth": 2,
+	"editor.minimap.enabled": false,
+	"editor.minimap.scale": 2,
+	"editor.formatOnSave": true,
+	"editor.formatOnPaste": true,
+	"editor.formatOnType": true,
+	"editor.defaultFormatter": "biomejs.biome",
+	"editor.formatOnSaveMode": "modifications",
+	"editor.quickSuggestionsDelay": 200,
+	"files.autoSaveDelay": 300,
+	"editor.guides.bracketPairs": true,
+	"editor.bracketPairColorization.enabled": true,
+
+	"terminal.integrated.fontFamily": "Fira Code",
+	"terminal.integrated.fontSize": 14,
+	"terminal.integrated.fontLigatures": true,
+	"terminal.integrated.lineHeight": 1.2,
+	"terminal.integrated.cursorBlinking": true,
+	"terminal.integrated.cursorStyle": "line",
+
+	// 控制活动代码段是否阻止快速建议
+	"editor.suggest.snippetsPreventQuickSuggestions": false,
+	// 除了 `Tab` 键以外， `Enter` 键是否同样可以接受建议
+	// 这能减少“插入新行”和“接受建议”命令之间的歧义
+	"editor.acceptSuggestionOnEnter": "smart",
+	// 代码补全列表中，优先选择最近的建议
+	"editor.suggestSelection": "recentlyUsedByPrefix",
+	// 代码补全列表中，优先选择最常用的建议
+	"editor.suggestSelection": "recentlyUsed",
+
+
+	"editor.autoClosingBrackets": "beforeWhitespace",
+	"editor.autoClosingDelete": "always",
+	"editor.autoClosingOvertype": "always",
+	"editor.autoClosingQuotes": "beforeWhitespace",
+
+	"javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
+	"typescript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
+
+
+	// 关闭缩进猜测
+	"editor.detectIndentation": false,
+	"editor.tabSize": 4,
+
+
+	"editor.wordWrap": "on",
+	"editor.lineHeight": 1.5,
+	"editor.stickyScroll.enabled": true,
+	// 双击选中被截断字符
+	"editor.wordSeparators": "`~!@%^&*()=+[{]}\\|;:'\",.<>/?（），。；：",
+
+	"editor.foldingStrategy": "indentation",
+
+	// 文件夹紧凑模式
+	"explorer.compactFolders": true,
+	"notebook.compactView": true,
+	"window.density.editorTabHeight": "compact",
+
+
+	"typescript.locale": "zh-CN",
+
+	"typescript.inlayHints.enumMemberValues.enabled": true,
+
+	// 类型提示
+	"javascript.inlayHints.enumMemberValues.enabled": true,
+	"javascript.inlayHints.functionLikeReturnTypes.enabled": false,
+	"javascript.inlayHints.parameterNames.enabled": "none",
+	"typescript.inlayHints.enumMemberValues.enabled": true,
+	"typescript.preferences.preferTypeOnlyAutoImports": true,
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"typescript.preferences.includePackageJsonAutoImports": "on",
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"javascript.preferences.quoteStyle": "single",
+	"typescript.preferences.quoteStyle": "single",
+
+	"typescript.preferences.preferTypeOnlyAutoImports": true,
+	"typescript.preferences.includePackageJsonAutoImports": "on",
+	"typescript.suggest.autoImports": true,
+
+
+	"vue.updateImportsOnFileMove.enabled": true,
+	"vue.inlayHints.missingProps": true,
+	"vue.autoInsert.dotValue": true,
+
+	"workbench.startupEditor":"welcomePage",
+	"files.trimTrailingWhitespace": true,
+
+
+
+	"search.searchEditor.singleClickBehaviour": "peekDefinition",
+
+	"terminal.integrated.stickyScroll.enabled": true,
+
+	"terminal.integrated.shellIntegration.suggestEnabled": true,
+
+	// index 替换成 目录名
+	"workbench.editor.customLabels.patterns": {
+		"**/index.vue": "${dirname}.vue",
+		"**/index.js": "${dirname}.js",
+		"**/index.ts": "${dirname}.ts",
+		"**/index.jsx": "${dirname}.jsx",
+		"**/index.tsx": "${dirname}.tsx"
+	},
+	// 行内样式代码补全
+	"editor.quickSuggestions": {
+		"other": true,
+		"comments": true,
+		"strings": true
+	},
+
+	// 手动更新
+	"update.mode": "manual",
+
+
+	// 搜索排除目录
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/pnpm-lock.yaml": true,
+		"**/package-lock.json": true,
+		"**/.DS_Store": true,
+		"**/.git": true,
+		"**/.gitignore": true,
+		"**/.idea": true,
+		"**/.svn": true,
+		"**/.vscode": true,
+		"**/build": true,
+		"**/dist": true,
+		"**/tmp": true,
+		"**/yarn.lock": true
+	},
+
+	"files.associations": {
+		"*.wxss": "css",
+		"*.wxml": "html",
+		"*.svg": "html",
+		"*.xml": "html",
+		"*.wxs": "javascript",
+		// json注释
+		"*.cjson": "jsonc",
+		"*.json": "jsonc"
+	},
+	"files.watcherExclude": {
+		"**/node_modules/**": true,
+		"**/dist/**": true,
+		"**/build/**": true,
+		"**/tmp/**": true,
+		"**/.git/**": true,
+		"**/.svn/**": true,
+		"**/.hg/**": true
+	},
+	"files.defaultLanguage": "javascript",
+	"files.useExperimentalFileWatcher": true,
+	"RainbowBrackets.depreciation-notice": false,
+	"extensions.ignoreRecommendations": true,
+
+
+}
