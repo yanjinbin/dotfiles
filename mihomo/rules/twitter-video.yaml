@@ -1,0 +1,34 @@
+# NAME: TwitterVideo
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles
+# UPDATED: 2026-04-12
+# DOMAIN-SUFFIX: 9
+# TOTAL: 9
+payload:
+  # === 图片与静态资源 (Images) ===
+  # twimg 系列是 Twitter 最核心的静态资源域名，承载了推文图片、缩略图及用户头像
+  # - DOMAIN-SUFFIX,twimg.com
+  # - DOMAIN-SUFFIX,twimg.co
+  # - DOMAIN-SUFFIX,twimg.org
+
+  - DOMAIN-SUFFIX,video.twimg.com
+  - DOMAIN-SUFFIX,video.twimg.co
+  - DOMAIN-SUFFIX,video.twimg.org
+
+  # 早期第三方图片存储，现多用于加载历史存档图片
+  # - DOMAIN-SUFFIX,twitpic.com
+  # 内容管理系统域名，用于加载官方品牌素材和部分静态数字资产
+  # - DOMAIN-SUFFIX,cms-twdigitalassets.com
+
+  # === 视频与音频 (Video & Audio) ===
+  # 专门负责 Twitter 平台上的原生视频流传输
+  - DOMAIN-SUFFIX,twvid.com
+  # 内部及早期 API 域名，涉及视频元数据加载及音频空间 (Spaces) 的连接
+  - DOMAIN-SUFFIX,twttr.com
+  - DOMAIN-SUFFIX,twttr.net
+
+  # === 直播流媒体 (Live Streaming) ===
+  # 虽 Periscope 已停止独立运营，但 X 的实时直播技术（如直播视频流）仍大量使用其域名
+  - DOMAIN-SUFFIX,periscope.tv
+  - DOMAIN-SUFFIX,pscp.tv
+

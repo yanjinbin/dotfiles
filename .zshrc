@@ -1,236 +1,49 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+# =============================================================================
+#  ~/.zshrc
+#  Last optimized: 2026-04
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Powerlevel10k 即时提示（需放最顶部）
+# 若用 robbyrussell 主题可注释此块
+# -----------------------------------------------------------------------------
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
+# -----------------------------------------------------------------------------
+# Oh My Zsh 核心配置
+# -----------------------------------------------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ZSH_THEME="af-magic"
-ZSH_THEME="agnoster"
-# ZSH_THEME="powerlevel10k/powerlevel10k"
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+# ZSH_THEME="robbyrussell"
+# 若切换到 p10k，改为：
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+# 历史记录时间戳
+HIST_STAMPS="yyyy-mm-dd"
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+# 插件列表（注意：zsh-syntax-highlighting 必须放最后）
+plugins=(
+  git
+  uv
+  pnpm
+  docker-compose
+  z
+  you-should-use
+  tmux
+  zsh-autosuggestions
+  gcma
+  zsh-syntax-highlighting   # ⚠️ 必须最后一个
+)
 
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+source "$ZSH/oh-my-zsh.sh"
 
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plug ins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git pnpm docker-compose z fzf-tab zsh-autosuggestions you-should-use zsh-syntax-highlighting )
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-
-# ================ Zinit 插件管理器 =================
-# 如果没有安装 Zinit 插件管理器，则进行安装
-if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
-    print -P "%F{33} 正在安装 Zinit 插件管理器... %f"
-    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
-    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git"
-    print -P "%F{34} 安装成功。%f"
-fi
-source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"  # 加载 Zinit
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit  # 启用补全功能
-
-# ===================== 路径配置 =====================
-
-# Homebrew 路径
-export HOMEBREW_PATH='/opt/homebrew/bin/'
-export PATH="$HOMEBREW_PATH:$PATH"  # 将 Homebrew 路径添加到系统 PATH 中
-
-
- export NVM_DIR="$HOME/.nvm"
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-# PNPM 路径
-export PNPM_HOME="/Users/yanjinbin/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"  # 将 PNPM 路径添加到系统 PATH 中
-
-
-# Maven 路径
-export MAVEN_HOME="${HOME}/apache-maven-3.6.3"
-export PATH="$MAVEN_HOME/bin:$PATH"  # 将 Maven 路径添加到系统 PATH 中
-
-# Go 环境配置
-export GO111MODULE=on  # 启用 Go Modules
-# export GOPROXY=https://mirrors.aliyun.com/goproxy/,direct  # 设置 Go 代理
-export GOPATH="${HOME}/GolandProjects"  # 设置 Go 工作空间路径
-export GOBIN="${GOPATH}/bin"  # 设置 Go 可执行文件路径
-export PATH="$PATH:$GOBIN"  # 将 Go 可执行文件路径添加到系统 PATH 中
-
-# Docker 路径
-export DOCKER_PATH="/Applications/Docker.app/Contents/Resources/bin"
-export PATH="$DOCKER_PATH:$PATH"  # 将 Docker 路径添加到系统 PATH 中
-
-# Python 环境配置
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"  # 将 Pyenv 路径添加到系统 PATH 中
-if command -v pyenv 1>/dev/null 2>&1; then
-    eval "$(pyenv init -)"  # 初始化 pyenv
-fi
-
-# RVM 环境配置（Ruby 版本管理）
-export PATH="$PATH:$HOME/.rvm/bin"  # 将 RVM 路径添加到系统 PATH 中
-
-# 环境变量设置（ElasticSearch 和 API Key）
-export ES_URL="localhost:9200"
-export API_KEY="aTl3am5vNEJRai1jV3ZhSUlJTXE6LUF1M1RkbDlRMHlBQU9RVF9zVE9aZw=="
-
-# ===================== 常用别名 =====================
-
-# PNPM 命令别名
-alias pi="pnpm install"  # 安装依赖
-alias pa="pnpm add"  # 添加依赖
-alias prd="pnpm run dev"  # 启动开发环境
-alias prb="pnpm run biome"  # 启动 Biome
-alias prp="pnpm run preview"  # 启动预览
-
-
-# Git 命令别名
-alias gbso="git branch show origin"  # 显示远程分支
-alias gbvv="git branch -vv"  # 显示分支信息
-alias gbuo="git branch update origin"  # 更新远程分支
-alias grpo="git remote prune origin"  # 清理远程分支
-
-# 常用工具别名
-alias y="yazi"  # 别名 yazi
-alias t="history | tail -100"  # 查看最近 100 条命令
-
-# SSH 连接到阿里云服务器
-alias loginaliyun='ssh -i ~/.ssh/aliyun_rsa root@121.41.102.247'
-
-alias  proxyon='export https_proxy="http://127.0.0.1:7890" http_proxy="http://127.0.0.1:7890" all_proxy="socks5://127.0.0.1:7890"'
-alias proxyoff='unset https_proxy http_proxy all_proxy'
-
-# ===================== 其他工具配置 =====================
-
-# Racket 路径配置
-RacketHomePath="/Applications/Racket v8.12/bin"
-export PATH="$RacketHomePath:$PATH"  # 将 Racket 路径添加到系统 PATH 中
-
-
-# JetBrains VMOptions 配置
-___MY_VMOPTIONS_SHELL_FILE="${HOME}/.jetbrains.vmoptions.sh"
-if [ -f "${___MY_VMOPTIONS_SHELL_FILE}" ]; then
-    . "${___MY_VMOPTIONS_SHELL_FILE}"
-fi
-
-# 主题配置（如果存在）
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# ===================== 自定义命令 =====================
-
-# 通过 Google 搜索的别名
-function google() {
-    open -na "Google Chrome" --args "https://www.google.com/search?q=$*"
-}
-
-# C++ 编译和运行的函数
-function compilecpp() {
-    g++ "$1".cpp -o "$1" && ./$1
-}
-
-# ===================== 特定工具 =====================
-
-# 安装和激活 Mise 环境
-eval "$(~/.local/bin/mise activate zsh)"
-
-
-
-
-# ===================== 结束 =====================
-
+# -----------------------------------------------------------------------------
+# PATH 配置
+# -----------------------------------------------------------------------------
 # pnpm
-export PNPM_HOME="/Users/yanjinbin/Library/pnpm"
+export PNPM_HOME="${HOME}/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -238,105 +51,254 @@ esac
 # pnpm end
 
 
-querypid() {
-  # 验证端口号是否有效
-  local port=$1
-  if [[ ! "$port" =~ ^[0-9]+$ ]] || [ "$port" -lt 1 ] || [ "$port" -gt 65535 ]; then
-    echo "⚠️ 无效的端口号: $port"
-    return 1
-  fi
+# Maven
+export MAVEN_HOME="$HOME/apache-maven-3.6.3"
 
-  # 使用 lsof 查询指定端口的进程
-  pid=$(lsof -ti :$port 2>/dev/null)
+# Go（修复：GOBIN 需显式定义，否则 $GOBIN 为空）
+export GOPATH="$HOME/GolandProjects"
+export GOBIN="$GOPATH/bin"
+export GOPROXY="https://mirrors.tencent.com/go/"
 
-  # 如果没有返回结果，说明没有进程监听该端口
-  if [ -z "$pid" ]; then
-    echo "⚠️ 没有进程监听端口 $port"
-    return 2
-  fi
+# rust镜像
+export RUSTUP_DIST_SERVER="https://rsproxy.cn"
+export RUSTUP_UPDATE_ROOT="https://rsproxy.cn/rustup"
 
-  # 返回 PID
-  echo "$pid"
+# fnm (Node.js 版本管理)
+FNM_PATH="/opt/homebrew/opt/fnm/bin"
+
+# 统一 PATH 声明（避免多次 export PATH）
+export PATH="$PNPM_HOME:$MAVEN_HOME/bin:$GOBIN:$FNM_PATH:$PATH"
+
+# fnm 环境初始化
+[[ -d "$FNM_PATH" ]] && eval "$(fnm env --shell zsh)"
+
+# -----------------------------------------------------------------------------
+# eza — 现代 ls 替代
+# -----------------------------------------------------------------------------
+alias ls='eza --icons --color=auto'
+alias ll='eza -l  --icons --group-directories-first'
+alias lla='eza -la --icons --group-directories-first'
+alias llg='eza -l  --icons --git --group-directories-first'   # 带 Git 状态
+alias llag='eza -la --icons --git --group-directories-first'
+alias lld='eza -l  --icons --only-dirs'
+alias llf='eza -l  --icons --only-files'
+
+# 树形视图（lt=2层, lt3=3层, lt4=4层）
+alias lt='eza  -T -L 2 --icons'
+alias lt3='eza -T -L 3 --icons'
+alias lt4='eza -T -L 4 --icons'
+
+# -----------------------------------------------------------------------------
+# uv — Python 包管理
+# -----------------------------------------------------------------------------
+alias ur='uv run python'
+alias ua='uv add'
+alias us='uv sync'
+alias uvp='uv pip'
+
+# -----------------------------------------------------------------------------
+# Git 快捷
+# -----------------------------------------------------------------------------
+alias gs='git status'
+alias gd='git diff'
+alias gl='git log --oneline --graph --decorate -20'
+alias gp='git push'
+alias gpl='git pull'
+
+# -----------------------------------------------------------------------------
+# 系统 & 工具
+# -----------------------------------------------------------------------------
+alias c='clear'
+alias y='yazi'
+alias t='history | tail -100'
+alias wattage='system_profiler SPPowerDataType | grep Wattage -C 5'
+alias myip="curl -s http://ip-api.com/json | jq -r '\"\(.country) \(.regionName) \(.city) \(.isp) \(.query)\"'"
+
+
+# ipv6 开关（仅限 Wi-Fi）
+alias ipv6off="networksetup -setv6off Wi-Fi && echo '✅ IPv6 已关闭'"
+alias ipv6on="networksetup -setv6automatic Wi-Fi && echo '✅ IPv6 已恢复'"
+
+#alias AI
+alias gmn="gemini --yolo"
+alias cx="codex -c model_reasoning_effort="high" --dangerously-bypass-approvals-and-sandbox -c model_reasoning_summary="detailed" -c model_supports_reasoning_summaries=true"
+alias cc="claude --dangerously-skip-permissions"
+
+
+proxyon() {
+  export http_proxy="http://127.0.0.1:7890"
+  export https_proxy="http://127.0.0.1:7890"
+  export all_proxy="socks5h://127.0.0.1:7890"
+  echo "🔌 proxy on → 127.0.0.1:7890"
+  env | grep -i proxy
 }
 
-# 用于终止指定进程 PID 的函数
-killpid() {
-  local pid=$1
-  if [ -z "$pid" ]; then
-    echo "⚠️ 没有提供 PID，无法终止进程"
-    return 1
-  fi
-
-  echo "🔴 正在终止进程 PID: $pid"
-  kill -9 "$pid" 2>/dev/null
-
-  if [ $? -eq 0 ]; then
-    echo "✅ 进程 $pid 已终止"
-  else
-    echo "⚠️ 无法终止进程 $pid"
-    return 2
-  fi
-}
-#!/bin/bash
-
-# 查询指定端口的进程 PID
-querypid() {
-  local port=$1
-
-  # 验证端口号是否有效
-  if [[ ! "$port" =~ ^[0-9]+$ ]] || [ "$port" -lt 1 ] || [ "$port" -gt 65535 ]; then
-    echo "⚠️ 无效的端口号: $port"
-    return 1
-  fi
-
-  # 使用 lsof 查询指定端口的进程
-  pid=$(lsof -ti :$port 2>/dev/null)
-
-  # 如果没有返回结果，说明没有进程监听该端口
-  if [ -z "$pid" ]; then
-    echo "⚠️ 没有进程监听端口 $port"
-    return 2
-  fi
-
-  # 返回 PID
-  echo "$pid"
+proxyoff() {
+  unset http_proxy https_proxy all_proxy
+  echo "❌ proxy off"
+  env | grep -i proxy
 }
 
-# 终止指定进程 PID
-killpid() {
-  local pid=$1
-
-  if [ -z "$pid" ]; then
-    echo "⚠️ 没有提供 PID，无法终止进程"
-    return 1
-  fi
-
-  echo "🔴 正在终止进程 PID: $pid"
-  kill -SIGTERM "$pid" 2>/dev/null
-
-  if [ $? -eq 0 ]; then
-    echo "✅ 进程 $pid 已终止"
-  else
-    echo "⚠️ 无法终止进程 $pid"
-    return 2
-  fi
+# Claude Code 遥测开关
+claude-privacy-on() {
+  export DISABLE_TELEMETRY=1
+  export DISABLE_ERROR_REPORTING=1
+  export CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1
+  export DISABLE_FEEDBACK_COMMAND=1
+  export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+  echo "🔒 隐私模式已开启（遥测/反馈/非必要流量：已关闭）"
 }
 
-# 根据端口号查询并终止占用该端口的进程
-terminate_process_by_port() {
-  local port=$1
-
-  # 查询 PID
-  pid=$(querypid "$port")
-
-  # 如果 querypid 返回错误，则终止处理
-  if [ $? -ne 0 ]; then
-    return $?
-  fi
-
-  # 终止该进程
-  killpid "$pid"
+claude-privacy-off() {
+  unset DISABLE_TELEMETRY
+  unset DISABLE_ERROR_REPORTING
+  unset CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY
+  unset DISABLE_FEEDBACK_COMMAND
+  unset CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
+  echo "🔓 隐私模式已关闭（遥测/反馈/非必要流量：已恢复默认）"
 }
 
-# 示例：根据端口号终止进程
-terminate_process_by_port 9003
+claude-privacy-status() {
+  echo "DISABLE_TELEMETRY=${DISABLE_TELEMETRY:-0}"
+  echo "DISABLE_ERROR_REPORTING=${DISABLE_ERROR_REPORTING:-0}"
+  echo "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=${CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY:-0}"
+  echo "DISABLE_FEEDBACK_COMMAND=${DISABLE_FEEDBACK_COMMAND:-0}"
+  echo "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=${CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC:-0}"
+}
+
+alias claudeon='claude-privacy-off'
+alias claudeoff='claude-privacy-on'
+
+
+
+# -----------------------------------------------------------------------------
+# 实用函数
+# -----------------------------------------------------------------------------
+ai_update() {
+  local RESET='\033[0m'
+  local BOLD='\033[1m'
+  local DIM='\033[2m'
+  local GREEN='\033[38;5;120m'
+  local RED='\033[38;5;203m'
+  local YELLOW='\033[38;5;221m'
+
+  _banner() {
+    echo ""
+    printf '\033[38;5;213m  ✦ \033[38;5;183mA\033[38;5;153mI\033[38;5;123m \033[38;5;120mC\033[38;5;121mL\033[38;5;122mI\033[38;5;148m \033[38;5;214mU\033[38;5;208mp\033[38;5;203md\033[38;5;204ma\033[38;5;205mt\033[38;5;206me\033[38;5;213m ✦\033[0m'
+    echo ""
+  }
+
+  _spin() {
+    local pid=$1 msg=$2
+    local frames=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+    local colors=('\033[38;5;213m' '\033[38;5;183m' '\033[38;5;153m' '\033[38;5;123m' '\033[38;5;120m')
+    local i=0 c=0
+    while kill -0 "$pid" 2>/dev/null; do
+      printf "\r  ${colors[c]}${frames[i]}${RESET}  ${msg}"
+      i=$(( (i+1) % ${#frames[@]} ))
+      c=$(( (c+1) % ${#colors[@]} ))
+      sleep 0.08
+    done
+  }
+
+  _run() {
+    local label=$1; shift
+    local log
+    log=$(mktemp)
+    { "$@" >"$log" 2>&1; } &
+    local pid=$!
+    _spin $pid "$label"
+    wait $pid
+    local ok=$?
+    rm -f "$log"
+    [[ $ok -eq 0 ]] \
+      && printf "\r  ${GREEN}✔${RESET}  ${BOLD}${label}${RESET}\n" \
+      || printf "\r  ${RED}✘${RESET}  ${BOLD}${label}${RESET} ${DIM}(failed)${RESET}\n"
+  }
+
+  _row() {
+    local icon=$1 name=$2 before=$3 after=$4
+    if [[ "$before" == "$after" ]]; then
+      printf "  %s  %-8s ${DIM}%-24s${RESET} ${YELLOW}↔${RESET} ${DIM}%s${RESET}\n" "$icon" "$name" "$before" "already latest"
+    else
+      printf "  %s  %-8s ${DIM}%-24s${RESET} ${GREEN}→${RESET} ${GREEN}${BOLD}%s${RESET}\n" "$icon" "$name" "$before" "$after"
+    fi
+  }
+
+  setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR 2>/dev/null
+  set +m 2>/dev/null
+
+  local g_before c_before x_before
+  g_before=$(gemini --version 2>/dev/null || echo "—")
+  c_before=$(claude --version 2>/dev/null || echo "—")
+  x_before=$(codex --version 2>/dev/null || echo "—")
+
+  _banner
+
+  printf "  ${DIM}%s${RESET}\n" "·············································"
+  _run "gemini  " npm update -g @google/gemini-cli
+  _run "claude  " claude update
+  _run "codex   " npm update -g @openai/codex
+  printf "  ${DIM}%s${RESET}\n" "·············································"
+
+  echo ""
+
+  local g_after c_after x_after
+  g_after=$(gemini --version 2>/dev/null || echo "—")
+  c_after=$(claude --version 2>/dev/null || echo "—")
+  x_after=$(codex --version 2>/dev/null || echo "—")
+
+  _row "🪐" "gemini" "$g_before" "$g_after"
+  _row "🦀" "claude" "$c_before" "$c_after"
+  _row "🐙" "codex"  "$x_before" "$x_after"
+
+  echo ""
+  printf "  \033[38;5;213m✨\033[38;5;183m✨\033[38;5;153m✨\033[0m  ${DIM}all done!${RESET}\n"
+  echo ""
+}
+
+# mkdir 后自动 cd 进入
+mkcd() { mkdir -p "$1" && cd "$1"; }
+
+# 万能解压
+extract() {
+  case "$1" in
+    *.tar.gz|*.tgz)  tar xzf "$1"  ;;
+    *.tar.bz2|*.tbz) tar xjf "$1"  ;;
+    *.tar.xz)        tar xJf "$1"  ;;
+    *.tar)           tar xf  "$1"  ;;
+    *.zip)           unzip   "$1"  ;;
+    *.gz)            gunzip  "$1"  ;;
+    *.rar)           unrar x "$1"  ;;
+    *.7z)            7z x    "$1"  ;;
+    *)               echo "不支持的格式: $1" ;;
+  esac
+}
+
+# 快速查找文件
+ff() { find . -name "*$1*" 2>/dev/null; }
+
+# 端口占用查询
+port() { lsof -i :"$1"; }
+
+
+gmr() {
+  [ "$1" = "on" ] && npm config set proxy http://127.0.0.1:7890 && npm config set https-proxy http://127.0.0.1:7890 || (npm config delete proxy 2>/dev/null; npm config delete https-proxy 2>/dev/null)
+  npm uninstall -g @google/gemini-cli 2>/dev/null
+  npm cache clean --force
+  npm install -g @google/gemini-cli
+}
+
+# gmr on   # 走代理
+# gmr off  # 不走代理
+
+
+# >>>> p10k configure start >>>>
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# <<<< p10k configure end <<<<
+
+export APP_IDENTITY="BloomBar Development"
+
+# Added by Antigravity
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"

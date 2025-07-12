@@ -1,0 +1,15 @@
+# NAME: auto-proxy
+# AUTHOR: yanjinbin
+# REPO: REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
+# UPDATED: 2026-04-27 09:20:02
+# DOMAIN-SUFFIX: 5
+# TOTAL: 5
+
+payload:
+  # vscode 
+  - DOMAIN-SUFFIX,visualstudio.com
+  - DOMAIN-SUFFIX,vsassets.io
+  - DOMAIN-SUFFIX,vsmarketplacebadge.apphb.com
+  - DOMAIN-SUFFIX,microsoft.com
+  - DOMAIN-SUFFIX,azureedge.net
+  - DOMAIN-SUFFIX,28.al

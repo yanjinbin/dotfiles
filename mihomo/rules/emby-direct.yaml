@@ -1,0 +1,12 @@
+# NAME: emby-direct
+# AUTHOR: yanjinbin (custom)
+# UPDATED: 2026-05-05
+# DOMAIN-SUFFIX: 2
+# tips: emby服务器 直连列表
+# TOTAL: 2
+
+payload:
+  # micu emby 直连列表
+  - DOMAIN-SUFFIX,tv.micu.hk
+  - DOMAIN-SUFFIX,tv1.micu.hk
+  
