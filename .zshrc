@@ -132,16 +132,72 @@ export PATH="$MAVEN_HOME/bin:$PATH"
 
 # Go
 export GO111MODULE=on
-export GOPROXY="https://mirrors.aliyun.com/goproxy/,direct"
+export GOPROXY=https://goproxy.io,direct
 export GOPATH="$HOME/GolandProjects"
 export GOBIN="$GOPATH/bin"
-export PATH="$PATH:$GOBIN"
+export PATH="$GOBIN:$PATH"
 
 
 ### >>> alias config start >>>>
 ##### Proxy 切换 #####
 alias proxyon='export https_proxy="http://127.0.0.1:7890" http_proxy="http://127.0.0.1:7890" all_proxy="socks5://127.0.0.1:7890"'
 alias proxyoff='unset https_proxy http_proxy all_proxy'
+
+
+# >>>> nvm init <<<<
+
+## >>>> nvm init start  >>>>
+export NVM_DIR="$HOME/.nvm"
+nvm() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  nvm "$@"
+}
+node() {
+  unset -f node
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  node "$@"
+}
+npm() {
+  unset -f npm
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  npm "$@"
+}
+npx() {
+  unset -f npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  npx "$@"
+}
+
+
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# place this after nvm initialization!
+# autoload -U add-zsh-hook
+
+# load-nvmrc() {
+#   local nvmrc_path
+#   nvmrc_path="$(nvm_find_nvmrc)"
+
+#   if [ -n "$nvmrc_path" ]; then
+#     local nvmrc_node_version
+#     nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+#     if [ "$nvmrc_node_version" = "N/A" ]; then
+#       nvm install
+#     elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
+#       nvm use
+#     fi
+#   elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
+#     echo "Reverting to nvm default version"
+#     nvm use default
+#   fi
+# }
+
+# add-zsh-#hook chpwd load-nvmrc
+# load-nvmrc
+## <<<<< nvm init end  <<<<
 
 ##### 常用别名 #####
 # PNPM
@@ -158,6 +214,9 @@ alias gbvv="git branch -vv"
 alias gbuo="git branch update origin"
 alias grpo="git remote prune origin"
 
+# 
+alias c="clear"
+
 # 工具 & 快捷
 alias y="yazi"
 alias t="history | tail -100"
@@ -172,33 +231,4 @@ alias loginaliyun='ssh -i ~/.ssh/aliyun_rsa root@121.41.102.247'
 # <<<< p10k configure end <<<<
 
 
-## >>>> nvm init start  >>>>
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# place this after nvm initialization!
-autoload -U add-zsh-hook
-
-load-nvmrc() {
-  local nvmrc_path
-  nvmrc_path="$(nvm_find_nvmrc)"
-
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version
-    nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
-      nvm use
-    fi
-  elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
-## <<<<< nvm init end  <<<<
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
