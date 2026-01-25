@@ -81,8 +81,8 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git zsh-autosuggestions zsh-syntax-highlighting )
 
-plugins=( git pnpm docker-compose z you-should-use tmux zsh-autosuggestions
-zsh-syntax-highlighting)
+plugins=( uv git pnpm docker-compose z you-should-use tmux zsh-autosuggestions
+zsh-syntax-highlighting )
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -131,8 +131,10 @@ export MAVEN_HOME="$HOME/apache-maven-3.6.3"
 export PATH="$MAVEN_HOME/bin:$PATH"
 
 # Go
-export GO111MODULE=on
-export GOPROXY=https://goproxy.io,direct
+# export GO111MODULE=on
+export GOPROXY=https://mirrors.tencent.com/go/
+# export GOPROXY=https://goproxy.cn,https://mirrors.tencent.com/go,direct
+# export GOPROXY=https://goproxy.cn,direct
 export GOPATH="$HOME/GolandProjects"
 export GOBIN="$GOPATH/bin"
 export PATH="$GOBIN:$PATH"
@@ -140,66 +142,57 @@ export PATH="$GOBIN:$PATH"
 
 ### >>> alias config start >>>>
 ##### Proxy 切换 #####
-alias proxyon='export https_proxy="http://127.0.0.1:7890" http_proxy="http://127.0.0.1:7890" all_proxy="socks5://127.0.0.1:7890"'
-alias proxyoff='unset https_proxy http_proxy all_proxy'
+# ===== Auto proxy on (every new tab/window) =====
+export http_proxy="http://127.0.0.1:7890"
+export https_proxy="http://127.0.0.1:7890"
+export all_proxy="socks5://127.0.0.1:7890"
+
+alias proxyon='export http_proxy="http://127.0.0.1:7890" https_proxy="http://127.0.0.1:7890" all_proxy="socks5://127.0.0.1:7890"'
+alias proxyoff='unset http_proxy https_proxy all_proxy'
+# ==============================================
 
 
-# >>>> nvm init <<<<
-
-## >>>> nvm init start  >>>>
-export NVM_DIR="$HOME/.nvm"
-nvm() {
-  unset -f nvm node npm npx
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  nvm "$@"
-}
-node() {
-  unset -f node
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  node "$@"
-}
-npm() {
-  unset -f npm
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  npm "$@"
-}
-npx() {
-  unset -f npx
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  npx "$@"
-}
 
 
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# place this after nvm initialization!
-# autoload -U add-zsh-hook
-
-# load-nvmrc() {
-#   local nvmrc_path
-#   nvmrc_path="$(nvm_find_nvmrc)"
-
-#   if [ -n "$nvmrc_path" ]; then
-#     local nvmrc_node_version
-#     nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-#     if [ "$nvmrc_node_version" = "N/A" ]; then
-#       nvm install
-#     elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
-#       nvm use
-#     fi
-#   elif [ -n "$(PWD=$OLDPWD nvm_find_nvmrc)" ] && [ "$(nvm version)" != "$(nvm version default)" ]; then
-#     echo "Reverting to nvm default version"
-#     nvm use default
-#   fi
-# }
-
-# add-zsh-#hook chpwd load-nvmrc
-# load-nvmrc
-## <<<<< nvm init end  <<<<
 
 ##### 常用别名 #####
+# ==============================
+# eza - modern ls replacement
+# ==============================
+
+# 基础：替代 ls（彩色 + 图标）
+alias ls='eza --icons --color=auto'
+
+# 常用：长列表（不显示 owner / group，目录优先）
+alias ll='eza -l --icons --group-directories-first'
+
+# 全量：包含隐藏文件（.git / .env 等）
+alias lla='eza -la --icons --group-directories-first'
+
+# 树形：查看项目结构（2 层，最常用）
+alias lt='eza -T -L 2 --icons'
+alias lt2='eza -T -L 2 --icons'
+# ------------------------------
+# 进阶（可选但强烈推荐）
+# ------------------------------
+
+# 带 Git 状态（非常适合项目目录）
+alias llg='eza -l --icons --git --group-directories-first'
+alias llag='eza -la --icons --git --group-directories-first'
+
+# 只看目录 / 只看文件
+alias lld='eza -l --icons --only-dirs'
+alias llf='eza -l --icons --only-files'
+
+# 更深的树（调试项目结构）
+alias lt3='eza -T -L 3 --icons'
+alias lt4='eza -T -L 4 --icons'
+
+# 恢复系统原生 ls（以防万一）
+# alias lsb='/bin/ls'
+
+
+alias npm='pnpm'
 # PNPM
 alias pi="pnpm install"
 alias pa="pnpm add"
@@ -207,12 +200,19 @@ alias prd="pnpm run dev"
 alias prp="pnpm run preview"
 alias prb="pnpm run biome"
 
-
+alias wattage="system_profiler SPPowerDataType | grep Wattage -C 5"
 # Git
 alias gbso="git branch show origin"
 alias gbvv="git branch -vv"
 alias gbuo="git branch update origin"
 alias grpo="git remote prune origin"
+
+# uv alias
+alias ur="uv run python"
+alias ua="uv add"
+alias us="uv sync"
+alias uvp="uv pip"
+
 
 # 
 alias c="clear"
@@ -223,6 +223,7 @@ alias t="history | tail -100"
 alias loginaliyun='ssh -i ~/.ssh/aliyun_rsa root@121.41.102.247'
 
 
+
 ### <<<< alias config end <<<<<
 
 # >>>> p10k configure start >>>>
@@ -230,5 +231,16 @@ alias loginaliyun='ssh -i ~/.ssh/aliyun_rsa root@121.41.102.247'
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 # <<<< p10k configure end <<<<
 
+# pnpm
+export PNPM_HOME="${HOME}/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
 
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# . "$HOME/.local/bin/env"
