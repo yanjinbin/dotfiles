@@ -1,0 +1,7 @@
+payload:
+  # Gemini / Google 固定走美国原生 IP
+  - DOMAIN,alkalimessages-pa.googleapis.com
+  - DOMAIN-SUFFIX,googleapis.com
+  - DOMAIN-SUFFIX,gstatic.com
+  - DOMAIN-SUFFIX,googleusercontent.com
+  - DOMAIN-SUFFIX,google.com
