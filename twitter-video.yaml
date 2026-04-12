@@ -1,3 +1,10 @@
+# NAME: TwitterVideo
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles
+# UPDATED: 2026-04-12
+# DOMAIN-SUFFIX: 9
+# IP-CIDR: 6
+# TOTAL: 15
 payload:
   # === 图片与静态资源 (Images) ===
   # twimg 系列是 Twitter 最核心的静态资源域名，承载了推文图片、缩略图及用户头像
