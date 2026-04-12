@@ -1,13 +1,31 @@
 payload:
-  - DOMAIN-SUFFIX,x.com
-  - DOMAIN-SUFFIX,twitter.com
+  # === 图片与静态资源 (Images) ===
+  # twimg 系列是 Twitter 最核心的静态资源域名，承载了推文图片、缩略图及用户头像
   - DOMAIN-SUFFIX,twimg.com
   - DOMAIN-SUFFIX,twimg.co
+  - DOMAIN-SUFFIX,twimg.org
+  # 早期第三方图片存储，现多用于加载历史存档图片
+  - DOMAIN-SUFFIX,twitpic.com
+  # 内容管理系统域名，用于加载官方品牌素材和部分静态数字资产
+  - DOMAIN-SUFFIX,cms-twdigitalassets.com
+
+  # === 视频与音频 (Video & Audio) ===
+  # 专门负责 Twitter 平台上的原生视频流传输
+  - DOMAIN-SUFFIX,twvid.com
+  # 内部及早期 API 域名，涉及视频元数据加载及音频空间 (Spaces) 的连接
+  - DOMAIN-SUFFIX,twttr.com
+  - DOMAIN-SUFFIX,twttr.net
+
+  # === 直播流媒体 (Live Streaming) ===
+  # 虽 Periscope 已停止独立运营，但 X 的实时直播技术（如直播视频流）仍大量使用其域名
   - DOMAIN-SUFFIX,periscope.tv
   - DOMAIN-SUFFIX,pscp.tv
-  - DOMAIN-SUFFIX,t.co
-  - DOMAIN-SUFFIX,twvid.com
-  - DOMAIN-SUFFIX,ipleak.net
-  - DOMAIN-SUFFIX,dnsleaktest.com
-  - DOMAIN-SUFFIX,ipapi.co
-  - DOMAIN,www.ugtop.com
+
+  # === 媒体分发 IP 段 (Media CDN IPs) ===
+  # Twitter 自建的数据中心 IP 段，主要用于加速大流量媒体数据（如视频数据包）的分发
+  - IP-CIDR,192.133.76.0/22
+  - IP-CIDR,199.59.148.0/22
+  - IP-CIDR,199.96.56.0/21
+  - IP-CIDR,202.160.128.0/22
+  - IP-CIDR,209.237.192.0/19
+  - IP-CIDR,69.195.160.0/19
