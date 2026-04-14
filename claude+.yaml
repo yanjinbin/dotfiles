@@ -15,6 +15,7 @@ payload:
   - DOMAIN-SUFFIX,clau.de              # Claude 短域名（重定向）
   - DOMAIN-SUFFIX,claudemcpclient.com  # Claude MCP 客户端
   - DOMAIN-SUFFIX,claudeusercontent.com # 用户内容 / 附件
+  - DOMAIN-SUFFIX,usefathom.com # Google Analysis 竞品
 # === IP 段兜底（域名规则漏配时的最后防线）===
   - IP-CIDR,160.79.104.0/21,no-resolve   # Anthropic 自有 IPv4 段
   - IP-CIDR6,2607:6bc0::/32,no-resolve   # Anthropic IPv6 段
