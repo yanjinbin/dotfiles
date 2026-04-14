@@ -2,59 +2,13 @@
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles
 # UPDATED: 2026-04-14
-# DOMAIN-SUFFIX: 14
-# DOMAIN: 3
-# IP-CIDR: 8
-# TOTAL: 25
-
+# DOMAIN-SUFFIX: 5
+# TOTAL: 5
 payload:
-  # === Claude / Anthropic 主站 ===
-  # Claude Web、登录、账户、文档
+  # 核心
   - DOMAIN-SUFFIX,claude.ai
   - DOMAIN-SUFFIX,anthropic.com
   - DOMAIN-SUFFIX,claudeusercontent.com
-
-  # === Claude API / Console ===
-  # Claude Code、API、Console、WebSocket
-  - DOMAIN-SUFFIX,api.anthropic.com
-  - DOMAIN-SUFFIX,console.anthropic.com
-
-  # === 前端资源 / 遥测 / 功能开关 ===
-  # Claude 页面经常依赖这些服务，否则可能出现白屏、登录失败、按钮失效
-  - DOMAIN-SUFFIX,cdn.usefathom.com
-  - DOMAIN-SUFFIX,segment.io
-  - DOMAIN-SUFFIX,statsig.com
-  - DOMAIN-SUFFIX,launchdarkly.com
-  - DOMAIN-SUFFIX,sentry.io
-
-  # === 客服 / 通知 ===
-  - DOMAIN-SUFFIX,intercom.io
-  - DOMAIN-SUFFIX,intercomcdn.com
-
-  # === 支付 ===
-  - DOMAIN-SUFFIX,stripe.com
-  - DOMAIN-SUFFIX,stripe.network
-
-  # === Cloudflare 验证 / Turnstile ===
+  - DOMAIN-SUFFIX,usefathom.com
+  # Cloudflare Turnstile 验证（登录时需要）
   - DOMAIN-SUFFIX,challenges.cloudflare.com
-  - DOMAIN-SUFFIX,turnstile.com
-
-  # === 精确域名 ===
-  - DOMAIN,claude.ai
-  - DOMAIN,api.anthropic.com
-  - DOMAIN,console.anthropic.com
-
-  # === Claude / Anthropic 常见 CDN / 出口 IP 段 ===
-  # Cloudflare
-  - IP-CIDR,104.16.0.0/13,no-resolve
-  - IP-CIDR,104.24.0.0/14,no-resolve
-  - IP-CIDR,172.64.0.0/13,no-resolve
-
-  # Fastly / 静态资源
-  - IP-CIDR,151.101.0.0/16,no-resolve
-
-  # AWS CloudFront
-  - IP-CIDR,13.32.0.0/15,no-resolve
-  - IP-CIDR,18.64.0.0/14,no-resolve
-  - IP-CIDR,99.84.0.0/16,no-resolve
-  - IP-CIDR,54.192.0.0/16,no-resolve
