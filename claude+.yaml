@@ -6,7 +6,7 @@
 # IP-CIDR: 1
 # IP-CIDR6: 1
 # IP-ASN: 1
-# TOTAL: 5
+# TOTAL: 9
 payload:
 # === 核心域名 ===
   - DOMAIN-SUFFIX,anthropic.com        # Anthropic 主站及所有子域名
