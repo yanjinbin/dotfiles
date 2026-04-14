@@ -1,0 +1,21 @@
+# NAME: ClaudeSite
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles
+# UPDATED: 2026-04-14
+# DOMAIN-SUFFIX: 6
+# IP-CIDR: 1
+# IP-CIDR6: 1
+# IP-ASN: 1
+# TOTAL: 5
+payload:
+# === 核心域名 ===
+  - DOMAIN-SUFFIX,anthropic.com        # Anthropic 主站及所有子域名
+  - DOMAIN-SUFFIX,claude.ai            # Claude 网页版
+  - DOMAIN-SUFFIX,claude.com           # Claude 备用域名
+  - DOMAIN-SUFFIX,clau.de              # Claude 短域名（重定向）
+  - DOMAIN-SUFFIX,claudemcpclient.com  # Claude MCP 客户端
+  - DOMAIN-SUFFIX,claudeusercontent.com # 用户内容 / 附件
+# === IP 段兜底（域名规则漏配时的最后防线）===
+  - IP-CIDR,160.79.104.0/21,no-resolve   # Anthropic 自有 IPv4 段
+  - IP-CIDR6,2607:6bc0::/32,no-resolve   # Anthropic IPv6 段
+  - IP-ASN,399358,no-resolve             # Anthropic PBC 自治系统号
