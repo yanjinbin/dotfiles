@@ -1,0 +1,47 @@
+# NAME: ClaudeSite
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles
+# UPDATED: 2026-04-15
+# DOMAIN-SUFFIX: 10
+# DOMAIN: 5
+# DOMAIN-KEYWORD: 3
+# IP-CIDR: 1
+# IP-CIDR6: 1
+# IP-ASN: 1
+# TOTAL: 21
+
+payload:
+
+  # === 核心域名 ===
+  - DOMAIN-SUFFIX,anthropic.com          # Anthropic 主站及所有子域名（含 api/cdn/console/mcp/workbench）
+  - DOMAIN-SUFFIX,claude.ai              # Claude 网页版
+  - DOMAIN-SUFFIX,claude.com             # Claude 备用域名
+  - DOMAIN-SUFFIX,clau.de               # Claude 短域名（重定向）
+  - DOMAIN-SUFFIX,claudemcpclient.com    # Claude MCP 客户端通信
+  - DOMAIN-SUFFIX,claudeusercontent.com  # 用户内容 / 附件
+
+  # === CDN 和静态资源 ===
+  - DOMAIN,servd-anthropic-website.b-cdn.net    # BunnyCDN 静态资源
+  - DOMAIN,anthropic.com.cdn.cloudflare.net     # Cloudflare CDN 节点
+
+  # === 认证 / 内容 ===
+  - DOMAIN,anthropic.auth0.com           # OAuth 登录认证
+  - DOMAIN,anthropic-com.ghost.io        # 博客 / CMS 内容
+
+  # === 监控和遥测（保持出口 IP 一致，防风控）===
+  - DOMAIN-SUFFIX,sentry.io             # 错误监控上报
+  - DOMAIN-SUFFIX,statsigapi.net        # 功能开关 / AB 测试
+  - DOMAIN,browser-intake-us5-datadoghq.com  # Datadog RUM（注意：根域名不是 datadoghq.com）
+  - DOMAIN-KEYWORD,datadog              # Datadog 其他地区端点兜底（us3/eu1/ap1 等）
+  - DOMAIN-KEYWORD,sentry               # Sentry 通配兜底
+  - DOMAIN-KEYWORD,sift                 # 反欺诈检测
+
+  # === 客服 / 第三方 widget ===
+  - DOMAIN-SUFFIX,intercom.io           # Intercom 在线客服
+  - DOMAIN-SUFFIX,intercomcdn.com       # Intercom 静态资源 CDN
+  - DOMAIN,cdn.usefathom.com            # Fathom 访问统计
+
+  # === IP 段兜底（域名规则漏配时的最后防线）===
+  - IP-CIDR,160.79.104.0/21,no-resolve  # Anthropic 自有 IPv4 段
+  - IP-CIDR6,2607:6bc0::/32,no-resolve  # Anthropic IPv6 段
+  - IP-ASN,399358,no-resolve            # Anthropic PBC 自治系统号
