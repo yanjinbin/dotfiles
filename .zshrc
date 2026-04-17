@@ -1,236 +1,47 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+# =============================================================================
+#  ~/.zshrc
+#  Last optimized: 2026-04
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Powerlevel10k 即时提示（需放最顶部）
+# 若用 robbyrussell 主题可注释此块
+# -----------------------------------------------------------------------------
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-
-# Path to your Oh My Zsh installation.
+# -----------------------------------------------------------------------------
+# Oh My Zsh 核心配置
+# -----------------------------------------------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_THEME="robbyrussell"
+# 若切换到 p10k，改为：
 ZSH_THEME="powerlevel10k/powerlevel10k"
-# ZSH_THEME="agnoster"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+# 历史记录时间戳
+HIST_STAMPS="yyyy-mm-dd"
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+# 插件列表（注意：zsh-syntax-highlighting 必须放最后）
+plugins=(
+  git
+  uv
+  pnpm
+  docker-compose
+  z
+  you-should-use
+  tmux
+  zsh-autosuggestions
+  zsh-syntax-highlighting   # ⚠️ 必须最后一个
+)
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+source "$ZSH/oh-my-zsh.sh"
 
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-# plugins=(git zsh-autosuggestions zsh-syntax-highlighting )
-
-plugins=( uv git pnpm docker-compose z you-should-use tmux zsh-autosuggestions
-zsh-syntax-highlighting )
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
-
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes. Aliases can be placed here, though Oh My Zsh
-# users are encouraged to define aliases within a top-level file in
-# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-
-# Python (pyenv)
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
-
-# PNPM
-export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-
-# Maven
-export MAVEN_HOME="$HOME/apache-maven-3.6.3"
-export PATH="$MAVEN_HOME/bin:$PATH"
-
-# Go
-# export GO111MODULE=on
-export GOPROXY=https://mirrors.tencent.com/go/
-# export GOPROXY=https://goproxy.cn,https://mirrors.tencent.com/go,direct
-# export GOPROXY=https://goproxy.cn,direct
-export GOPATH="$HOME/GolandProjects"
-export GOBIN="$GOPATH/bin"
-export PATH="$GOBIN:$PATH"
-
-
-### >>> alias config start >>>>
-##### Proxy 切换 #####
-# ===== Auto proxy on (every new tab/window) =====
-export http_proxy="http://127.0.0.1:7890"
-export https_proxy="http://127.0.0.1:7890"
-export all_proxy="socks5://127.0.0.1:7890"
-
-alias proxyon='export http_proxy="http://127.0.0.1:7890" https_proxy="http://127.0.0.1:7890" all_proxy="socks5://127.0.0.1:7890"'
-alias proxyoff='unset http_proxy https_proxy all_proxy'
-# ==============================================
-
-
-
-
-
-##### 常用别名 #####
-# ==============================
-# eza - modern ls replacement
-# ==============================
-
-# 基础：替代 ls（彩色 + 图标）
-alias ls='eza --icons --color=auto'
-
-# 常用：长列表（不显示 owner / group，目录优先）
-alias ll='eza -l --icons --group-directories-first'
-
-# 全量：包含隐藏文件（.git / .env 等）
-alias lla='eza -la --icons --group-directories-first'
-
-# 树形：查看项目结构（2 层，最常用）
-alias lt='eza -T -L 2 --icons'
-alias lt2='eza -T -L 2 --icons'
-# ------------------------------
-# 进阶（可选但强烈推荐）
-# ------------------------------
-
-# 带 Git 状态（非常适合项目目录）
-alias llg='eza -l --icons --git --group-directories-first'
-alias llag='eza -la --icons --git --group-directories-first'
-
-# 只看目录 / 只看文件
-alias lld='eza -l --icons --only-dirs'
-alias llf='eza -l --icons --only-files'
-
-# 更深的树（调试项目结构）
-alias lt3='eza -T -L 3 --icons'
-alias lt4='eza -T -L 4 --icons'
-
-# 恢复系统原生 ls（以防万一）
-# alias lsb='/bin/ls'
-
-
-alias npm='pnpm'
-# PNPM
-alias pi="pnpm install"
-alias pa="pnpm add"
-alias prd="pnpm run dev"
-alias prp="pnpm run preview"
-alias prb="pnpm run biome"
-
-alias wattage="system_profiler SPPowerDataType | grep Wattage -C 5"
-# Git
-alias gbso="git branch show origin"
-alias gbvv="git branch -vv"
-alias gbuo="git branch update origin"
-alias grpo="git remote prune origin"
-
-# uv alias
-alias ur="uv run python"
-alias ua="uv add"
-alias us="uv sync"
-alias uvp="uv pip"
-
-
-# 
-alias c="clear"
-
-# 工具 & 快捷
-alias y="yazi"
-alias t="history | tail -100"
-alias loginaliyun='ssh -i ~/.ssh/aliyun_rsa root@121.41.102.247'
-
-
-
-### <<<< alias config end <<<<<
-
-# >>>> p10k configure start >>>>
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-# <<<< p10k configure end <<<<
-
+# -----------------------------------------------------------------------------
+# PATH 配置
+# -----------------------------------------------------------------------------
+# pnpm
 # pnpm
 export PNPM_HOME="${HOME}/Library/pnpm"
 case ":$PATH:" in
@@ -239,8 +50,197 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# . "$HOME/.local/bin/env"
+# Maven
+export MAVEN_HOME="$HOME/apache-maven-3.6.3"
+
+# Go（修复：GOBIN 需显式定义，否则 $GOBIN 为空）
+export GOPATH="$HOME/GolandProjects"
+export GOBIN="$GOPATH/bin"
+export GOPROXY="https://mirrors.tencent.com/go/"
+
+# fnm (Node.js 版本管理)
+FNM_PATH="/opt/homebrew/opt/fnm/bin"
+
+# 统一 PATH 声明（避免多次 export PATH）
+export PATH="$PNPM_HOME:$MAVEN_HOME/bin:$GOBIN:$FNM_PATH:$PATH"
+
+# fnm 环境初始化
+[[ -d "$FNM_PATH" ]] && eval "$(fnm env --shell zsh)"
+
+# -----------------------------------------------------------------------------
+# eza — 现代 ls 替代
+# -----------------------------------------------------------------------------
+alias ls='eza --icons --color=auto'
+alias ll='eza -l  --icons --group-directories-first'
+alias lla='eza -la --icons --group-directories-first'
+alias llg='eza -l  --icons --git --group-directories-first'   # 带 Git 状态
+alias llag='eza -la --icons --git --group-directories-first'
+alias lld='eza -l  --icons --only-dirs'
+alias llf='eza -l  --icons --only-files'
+
+# 树形视图（lt=2层, lt3=3层, lt4=4层）
+alias lt='eza  -T -L 2 --icons'
+alias lt3='eza -T -L 3 --icons'
+alias lt4='eza -T -L 4 --icons'
+
+# -----------------------------------------------------------------------------
+# uv — Python 包管理
+# -----------------------------------------------------------------------------
+alias ur='uv run python'
+alias ua='uv add'
+alias us='uv sync'
+alias uvp='uv pip'
+
+# -----------------------------------------------------------------------------
+# Git 快捷
+# -----------------------------------------------------------------------------
+alias gs='git status'
+alias gd='git diff'
+alias gl='git log --oneline --graph --decorate -20'
+alias gp='git push'
+alias gpl='git pull'
+
+# -----------------------------------------------------------------------------
+# 系统 & 工具
+# -----------------------------------------------------------------------------
+alias c='clear'
+alias y='yazi'
+alias t='history | tail -100'
+alias wattage='system_profiler SPPowerDataType | grep Wattage -C 5'
+alias myip="curl -s http://ip-api.com/json | jq -r '\"\(.country) \(.regionName) \(.city) \(.isp) \(.query)\"'"
+
+# SSH
+alias loginaliyun='ssh -i ~/.ssh/aliyun_rsa root@121.41.102.247'
+
+# ipv6 开关（仅限 Wi-Fi）
+alias ipv6off="networksetup -setv6off Wi-Fi && echo '✅ IPv6 已关闭'"
+alias ipv6on="networksetup -setv6automatic Wi-Fi && echo '✅ IPv6 已恢复'"
+
+proxyon() {
+  export http_proxy="http://127.0.0.1:7890"
+  export https_proxy="http://127.0.0.1:7890"
+  export all_proxy="socks5h://127.0.0.1:7890"
+  echo "Proxy enabled:"
+  env | grep -i proxy
+}
+
+proxyoff() {
+  unset http_proxy https_proxy all_proxy
+  echo "Proxy disabled"
+  env | grep -i proxy
+}
+# Claude Code 遥测开关
+claude-privacy-on() {
+  export DISABLE_TELEMETRY=1
+  export DISABLE_ERROR_REPORTING=1
+  export CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1
+  export DISABLE_FEEDBACK_COMMAND=1
+  export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+  echo "🔒 隐私模式已开启（遥测/反馈/非必要流量：已关闭）"
+}
+
+claude-privacy-off() {
+  unset DISABLE_TELEMETRY
+  unset DISABLE_ERROR_REPORTING
+  unset CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY
+  unset DISABLE_FEEDBACK_COMMAND
+  unset CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
+  echo "🔓 隐私模式已关闭（遥测/反馈/非必要流量：已恢复默认）"
+}
+
+claude-privacy-status() {
+  echo "DISABLE_TELEMETRY=${DISABLE_TELEMETRY:-0}"
+  echo "DISABLE_ERROR_REPORTING=${DISABLE_ERROR_REPORTING:-0}"
+  echo "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=${CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY:-0}"
+  echo "DISABLE_FEEDBACK_COMMAND=${DISABLE_FEEDBACK_COMMAND:-0}"
+  echo "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=${CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC:-0}"
+}
+
+alias claudeon='claude-privacy-off'
+alias claudeoff='claude-privacy-on'
+
+
+
+# -----------------------------------------------------------------------------
+# 实用函数
+# -----------------------------------------------------------------------------
+
+# mkdir 后自动 cd 进入
+mkcd() { mkdir -p "$1" && cd "$1"; }
+
+# 万能解压
+extract() {
+  case "$1" in
+    *.tar.gz|*.tgz)  tar xzf "$1"  ;;
+    *.tar.bz2|*.tbz) tar xjf "$1"  ;;
+    *.tar.xz)        tar xJf "$1"  ;;
+    *.tar)           tar xf  "$1"  ;;
+    *.zip)           unzip   "$1"  ;;
+    *.gz)            gunzip  "$1"  ;;
+    *.rar)           unrar x "$1"  ;;
+    *.7z)            7z x    "$1"  ;;
+    *)               echo "不支持的格式: $1" ;;
+  esac
+}
+
+# 快速查找文件
+ff() { find . -name "*$1*" 2>/dev/null; }
+
+# 端口占用查询
+port() { lsof -i :"$1"; }
+
+
+# >>>> copilot commit message with gh cli, gitemoji, and conventional commits  start >>>>
+# # 1️⃣ 干掉 oh-my-zsh 的 gcm
+# unalias gcm 2>/dev/null
+
+gcm_() {
+  RAW=$(gh copilot --model gpt-5-mini -p 'Generate a git commit message from the staged diff.
+
+Requirements:
+- Follow Conventional Commits
+- Type must be one of: feat, fix, docs, style, refactor, test, chore, ci, build, perf, revert, hotfix
+- Include a gitmoji AFTER the type
+- Format strictly as: type(scope): emoji message
+- If scope is unclear, omit it
+- Maximum 72 characters
+- Use imperative mood
+- No trailing period
+
+Output rules:
+- Output exactly ONE line
+- No explanation
+- No extra text' \
+  --allow-tool "shell(git)")
+
+  MSG=$(echo "$RAW" | tail -n 1)
+
+  echo ""
+  echo "💡 Suggested commit:"
+  echo "$MSG"
+  echo ""
+
+  read "?Use this commit? (y/n): " confirm
+
+  if [[ "$confirm" == "y" ]]; then
+    git commit -m "$MSG"
+  else
+    echo "❌ Aborted"
+  fi
+}
+# <<<< copilot commit message with gh cli, gitemoji, and conventional commits  end <<<<
+
+
+# >>>> p10k configure start >>>>
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# <<<< p10k configure end <<<<
+
+export APP_IDENTITY="BloomBar Development"
+
+# Added by Antigravity
+export PATH="/Users/yanjinbin/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/yanjinbin/.antigravity/antigravity/bin:$PATH"
