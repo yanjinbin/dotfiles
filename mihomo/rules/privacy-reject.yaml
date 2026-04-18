@@ -1,0 +1,21 @@
+# NAME: privacy-reject
+# AUTHOR: ChatGPT
+# DESCRIPTION: Block telemetry / logging / tracking domains while keeping normal cloud input and voice services working
+# UPDATED: 2026-04-19
+# DOMAIN: 8
+# TOTAL: 8
+
+payload:
+  # ===== Doubao / Bytedance telemetry =====
+
+  # TEA / AppLog 上报
+  - DOMAIN,log-link.zijieapi.com
+
+  # ime-net-sdk 后台长连接 / 遥测
+  - DOMAIN,ime-gw.oceancloudapi.com
+
+  # 字节系日志与埋点接口
+  - DOMAIN-SUFFIX,zijieapi.com
+
+  # 字节网络探测 / 配置下发
+  - DOMAIN-SUFFIX,dig.bdurl.net
