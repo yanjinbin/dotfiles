@@ -1,0 +1,13 @@
+# NAME: bypass
+# AUTHOR: ChatGPT
+# DESCRIPTION: Domains that bypass reject rules
+# UPDATED: 2026-04-19
+# DOMAIN: 5
+# TOTAL: 5
+
+payload:
+  - DOMAIN,ime.doubao.com
+  - DOMAIN,speech.bytedance.com
+  # - DOMAIN-SUFFIX,frontier-audio-ime-quic.doubao.com
+  # - DOMAIN-SUFFIX,frontier-audio-ime-ws.doubao.com
+  - DOMAIN-SUFFIX,sportsteam368.com
