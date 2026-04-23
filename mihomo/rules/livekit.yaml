@@ -1,0 +1,37 @@
+# NAME: LiveKit
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles
+# UPDATED: 2026-04-23
+# DOMAIN-SUFFIX: 3
+# DOMAIN: 3
+# IP-CIDR: 2
+# TOTAL: 8
+
+payload:
+  # ── 本地 server 直连（覆盖所有端口：7880/7881/7882/UDP媒体）──────
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,0.0.0.0/8,DIRECT,no-resolve
+  - DOMAIN,localhost,DIRECT
+
+  # ── LiveKit Cloud 官方域名 ────────────────────────────────────────
+  - DOMAIN-SUFFIX,livekit.io,PROXY
+  - DOMAIN-SUFFIX,livekit.cloud,PROXY
+  - DOMAIN,meet.livekit.io,PROXY
+  - DOMAIN,agents-playground.livekit.io,PROXY
+
+  # ── lk CLI 依赖 ───────────────────────────────────────────────────
+  - DOMAIN-SUFFIX,twilio.com,PROXY
+
+  # ================================================================
+  # 云端自建 server 样板（填入实际地址后取消注释，并更新头部计数）
+  # ================================================================
+
+  # 域名形式：
+  # - DOMAIN,your-livekit.example.com,DIRECT
+  # - DOMAIN,turn.your-domain.com,DIRECT
+
+  # IP 形式（lk load-test 目标 / 云端 Redis / TURN server）：
+  # - IP-CIDR,1.2.3.4/32,DIRECT,no-resolve    # livekit-server
+  # - IP-CIDR,1.2.3.5/32,DIRECT,no-resolve    # Redis
+  # - IP-CIDR,1.2.3.6/32,DIRECT,no-resolve    # TURN
+  # - IP-CIDR,10.0.0.0/24,DIRECT,no-resolve   # 内网测试网段
