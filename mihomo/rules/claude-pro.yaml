@@ -2,7 +2,7 @@
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles
 # UPDATED: 2026-04-15
-# DOMAIN-SUFFIX: 10
+# DOMAIN-SUFFIX: 13
 # DOMAIN: 5
 # DOMAIN-KEYWORD: 3
 # IP-CIDR: 1
@@ -19,6 +19,8 @@ payload:
   - DOMAIN-SUFFIX,clau.de               # Claude 短域名（重定向）
   - DOMAIN-SUFFIX,claudemcpclient.com    # Claude MCP 客户端通信
   - DOMAIN-SUFFIX,claudeusercontent.com  # 用户内容 / 附件
+  - DOMAIN-SUFFIX,claudemcpcontent.com    # ← 新增，MCP 可视化内容
+  - DOMAIN-SUFFIX,anthropicusercontent.com  # ← 新增，用户内容备用域名
 
   # === CDN 和静态资源 ===
   - DOMAIN,servd-anthropic-website.b-cdn.net    # BunnyCDN 静态资源
