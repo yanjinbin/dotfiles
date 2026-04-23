@@ -21,15 +21,28 @@ Examples:
   gcma copilot gpt-5-mini
   gcma --help
 
+Run Mode:
+  1) Args: gcma [agent] [model]
+  2) Defaults: agent=codex; model by agent
+  3) Context: staged summary + name-status + unified diff
+  4) Flow: auth check -> generate -> local validate -> confirm -> git commit
+
 Notes:
-  1) Stage changes first: git add ...
-  2) gcma injects staged diff into the prompt, so agent tools are not required.
+  1) Stage only what you want to describe. Unstaged and untracked changes are ignored.
+  2) Auth is checked before generation: codex login status, claude auth status, or gh auth status.
+  3) Defaults: codex -> gpt-5.3-codex, claude -> sonnet, copilot -> gpt-5-mini.
+  4) Injected context has 3 sections: summary, name-status, and unified diff.
+  5) Diff context is compacted (U0 + minimal) without truncation; added/removed lines are preserved.
+  6) Local validation requires Conventional Commits pattern and max length 72.
+  7) Messages ending with a period are rejected.
+  8) After suggestion, commit runs only when you confirm with y.
+  9) Exit code: 0 on success or --help; 1 on validation/auth/generation failure.
 EOF_HELP
 }
 
 _gcma_prompt_base() {
   cat <<'EOF_PROMPT'
-Generate a git commit message from the staged diff.
+Generate a git commit message from the staged changes context.
 
 Requirements:
 - Follow Conventional Commits
@@ -47,7 +60,9 @@ Output rules:
 - No extra text
 
 Important:
-- Use only the staged diff provided below.
+- Use only the staged context provided below (summary, name-status, unified diff).
+- The unified diff is compacted with --unified=0 --minimal to reduce tokens.
+- All added/removed lines from staged changes are preserved (no truncation).
 - Do not ask to run git commands.
 - Do not ask for extra permissions.
 EOF_PROMPT
@@ -63,9 +78,10 @@ gcma() {
   local raw
   local msg
   local confirm
+  local staged_summary
+  local staged_name_status
   local staged_diff
   local pattern='^(feat|fix|docs|style|refactor|test|chore|ci|build|perf|revert|hotfix)(\([^)]+\))?: .+'
-  local -i diff_limit=20000
 
   case "${1:-}" in
     -h|--help|help)
@@ -89,14 +105,13 @@ gcma() {
     return 1
   fi
 
-  staged_diff="$(git diff --cached --no-color --no-ext-diff 2>/dev/null)"
-  if [[ -z "$staged_diff" ]]; then
+  staged_summary="$(git diff --cached --summary 2>/dev/null)"
+  staged_name_status="$(git diff --cached --name-status 2>/dev/null)"
+  staged_diff="$(git diff --cached --no-color --no-ext-diff --unified=0 --minimal 2>/dev/null)"
+
+  if [[ -z "$staged_summary" && -z "$staged_name_status" && -z "$staged_diff" ]]; then
     echo "❌ No staged changes. Run git add first."
     return 1
-  fi
-
-  if (( ${#staged_diff} > diff_limit )); then
-    staged_diff="${staged_diff[1,$diff_limit]}\n\n[Diff truncated to first ${diff_limit} characters.]"
   fi
 
   case "$provider" in
@@ -108,9 +123,17 @@ gcma() {
 
   prompt="$(_gcma_prompt_base)
 
-Staged diff starts:
-$staged_diff
-Staged diff ends."
+Staged summary starts:
+${staged_summary:-[none]}
+Staged summary ends.
+
+Staged name-status starts:
+${staged_name_status:-[none]}
+Staged name-status ends.
+
+Staged unified diff starts:
+${staged_diff:-[none]}
+Staged unified diff ends."
 
   tmp_file="$(mktemp)"
   err_file="$(mktemp)"
