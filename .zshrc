@@ -33,6 +33,7 @@ plugins=(
   you-should-use
   tmux
   zsh-autosuggestions
+  gcma
   zsh-syntax-highlighting   # ⚠️ 必须最后一个
 )
 
@@ -189,48 +190,6 @@ ff() { find . -name "*$1*" 2>/dev/null; }
 
 # 端口占用查询
 port() { lsof -i :"$1"; }
-
-
-# >>>> copilot commit message with gh cli, gitemoji, and conventional commits  start >>>>
-# # 1️⃣ 干掉 oh-my-zsh 的 gcm
-# unalias gcm 2>/dev/null
-
-gcm_() {
-  RAW=$(gh copilot --model gpt-5-mini -p 'Generate a git commit message from the staged diff.
-
-Requirements:
-- Follow Conventional Commits
-- Type must be one of: feat, fix, docs, style, refactor, test, chore, ci, build, perf, revert, hotfix
-- Include a gitmoji AFTER the type
-- Format strictly as: type(scope): emoji message
-- If scope is unclear, omit it
-- Maximum 72 characters
-- Use imperative mood
-- No trailing period
-
-Output rules:
-- Output exactly ONE line
-- No explanation
-- No extra text' \
-  --allow-tool "shell(git)")
-
-  MSG=$(echo "$RAW" | tail -n 1)
-
-  echo ""
-  echo "💡 Suggested commit:"
-  echo "$MSG"
-  echo ""
-
-  read "?Use this commit? (y/n): " confirm
-
-  if [[ "$confirm" == "y" ]]; then
-    git commit -m "$MSG"
-  else
-    echo "❌ Aborted"
-  fi
-}
-# <<<< copilot commit message with gh cli, gitemoji, and conventional commits  end <<<<
-
 
 # >>>> p10k configure start >>>>
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
