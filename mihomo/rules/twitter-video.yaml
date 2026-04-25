@@ -8,13 +8,13 @@
 payload:
   # === 图片与静态资源 (Images) ===
   # twimg 系列是 Twitter 最核心的静态资源域名，承载了推文图片、缩略图及用户头像
-  - DOMAIN-SUFFIX,twimg.com
-  - DOMAIN-SUFFIX,twimg.co
-  - DOMAIN-SUFFIX,twimg.org
+  # - DOMAIN-SUFFIX,twimg.com
+  # - DOMAIN-SUFFIX,twimg.co
+  # - DOMAIN-SUFFIX,twimg.org
   # 早期第三方图片存储，现多用于加载历史存档图片
-  - DOMAIN-SUFFIX,twitpic.com
+  # - DOMAIN-SUFFIX,twitpic.com
   # 内容管理系统域名，用于加载官方品牌素材和部分静态数字资产
-  - DOMAIN-SUFFIX,cms-twdigitalassets.com
+  # - DOMAIN-SUFFIX,cms-twdigitalassets.com
 
   # === 视频与音频 (Video & Audio) ===
   # 专门负责 Twitter 平台上的原生视频流传输
