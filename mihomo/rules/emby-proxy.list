@@ -1,0 +1,9 @@
+# NAME: emby-proxy (Surge/Shadowrocket)
+# AUTHOR: yanjinbin (custom)
+# UPDATED: 2026-05-05
+
+DOMAIN-SUFFIX,media.micu.hk
+DOMAIN-SUFFIX,micu.me
+DOMAIN-SUFFIX,media1.micu.hk
+DOMAIN-SUFFIX,media2.micu.hk
+DOMAIN-SUFFIX,media3.micu.hk

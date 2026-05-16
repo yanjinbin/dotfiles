@@ -1,0 +1,25 @@
+# NAME: APNs
+# AUTHOR: yanjinbin (custom)
+# UPDATED: 2026-05-01
+# DOMAIN: 6
+# IP-CIDR: 1
+# PROCESS: 1
+# TOTAL: 8
+
+payload:
+  # ── Apple Push Notification Service ──
+
+  # 主域名（最关键）
+  - DOMAIN-SUFFIX,push.apple.com
+
+  # 实际推送通道（经常命中）
+  - DOMAIN-SUFFIX,courier.push.apple.com
+
+  # Akamai 加速（很多人漏掉）
+  - DOMAIN-SUFFIX,push-apple.com.akadns.net
+
+  # iOS 内部推送进程（增强命中）
+  - PROCESS-NAME,apsd
+
+  # Apple ASN（必须）
+  - IP-CIDR,17.0.0.0/8,no-resolve

@@ -1,0 +1,11 @@
+# NAME: auto-proxy (Surge/Shadowrocket)
+# AUTHOR: yanjinbin
+# UPDATED: 2026-04-27
+
+# vscode / azure
+DOMAIN-SUFFIX,visualstudio.com
+DOMAIN-SUFFIX,vsassets.io
+DOMAIN-SUFFIX,vsmarketplacebadge.apphb.com
+DOMAIN-SUFFIX,microsoft.com
+DOMAIN-SUFFIX,azureedge.net
+DOMAIN-SUFFIX,28.al

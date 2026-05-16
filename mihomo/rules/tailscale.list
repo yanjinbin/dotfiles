@@ -1,0 +1,13 @@
+# NAME: Tailscale (Surge/Shadowrocket)
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles
+# UPDATED: 2026-04-29
+
+# === 虚拟网段 ===
+IP-CIDR,100.64.0.0/10,no-resolve
+IP-CIDR,100.100.100.100/32,no-resolve
+
+# === 控制 / 认证 / DERP ===
+DOMAIN-SUFFIX,tailscale.com
+DOMAIN-SUFFIX,tailscale.io
+DOMAIN-SUFFIX,ts.net

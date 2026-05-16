@@ -1,0 +1,31 @@
+# NAME: Tailscale
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles
+# UPDATED: 2026-04-29
+# DOMAIN-SUFFIX: 2
+# IP-CIDR: 2
+# TOTAL: 4
+
+payload:
+  # === 虚拟网段 ===
+  # Tailscale 100.x 虚拟 IP 段
+  - IP-CIDR,100.64.0.0/10,no-resolve
+  # Tailscale MagicDNS
+  - IP-CIDR,100.100.100.100/32,no-resolve
+
+  # === 控制 / 认证 / DERP ===
+  # 涵盖 controlplane / login / derp 全部子域名
+  - DOMAIN-SUFFIX,tailscale.com
+  # DERP 及 API 备用域名
+  - DOMAIN-SUFFIX,tailscale.io
+
+  # rule-providers:
+  # tailscale:
+  #   type: http
+  #   behavior: classical
+  #   url: "https://cdn.jsdelivr.net/gh/yanjinbin/dotfiles@latest/mihomo/rules/tailscale.yaml"
+  #   path: ./ruleset/Tailscale.yaml
+  #   interval: 2592000
+  # rules:
+  # # Tailscale 直连，放最前面
+  # - RULE-SET,tailscale,DIRECT

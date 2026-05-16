@@ -1,0 +1,40 @@
+# NAME: ClaudeSite (Surge/Shadowrocket)
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles
+# UPDATED: 2026-04-28
+# FORMAT: Surge classical list
+
+# === 核心域名 ===
+DOMAIN-SUFFIX,anthropic.com
+DOMAIN-SUFFIX,claude.ai
+DOMAIN-SUFFIX,claude.com
+DOMAIN-SUFFIX,clau.de
+DOMAIN-SUFFIX,claudemcpclient.com
+DOMAIN-SUFFIX,claudeusercontent.com
+DOMAIN-SUFFIX,claudemcpcontent.com
+DOMAIN-SUFFIX,anthropicusercontent.com
+
+# === CDN & 静态资源 ===
+DOMAIN,servd-anthropic-website.b-cdn.net
+DOMAIN,anthropic.com.cdn.cloudflare.net
+
+# === 认证 / 内容 ===
+DOMAIN,anthropic.auth0.com
+DOMAIN,anthropic-com.ghost.io
+
+# === 监控 & 遥测 ===
+DOMAIN-SUFFIX,sentry.io
+DOMAIN-SUFFIX,statsigapi.net
+DOMAIN,browser-intake-us5-datadoghq.com
+DOMAIN-KEYWORD,datadog
+DOMAIN-KEYWORD,sentry
+DOMAIN-KEYWORD,sift
+
+# === 客服 / 第三方 widget ===
+DOMAIN-SUFFIX,intercom.io
+DOMAIN-SUFFIX,intercomcdn.com
+DOMAIN,cdn.usefathom.com
+DOMAIN-SUFFIX,usefathom.com
+
+# === IP 兜底 ===
+IP-CIDR,160.79.104.0/21,no-resolve

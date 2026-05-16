@@ -1,0 +1,9 @@
+# NAME: APNs (Surge/Shadowrocket)
+# AUTHOR: yanjinbin (custom)
+# UPDATED: 2026-05-01
+# NOTE: PROCESS-NAME,apsd not supported in remote ruleset — add manually in [Rule] if on macOS
+
+DOMAIN-SUFFIX,push.apple.com
+DOMAIN-SUFFIX,courier.push.apple.com
+DOMAIN-SUFFIX,push-apple.com.akadns.net
+IP-CIDR,17.0.0.0/8,no-resolve

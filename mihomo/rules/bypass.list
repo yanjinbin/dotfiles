@@ -1,0 +1,20 @@
+# NAME: bypass (Surge/Shadowrocket)
+# AUTHOR: yanjinbin
+# DESCRIPTION: Domains that bypass reject rules
+# UPDATED: 2026-04-19
+
+DOMAIN,ime.doubao.com
+DOMAIN,speech.bytedance.com
+
+# nba直播
+DOMAIN-SUFFIX,sportsteam368.com
+DOMAIN-SUFFIX,bbs456.com
+DOMAIN-SUFFIX,yumixiu768.com
+DOMAIN-SUFFIX,sportsteam25.com
+DOMAIN-SUFFIX,livehwc4.com
+DOMAIN-SUFFIX,htfbudv.com
+DOMAIN-SUFFIX,u5rq.com
+
+# 国内大模型 / 游戏充值
+DOMAIN-SUFFIX,xiaomimimo.com
+DOMAIN-SUFFIX,seagm.com

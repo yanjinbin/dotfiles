@@ -1,0 +1,27 @@
+# NAME: bypass
+# AUTHOR: ChatGPT
+# DESCRIPTION: Domains that bypass reject rules
+# UPDATED: 2026-04-19
+# DOMAIN-SUFFIX: 8
+# TOTAL: 8
+
+payload:
+  - DOMAIN,ime.doubao.com
+  - DOMAIN,speech.bytedance.com
+  # - DOMAIN-SUFFIX,frontier-audio-ime-quic.doubao.com
+  # - DOMAIN-SUFFIX,frontier-audio-ime-ws.doubao.com
+  # nba直播
+  - DOMAIN-SUFFIX,sportsteam368.com
+  - DOMAIN-SUFFIX,bbs456.com
+  - DOMAIN-SUFFIX,yumixiu768.com
+  - DOMAIN-SUFFIX,sportsteam25.com
+  - DOMAIN-SUFFIX,livehwc4.com
+  - DOMAIN-SUFFIX,htfbudv.com
+  - DOMAIN-SUFFIX,u5rq.com
+  - DOMAIN-SUFFIX,yumixiu768.com
+  # 国内大模型
+  - DOMAIN-SUFFIX,xiaomimimo.com
+  - DOMAIN-SUFFIX,seagm.com
+  # gov网站
+  - DOMAIN-SUFFIX,miit.gov.cn
+  

@@ -1,0 +1,14 @@
+# NAME: emby-proxy 
+# AUTHOR: yanjinbin (custom)
+# UPDATED: 2026-05-05
+# DOMAIN-SUFFIX: 1
+# tips: emby服务器 需要代理列表
+# TOTAL: 1
+
+payload:
+  # micu emby 代理列表
+  - DOMAIN-SUFFIX,media.micu.hk
+  - DOMAIN-SUFFIX,micu.me
+  - DOMAIN-SUFFIX,media1.micu.hk
+  - DOMAIN-SUFFIX,media2.micu.hk
+  - DOMAIN-SUFFIX,media3.micu.hk

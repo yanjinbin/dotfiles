@@ -1,0 +1,15 @@
+# NAME: TwitterVideo (Surge/Shadowrocket)
+# AUTHOR: yanjinbin
+# UPDATED: 2026-04-12
+
+# === 视频流 ===
+DOMAIN-SUFFIX,video.twimg.com
+DOMAIN-SUFFIX,video.twimg.co
+DOMAIN-SUFFIX,video.twimg.org
+DOMAIN-SUFFIX,twvid.com
+DOMAIN-SUFFIX,twttr.com
+DOMAIN-SUFFIX,twttr.net
+
+# === 直播流媒体 ===
+DOMAIN-SUFFIX,periscope.tv
+DOMAIN-SUFFIX,pscp.tv

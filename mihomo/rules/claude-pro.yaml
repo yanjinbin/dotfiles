@@ -1,0 +1,67 @@
+# NAME: ClaudeSite
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles
+# UPDATED: 2026-04-28
+# DOMAIN-SUFFIX: 13
+# DOMAIN: 5
+# DOMAIN-KEYWORD: 3
+# IP-CIDR: 1
+# TOTAL: 22
+payload:
+  # === 核心域名 ===
+  # Anthropic 主站及所有子域名（含 api/cdn/console/mcp/workbench）
+  - DOMAIN-SUFFIX,anthropic.com
+  # Claude 网页版
+  - DOMAIN-SUFFIX,claude.ai
+  # Claude 备用域名
+  - DOMAIN-SUFFIX,claude.com
+  # Claude 短域名（重定向）
+  - DOMAIN-SUFFIX,clau.de
+  # Claude MCP 客户端通信
+  - DOMAIN-SUFFIX,claudemcpclient.com
+  # 用户内容 / 附件
+  - DOMAIN-SUFFIX,claudeusercontent.com
+  # MCP 可视化内容
+  - DOMAIN-SUFFIX,claudemcpcontent.com
+  # 用户内容备用域名
+  - DOMAIN-SUFFIX,anthropicusercontent.com
+
+  # === CDN & 静态资源 ===
+  # BunnyCDN 静态资源
+  - DOMAIN,servd-anthropic-website.b-cdn.net
+  # Cloudflare CDN 节点
+  - DOMAIN,anthropic.com.cdn.cloudflare.net
+
+  # === 认证 / 内容 ===
+  # OAuth 登录认证
+  - DOMAIN,anthropic.auth0.com
+  # 博客 / CMS 内容
+  - DOMAIN,anthropic-com.ghost.io
+
+  # === 监控 & 遥测 ===
+  # 错误监控上报
+  - DOMAIN-SUFFIX,sentry.io
+  # 功能开关 / AB 测试
+  - DOMAIN-SUFFIX,statsigapi.net
+  # Datadog RUM（us5 端点）
+  - DOMAIN,browser-intake-us5-datadoghq.com
+  # Datadog 其他地区端点兜底（us3/eu1/ap1 等）
+  - DOMAIN-KEYWORD,datadog
+  # Sentry 通配兜底
+  - DOMAIN-KEYWORD,sentry
+  # 反欺诈检测
+  - DOMAIN-KEYWORD,sift
+
+  # === 客服 / 第三方 widget ===
+  # Intercom 在线客服
+  - DOMAIN-SUFFIX,intercom.io
+  # Intercom 静态资源 CDN
+  - DOMAIN-SUFFIX,intercomcdn.com
+  # Fathom 访问统计
+  - DOMAIN,cdn.usefathom.com
+  # 隐私友好访问统计
+  - DOMAIN-SUFFIX,usefathom.com
+
+  # === IP 兜底 ===
+  # Anthropic 自有 IPv4 段
+  - IP-CIDR,160.79.104.0/21,no-resolve
