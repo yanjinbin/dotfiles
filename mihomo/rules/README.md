@@ -9,7 +9,6 @@ mihomo/
 ├── yunyufen.conf          # Shadowrocket 专用配置（内联所有自定义规则）
 └── rules/
     ├── *.yaml             # Mihomo (Clash Meta) 格式规则集
-    ├── *.list             # Surge / Shadowrocket 格式规则集（与 .yaml 一一对应）
     └── icons/             # 代理分组图标
 ```
 
@@ -26,6 +25,7 @@ mihomo/
 | `auto-proxy` | 默认需要代理的域名（VSCode 等） | 代理 |
 | `apns` | Apple Push Notification Service | 代理 |
 | `doubaoime-block` | 豆包输入法遥测 / 日志域名 | 拒绝 |
+| `gemini-pro` | Gemini / DeepMind / Vertex AI 核心域名与 IP 段 | 代理（美国出口） |
 | `gemini-plus` | Antigravity (Gemini) 补充域名 | 代理（美国出口） |
 | `twitter-video` | Twitter / X 视频流域名 | 代理（油管组） |
 | `dns-doh-proxy` | DoH 服务器域名 | 代理 |
@@ -33,22 +33,14 @@ mihomo/
 | `livekit` | LiveKit 实时通信域名 | 代理 |
 | `apple+` | Apple 全系域名合并版（blackmatrix7） | 代理 |
 
-## 双格式说明
+## CDN 引用说明
 
-同名规则同时提供两种格式：
-
-- **`.yaml`** — Mihomo (Clash Meta) `rule-providers` 格式，`payload:` 结构
-- **`.list`** — Surge / Shadowrocket `RULE-SET` 格式，每行一条规则
-
-jsdelivr CDN 引用地址：
+Mihomo (Clash Meta) `.yaml` 规则集 `rule-providers` jsdelivr CDN 引用地址：
 
 ```
-# Mihomo (.yaml)
 https://cdn.jsdelivr.net/gh/yanjinbin/dotfiles@master/mihomo/rules/<name>.yaml
-
-# Shadowrocket (.list)
-https://cdn.jsdelivr.net/gh/yanjinbin/dotfiles@master/mihomo/rules/<name>.list
 ```
+
 
 ## Shadowrocket 配置
 
