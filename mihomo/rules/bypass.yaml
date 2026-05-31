@@ -12,6 +12,7 @@ payload:
   
   # nba直播
   - DOMAIN-SUFFIX,sportsteam368.com
+  - DOMAIN-SUFFIX,sportsteam356.com
   - DOMAIN-SUFFIX,bbs456.com
   - DOMAIN-SUFFIX,yumixiu768.com
   - DOMAIN-SUFFIX,sportsteam25.com
@@ -23,10 +24,22 @@ payload:
   - DOMAIN-SUFFIX,aegis.qq.com
   - DOMAIN-SUFFIX,trace.qq.com
   - DOMAIN-SUFFIX,beacon.qq.com
-  
+  - DOMAIN-SUFFIX,88zhibo.cc
+  - DOMAIN-SUFFIX,88zhibo.tv
+  - DOMAIN-SUFFIX,88kq.me
+  - DOMAIN-SUFFIX,88kq.org
+  - DOMAIN-SUFFIX,88kanqiu.tw
+  - DOMAIN-SUFFIX,88kanqiu.love
+  - DOMAIN-SUFFIX,88kanqiu.la
+  - DOMAIN-SUFFIX,88kanqiu.cv
+  - DOMAIN-SUFFIX,88kanqiu.one
+  - DOMAIN-SUFFIX,88kanqiu.pw
+  - DOMAIN-SUFFIX,88kanqiu.cx
+  - DOMAIN-SUFFIX,88kanqiu.bar
+  - DOMAIN-SUFFIX,88kanqiu.us
+
   # 国内大模型
   - DOMAIN-SUFFIX,xiaomimimo.com
-  - DOMAIN-SUFFIX,seagm.com
   
   # gov网站 (已包含在 .cn 规则中，保留也可)
   - DOMAIN-SUFFIX,miit.gov.cn
