@@ -13,6 +13,7 @@ payload:
   # nba直播
   - DOMAIN-SUFFIX,sportsteam368.com
   - DOMAIN-SUFFIX,sportsteam356.com
+  - DOMAIN-SUFFIX,sportsteam25.com
   - DOMAIN-SUFFIX,bbs456.com
   - DOMAIN-SUFFIX,yumixiu768.com
   - DOMAIN-SUFFIX,sportsteam25.com
