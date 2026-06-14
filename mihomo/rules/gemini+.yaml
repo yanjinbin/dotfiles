@@ -1,18 +1,19 @@
-# NAME: Gemini-plus
+# NAME: Gemini+
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
-# UPDATED: 2026-06-07 11:53:00
-# DOMAIN: 4
-# DOMAIN-KEYWORD: 4
-# DOMAIN-SUFFIX: 20
-# TOTAL: 28
+# UPDATED: 2026-06-11
+# DOMAIN: 3
+# DOMAIN-SUFFIX: 21
+# DOMAIN-KEYWORD: 5
+# TOTAL: 29
 payload:
   # === Antigravity 智能体 & 平台后端 ===
+  - DOMAIN-KEYWORD,gemini
   - DOMAIN-KEYWORD,antigravity
   - DOMAIN-SUFFIX,antigravity-unleash.goog
   - DOMAIN-SUFFIX,antigravity.google
   - DOMAIN-SUFFIX,trygravity.ai
-  # - DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com
+  - DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com
 
   # === Gemini 网页端 & AI Studio 开发者平台 ===
   - DOMAIN-SUFFIX,gemini.google.com
@@ -33,15 +34,18 @@ payload:
   - DOMAIN,ai.google.dev
   - DOMAIN-SUFFIX,generativeai.google
 
-  # === Google 基础公共服务与网络调试 ===
+  # === Google API 基础设施 ===
+  # 覆盖所有 *.googleapis.com（含 generativelanguage / aiplatform / proactivebackend 等 Gemini/Antigravity 后端）
+  # 注：YouTube 规则集优先级更高（rules 第 1028 行），YouTube API 不受影响
+  - DOMAIN-SUFFIX,googleapis.com
   - DOMAIN-SUFFIX,apis.google.com
-  # - DOMAIN-SUFFIX,googleapis.com
   - DOMAIN-SUFFIX,googleusercontent.com
   - DOMAIN-SUFFIX,nel.goog
+  - DOMAIN-SUFFIX,optimizationguide-pa.googleapis.com
+  - DOMAIN-SUFFIX,daily-cloudcode-pa.googleapis.com
 
-  # === 关键字匹配 (覆盖子域名及衍生服务) ===
+  # === 关键字匹配（覆盖衍生服务与未来新域名）===
   - DOMAIN-SUFFIX,notebooklm.google
   - DOMAIN-KEYWORD,colab
-  - DOMAIN-KEYWORD,gemini
   - DOMAIN-KEYWORD,developerprofiles
   - DOMAIN-KEYWORD,generativelanguage

@@ -8,6 +8,7 @@
 # TOTAL: 22
 payload:
   # === Antigravity 智能体 & 平台后端 ===
+  - DOMAIN-KEYWORD,antigravity
   # Antigravity 智能体核心控制台/下发服务
   - DOMAIN-SUFFIX,antigravity-unleash.goog
   # Gravity AI 平台门户/官网入口
@@ -52,6 +53,9 @@ payload:
   - DOMAIN-SUFFIX,apis.google.com
   # Google 错误日志记录服务 (Network Error Logging)
   - DOMAIN-SUFFIX,nel.goog
+  # api google
+  - DOMAIN-SUFFIX,optimizationguide-pa.googleapis.com
+  - DOMAIN-SUFFIX,daily-cloudcode-pa.googleapis.com
 
   # === 关键字匹配 (覆盖子域名及衍生服务) ===
   # NotebookLM 智能笔记与研究助手

@@ -1,51 +1,33 @@
-# NAME: bypass
-# AUTHOR: ChatGPT
-# DESCRIPTION: Domains that bypass reject rules
-# UPDATED: 2026-05-23
-# TOTAL: 18
-
 payload:
-  - DOMAIN,ime.doubao.com
-  - DOMAIN,speech.bytedance.com
+  # 豆包输入法
+  - DOMAIN-SUFFIX,ime.doubao.com
+  - DOMAIN-SUFFIX,speech.bytedance.com
   - DOMAIN-SUFFIX,frontier-audio-ime-quic.doubao.com
   - DOMAIN-SUFFIX,frontier-audio-ime-ws.doubao.com
-  
-  # nba直播
-  - DOMAIN-SUFFIX,sportsteam368.com
+
+  # NBA直播
+  - DOMAIN-KEYWORD,sportsteam
+  # - DOMAIN-SUFFIX,sportsteam368.com
+  # - DOMAIN-SUFFIX,sportsteam356.com
+  # - DOMAIN-SUFFIX,sportsteam25.com
   - DOMAIN-SUFFIX,bbs456.com
   - DOMAIN-SUFFIX,yumixiu768.com
-  - DOMAIN-SUFFIX,sportsteam25.com
   - DOMAIN-SUFFIX,livehwc4.com
   - DOMAIN-SUFFIX,htfbudv.com
   - DOMAIN-SUFFIX,u5rq.com
   - DOMAIN-SUFFIX,sports.qq.com
-  - DOMAIN-SUFFIX,rumt-zh.com
-  - DOMAIN-SUFFIX,aegis.qq.com
-  - DOMAIN-SUFFIX,trace.qq.com
-  - DOMAIN-SUFFIX,beacon.qq.com
-  
-  # 国内大模型
-  - DOMAIN-SUFFIX,xiaomimimo.com
-  - DOMAIN-SUFFIX,seagm.com
-  
-  # gov网站 (已包含在 .cn 规则中，保留也可)
-  - DOMAIN-SUFFIX,miit.gov.cn
-  
-  # AI 模型 hugging face
-  - DOMAIN-SUFFIX,hf-mirror.com
-  
-  # 阿里云镜像
-  - DOMAIN-SUFFIX,mirrors.aliyun.com
-  
-  # npm 前端镜像 (淘宝)
-  - DOMAIN-SUFFIX,npmmirror.com
-  
-  # GitHub 国内加速站
+
+  # 88直播系
+  - DOMAIN-SUFFIX,88zhibo.cc
+  - DOMAIN-SUFFIX,88zhibo.tv
+  - DOMAIN-KEYWORD,88kanqiu
+
+  # GitHub加速
   - DOMAIN-SUFFIX,kkgithub.com
   - DOMAIN-SUFFIX,gitclone.com
   - DOMAIN-SUFFIX,gh-proxy.com
   - DOMAIN-SUFFIX,ghproxy.net
-  
-  # 腾讯云镜像
-  - DOMAIN-SUFFIX,cloud.tencent.com
-  
+
+  # 常用镜像
+  - DOMAIN-SUFFIX,hf-mirror.com
+  - DOMAIN-SUFFIX,npmmirror.com
