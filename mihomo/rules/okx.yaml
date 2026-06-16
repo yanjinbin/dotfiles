@@ -1,0 +1,23 @@
+# NAME: okx
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
+# UPDATED: 2026-06-17 00:00:00
+# DOMAIN-SUFFIX: 5
+# DOMAIN-KEYWORD: 1
+# TOTAL: 6
+payload:
+  # =========================
+  # OKX 主站
+  # =========================
+  - DOMAIN-SUFFIX,okx.com
+  - DOMAIN-SUFFIX,okx.me
+  - DOMAIN-SUFFIX,ouxyi.com
+  # =========================
+  # CDN / 静态资源
+  # =========================
+  - DOMAIN-SUFFIX,okxcdn.com
+  - DOMAIN-SUFFIX,okexcdn.com
+  # =========================
+  # 关键字兜底（覆盖所有子域名）
+  # =========================
+  - DOMAIN-KEYWORD,okx

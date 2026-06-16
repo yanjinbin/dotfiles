@@ -1,0 +1,96 @@
+# NAME: nigeria 🇳🇬 尼日利亚 mtn esim 卡 ，timon 电子钱包
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
+# UPDATED: 2026-06-17 00:00:00
+# DOMAIN-SUFFIX: 53
+# DOMAIN-KEYWORD: 2
+# TOTAL: 55
+payload:
+  # =========================
+  # MTN Nigeria 运营商
+  # =========================
+  - DOMAIN-SUFFIX,mtn.ng
+  - DOMAIN-SUFFIX,mtnnigeria.net
+  - DOMAIN-SUFFIX,mtnonline.com
+  - DOMAIN-SUFFIX,mymtn.ng
+  - DOMAIN-SUFFIX,apps.mtn.ng
+  - DOMAIN-SUFFIX,selfservice.mtn.ng
+  - DOMAIN-SUFFIX,crm.mtnnigeria.net
+  - DOMAIN-SUFFIX,mtnbusiness.net
+  - DOMAIN-SUFFIX,mtn.com.ng
+  - DOMAIN-SUFFIX,mtnplay.com.ng
+  # =========================
+  # MTN MoMo 移动钱包
+  # =========================
+  - DOMAIN-SUFFIX,mtnmomo.com
+  - DOMAIN-SUFFIX,mymtnmomo.com
+  - DOMAIN-KEYWORD,mtnmomo
+  # =========================
+  # Airtel Nigeria 运营商
+  # =========================
+  - DOMAIN-SUFFIX,airtel.com.ng
+  - DOMAIN-SUFFIX,ng.airtel.com
+  - DOMAIN-SUFFIX,airtel.africa
+  # =========================
+  # Glo (Globacom) 运营商
+  # =========================
+  - DOMAIN-SUFFIX,glo.ng
+  - DOMAIN-SUFFIX,gloworld.com
+  - DOMAIN-SUFFIX,glo.com.ng
+  # =========================
+  # 9mobile 运营商
+  # =========================
+  - DOMAIN-SUFFIX,9mobile.com.ng
+  - DOMAIN-SUFFIX,etisalat.com.ng
+  # =========================
+  # Timon 虚拟美元卡
+  # =========================
+  - DOMAIN-SUFFIX,timon.africa
+  - DOMAIN-SUFFIX,timoncard.com
+  - DOMAIN-SUFFIX,timon.com.ng
+  - DOMAIN-KEYWORD,timoncard
+  # =========================
+  # GoMoney 奈拉钱包
+  # =========================
+  - DOMAIN-SUFFIX,gomoney.me
+  - DOMAIN-SUFFIX,gomoney.africa
+  - DOMAIN-SUFFIX,gomoney.ng
+  # =========================
+  # Paga 支付钱包
+  # =========================
+  - DOMAIN-SUFFIX,paga.com
+  - DOMAIN-SUFFIX,paga.com.ng
+  - DOMAIN-SUFFIX,paga.ng
+  - DOMAIN-SUFFIX,mypaga.com
+  # =========================
+  # BeeSIM eSIM 服务商
+  # =========================
+  - DOMAIN-SUFFIX,beesim.com
+  - DOMAIN-SUFFIX,beesim.io
+  # =========================
+  # Fintech / 支付
+  # =========================
+  - DOMAIN-SUFFIX,paystack.com
+  - DOMAIN-SUFFIX,flutterwave.com
+  - DOMAIN-SUFFIX,opayweb.com
+  - DOMAIN-SUFFIX,palmpay.com
+  - DOMAIN-SUFFIX,moniepoint.com
+  - DOMAIN-SUFFIX,kuda.com
+  - DOMAIN-SUFFIX,piggyvest.com
+  - DOMAIN-SUFFIX,cowrywise.com
+  - DOMAIN-SUFFIX,chippercash.com
+  - DOMAIN-SUFFIX,grey.co
+  - DOMAIN-SUFFIX,lemfi.com
+  # =========================
+  # 尼日利亚主要银行
+  # =========================
+  - DOMAIN-SUFFIX,gtbank.com
+  - DOMAIN-SUFFIX,gtworld.com
+  - DOMAIN-SUFFIX,accessbankplc.com
+  - DOMAIN-SUFFIX,zenithbank.com
+  - DOMAIN-SUFFIX,uba.com
+  - DOMAIN-SUFFIX,firstbanknigeria.com
+  - DOMAIN-SUFFIX,fidelitybank.ng
+  - DOMAIN-SUFFIX,sterlingbank.com
+  - DOMAIN-SUFFIX,polaris.bank
+  - DOMAIN-SUFFIX,wemabank.com

@@ -1,0 +1,71 @@
+name: Purge jsDelivr cache
+
+# 当 mihomo/rules 下的 yaml 规则文件更新时，自动清除对应的 jsDelivr CDN 缓存，
+# 避免路由器 rule-provider 拉到旧版本（jsDelivr @latest 默认缓存最长 12h）。
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'mihomo/rules/**.yaml'
+      - 'mihomo/rules/**.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: purge-jsdelivr
+  cancel-in-progress: false
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Collect changed rule files
+        id: collect
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT" = "workflow_dispatch" ] || ! git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+            # 手动触发或拿不到 before（新分支/force-push）：清掉全部规则文件
+            files=$(git ls-files 'mihomo/rules/*.yaml' 'mihomo/rules/*.yml')
+          else
+            files=$(git diff --name-only --diff-filter=ACMR "$BEFORE" "$AFTER" -- 'mihomo/rules/*.yaml' 'mihomo/rules/*.yml')
+          fi
+          {
+            echo "files<<EOF"
+            echo "$files"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          echo "Changed rule files:"; echo "$files"
+
+      - name: Purge jsDelivr
+        env:
+          FILES: ${{ steps.collect.outputs.files }}
+        run: |
+          set -uo pipefail
+          if [ -z "${FILES//[$'\n\r\t ']/}" ]; then
+            echo "No rule yaml changed, nothing to purge."
+            exit 0
+          fi
+          fail=0
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            url="https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@latest/${f}"
+            echo "==> $url"
+            if ! curl -fsS --retry 3 --retry-delay 2 "$url"; then
+              echo "  !! purge failed: $f"
+              fail=1
+            fi
+            echo
+          done <<< "$FILES"
+          exit $fail

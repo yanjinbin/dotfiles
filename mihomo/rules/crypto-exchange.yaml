@@ -1,0 +1,94 @@
+# NAME: crypto-exchange
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
+# UPDATED: 2026-06-17 00:00:00
+# DOMAIN-SUFFIX: 29
+# DOMAIN-KEYWORD: 5
+# TOTAL: 34
+payload:
+  # =========================
+  # Bitget 主站
+  # =========================
+  - DOMAIN-SUFFIX,bitget.com
+  - DOMAIN-SUFFIX,bitget.io
+  - DOMAIN-SUFFIX,bitgetglobal.com
+  # =========================
+  # Bitget Wallet（原 BitKeep）
+  # =========================
+  - DOMAIN-SUFFIX,bitkeep.com
+  - DOMAIN-SUFFIX,bitkeep.io
+  - DOMAIN-SUFFIX,bitgetwallet.com
+  # =========================
+  # Bitget CDN / 静态资源
+  # =========================
+  - DOMAIN-SUFFIX,bitgetcdn.com
+  - DOMAIN-SUFFIX,bitgetassets.com
+  # =========================
+  # Bitget 关键字兜底
+  # =========================
+  - DOMAIN-KEYWORD,bitget
+
+  # =========================
+  # Bybit 主站
+  # =========================
+  - DOMAIN-SUFFIX,bybit.com
+  - DOMAIN-SUFFIX,bytick.com
+  # =========================
+  # Bybit 地区站
+  # =========================
+  - DOMAIN-SUFFIX,bybit.nl
+  - DOMAIN-SUFFIX,bytick.nl
+  - DOMAIN-SUFFIX,bybit.kz
+  - DOMAIN-SUFFIX,bybit-tr.com
+  # =========================
+  # Bybit 关键字兜底
+  # =========================
+  - DOMAIN-KEYWORD,bybit
+
+  # =========================
+  # Coinbase 主站
+  # =========================
+  - DOMAIN-SUFFIX,coinbase.com
+  - DOMAIN-SUFFIX,coinbase.net
+  - DOMAIN-SUFFIX,coinbasepro.com
+  # =========================
+  # Coinbase CDN / 静态资源
+  # =========================
+  - DOMAIN-SUFFIX,coinbasecloud.net
+  - DOMAIN-SUFFIX,cbhh.co
+  # =========================
+  # Coinbase 关键字兜底
+  # =========================
+  - DOMAIN-KEYWORD,coinbase
+
+  # =========================
+  # Binance 主站
+  # =========================
+  - DOMAIN-SUFFIX,binance.com
+  - DOMAIN-SUFFIX,binance.cc
+  - DOMAIN-SUFFIX,binance.me
+  # =========================
+  # Binance CDN / 静态资源
+  # =========================
+  - DOMAIN-SUFFIX,bnbstatic.com
+  - DOMAIN-SUFFIX,binanceaqua.com
+  # =========================
+  # Binance 关键字兜底
+  # =========================
+  - DOMAIN-KEYWORD,binance
+
+  # =========================
+  # OKX 主站
+  # =========================
+  - DOMAIN-SUFFIX,okx.com
+  - DOMAIN-SUFFIX,okx.me
+  - DOMAIN-SUFFIX,ouxyi.com
+  # =========================
+  # OKX CDN / 静态资源
+  # =========================
+  - DOMAIN-SUFFIX,okxcdn.com
+  - DOMAIN-SUFFIX,okexcdn.com
+  # =========================
+  # OKX 关键字兜底
+  # =========================
+  - DOMAIN-KEYWORD,okx

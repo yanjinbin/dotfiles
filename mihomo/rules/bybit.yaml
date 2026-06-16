@@ -1,0 +1,24 @@
+# NAME: bybit
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
+# UPDATED: 2026-06-17 00:00:00
+# DOMAIN-SUFFIX: 6
+# DOMAIN-KEYWORD: 1
+# TOTAL: 7
+payload:
+  # =========================
+  # Bybit 主站
+  # =========================
+  - DOMAIN-SUFFIX,bybit.com
+  - DOMAIN-SUFFIX,bytick.com
+  # =========================
+  # Bybit 地区站
+  # =========================
+  - DOMAIN-SUFFIX,bybit.nl
+  - DOMAIN-SUFFIX,bytick.nl
+  - DOMAIN-SUFFIX,bybit.kz
+  - DOMAIN-SUFFIX,bybit-tr.com
+  # =========================
+  # 关键字兜底（覆盖所有子域名）
+  # =========================
+  - DOMAIN-KEYWORD,bybit

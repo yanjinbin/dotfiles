@@ -1,0 +1,29 @@
+# NAME: bitget
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
+# UPDATED: 2026-06-17 00:00:00
+# DOMAIN-SUFFIX: 8
+# DOMAIN-KEYWORD: 1
+# TOTAL: 9
+payload:
+  # =========================
+  # Bitget 主站
+  # =========================
+  - DOMAIN-SUFFIX,bitget.com
+  - DOMAIN-SUFFIX,bitget.io
+  - DOMAIN-SUFFIX,bitgetglobal.com
+  # =========================
+  # Bitget Wallet（原 BitKeep）
+  # =========================
+  - DOMAIN-SUFFIX,bitkeep.com
+  - DOMAIN-SUFFIX,bitkeep.io
+  - DOMAIN-SUFFIX,bitgetwallet.com
+  # =========================
+  # CDN / 静态资源
+  # =========================
+  - DOMAIN-SUFFIX,bitgetcdn.com
+  - DOMAIN-SUFFIX,bitgetassets.com
+  # =========================
+  # 关键字兜底（覆盖所有子域名）
+  # =========================
+  - DOMAIN-KEYWORD,bitget

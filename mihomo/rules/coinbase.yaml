@@ -1,0 +1,23 @@
+# NAME: coinbase
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
+# UPDATED: 2026-06-17 00:00:00
+# DOMAIN-SUFFIX: 5
+# DOMAIN-KEYWORD: 1
+# TOTAL: 6
+payload:
+  # =========================
+  # Coinbase 主站
+  # =========================
+  - DOMAIN-SUFFIX,coinbase.com
+  - DOMAIN-SUFFIX,coinbase.net
+  - DOMAIN-SUFFIX,coinbasepro.com
+  # =========================
+  # CDN / 静态资源
+  # =========================
+  - DOMAIN-SUFFIX,coinbasecloud.net
+  - DOMAIN-SUFFIX,cbhh.co
+  # =========================
+  # 关键字兜底（覆盖所有子域名）
+  # =========================
+  - DOMAIN-KEYWORD,coinbase
