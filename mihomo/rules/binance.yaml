@@ -1,0 +1,38 @@
+# NAME: binance
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
+# UPDATED: 2026-06-17 00:00:00
+# DOMAIN-SUFFIX: 13
+# DOMAIN-KEYWORD: 1
+# TOTAL: 14
+payload:
+  # =========================
+  # Binance 主站
+  # =========================
+  - DOMAIN-SUFFIX,binance.com
+  - DOMAIN-SUFFIX,binance.cc
+  - DOMAIN-SUFFIX,binance.me
+  - DOMAIN-SUFFIX,binance.cloud
+  # =========================
+  # Binance 业务域名
+  # =========================
+  - DOMAIN-SUFFIX,binancecnt.com
+  - DOMAIN-SUFFIX,binancefuture.com
+  - DOMAIN-SUFFIX,binanceaqua.com
+  # =========================
+  # CDN / 静态资源
+  # =========================
+  - DOMAIN-SUFFIX,bnbstatic.com
+  - DOMAIN-SUFFIX,bntrace.com
+  # =========================
+  # 渠道 / 归因追踪
+  # =========================
+  - DOMAIN-SUFFIX,appsflayer.com
+  - DOMAIN-SUFFIX,bnappzh.co
+  - DOMAIN-SUFFIX,bnbzh.ac
+  - DOMAIN-SUFFIX,saasexch.cc
+  - DOMAIN-SUFFIX,saasexch.com
+  # =========================
+  # 关键字兜底（覆盖所有子域名）
+  # =========================
+  - DOMAIN-KEYWORD,binance
