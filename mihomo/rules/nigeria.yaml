@@ -63,11 +63,6 @@ payload:
   - DOMAIN-SUFFIX,paga.ng
   - DOMAIN-SUFFIX,mypaga.com
   # =========================
-  # BeeSIM eSIM 服务商
-  # =========================
-  - DOMAIN-SUFFIX,beesim.com
-  - DOMAIN-SUFFIX,beesim.io
-  # =========================
   # Fintech / 支付
   # =========================
   - DOMAIN-SUFFIX,paystack.com
