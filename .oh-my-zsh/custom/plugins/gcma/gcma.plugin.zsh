@@ -10,30 +10,28 @@ Usage:
   gcma [agent] [model]
 
 Agents:
-  codex   (default)
+  agy     (default)
   claude
-  gemini
-  copilot
+  codex
 
 Examples:
   gcma
-  gcma codex gpt-5.3-codex
+  gcma agy "Gemini 3.1 Pro (High)"
   gcma claude sonnet
-  gcma gemini gemini-2.5-pro
-  gcma copilot gpt-5-mini
+  gcma codex gpt-5.3-codex
   gcma --help
 
 Run Mode:
   1) Args: gcma [agent] [model]
-  2) Defaults: agent=$GCMA_DEFAULT_AGENT or codex; model=$GCMA_DEFAULT_MODEL or per-agent default
+  2) Defaults: agent=$GCMA_DEFAULT_AGENT or agy; model=$GCMA_DEFAULT_MODEL or per-agent default
   3) Context: staged summary + name-status + unified diff
   4) Flow: auth check -> generate -> local validate -> confirm -> git commit
 
 Notes:
   1) Stage only what you want to describe. Unstaged and untracked changes are ignored.
-  2) Auth is checked before generation: codex login status, claude auth status, gemini auth status, or gh auth status.
-  3) Defaults: codex -> gpt-5.3-codex, claude -> sonnet, gemini -> gemini-2.5-pro, copilot -> gpt-5-mini.
-  4) Gemini valid models: gemini-3.1-pro-preview gemini-3-flash-preview gemini-3.1-flash-lite-preview gemini-2.5-pro gemini-2.5-flash
+  2) Auth is checked before generation: codex login status or claude auth status (agy uses its own configured session).
+  3) Defaults: agy -> "Gemini 3.5 Flash (Medium)", claude -> sonnet, codex -> gpt-5.3-codex.
+  4) agy valid models: Gemini 3.5 Flash (Medium/High/Low), Gemini 3.1 Pro (Low/High), Claude Sonnet 4.6 (Thinking), Claude Opus 4.6 (Thinking), GPT-OSS 120B (Medium)
   5) Injected context has 3 sections: summary, name-status, and unified diff.
   6) Diff context is compacted (U0 + minimal) without truncation; added/removed lines are preserved.
   7) Local validation requires Conventional Commits pattern and max length 72.
@@ -72,7 +70,7 @@ EOF_PROMPT
 }
 
 gcma() {
-  local provider="${GCMA_DEFAULT_AGENT:-codex}"
+  local provider="${GCMA_DEFAULT_AGENT:-agy}"
   local model=""
   local explicit_provider=0
   local default_model=""
@@ -86,12 +84,15 @@ gcma() {
   local staged_name_status
   local staged_diff
   local pattern='^(feat|fix|docs|style|refactor|test|chore|ci|build|perf|revert|hotfix)(\([^)]+\))?: .+'
-  local gemini_valid_models=(
-    gemini-3.1-pro-preview
-    gemini-3-flash-preview
-    gemini-3.1-flash-lite-preview
-    gemini-2.5-pro
-    gemini-2.5-flash
+  local agy_valid_models=(
+    "Gemini 3.5 Flash (Medium)"
+    "Gemini 3.5 Flash (High)"
+    "Gemini 3.5 Flash (Low)"
+    "Gemini 3.1 Pro (Low)"
+    "Gemini 3.1 Pro (High)"
+    "Claude Sonnet 4.6 (Thinking)"
+    "Claude Opus 4.6 (Thinking)"
+    "GPT-OSS 120B (Medium)"
   )
 
   case "${1:-}" in
@@ -99,7 +100,7 @@ gcma() {
       _gcma_help
       return 0
       ;;
-    codex|claude|gemini|copilot)
+    agy|claude|codex)
       provider="$1"
       explicit_provider=1
       shift
@@ -127,10 +128,9 @@ gcma() {
   fi
 
   case "$provider" in
-    codex)   default_model="gpt-5.3-codex" ;;
-    claude)  default_model="sonnet" ;;
-    gemini)  default_model="gemini-2.5-pro" ;;
-    copilot) default_model="gpt-5-mini" ;;
+    agy)    default_model="Gemini 3.5 Flash (Medium)" ;;
+    claude) default_model="sonnet" ;;
+    codex)  default_model="gpt-5.3-codex" ;;
   esac
   # GCMA_DEFAULT_MODEL only applies when using the default agent (not overridden via CLI)
   if [[ -z "$model" ]]; then
@@ -141,14 +141,14 @@ gcma() {
     fi
   fi
 
-  if [[ "$provider" == "gemini" ]]; then
+  if [[ "$provider" == "agy" ]]; then
     local valid=0
-    for m in "${gemini_valid_models[@]}"; do
+    for m in "${agy_valid_models[@]}"; do
       [[ "$m" == "$model" ]] && valid=1 && break
     done
     if (( !valid )); then
-      echo "❌ Invalid gemini model: $model"
-      echo "Valid options: ${gemini_valid_models[*]}"
+      echo "❌ Invalid agy model: $model"
+      echo "Valid options: ${agy_valid_models[*]}"
       return 1
     fi
   fi
@@ -171,20 +171,15 @@ Staged unified diff ends."
   err_file="$(mktemp)"
 
   case "$provider" in
-    codex)
-      if ! command -v codex >/dev/null 2>&1; then
-        echo "❌ codex not found in PATH"
+    agy)
+      if ! command -v agy >/dev/null 2>&1; then
+        echo "❌ agy not found in PATH"
         rm -f "$tmp_file" "$err_file"
         return 1
       fi
-      if ! codex login status >/dev/null 2>&1; then
-        echo "❌ Codex not logged in. Run: codex login"
-        rm -f "$tmp_file" "$err_file"
-        return 1
-      fi
-      if ! codex exec --model "$model" --ephemeral -o "$tmp_file" "$prompt" >/dev/null 2>"$err_file"; then
-        echo "❌ Codex generation failed"
-        echo "---- codex stderr ----"
+      if ! command agy --model "$model" -p "$prompt" >"$tmp_file" 2>"$err_file"; then
+        echo "❌ agy generation failed"
+        echo "---- agy stderr ----"
         cat "$err_file"
         rm -f "$tmp_file" "$err_file"
         return 1
@@ -209,34 +204,20 @@ Staged unified diff ends."
         return 1
       fi
       ;;
-    gemini)
-      if ! command -v gemini >/dev/null 2>&1; then
-        echo "❌ gemini not found in PATH"
+    codex)
+      if ! command -v codex >/dev/null 2>&1; then
+        echo "❌ codex not found in PATH"
         rm -f "$tmp_file" "$err_file"
         return 1
       fi
-      if ! command gemini --output-format text --model "$model" -p "$prompt" >"$tmp_file" 2>"$err_file"; then
-        echo "❌ Gemini generation failed"
-        echo "---- gemini stderr ----"
-        cat "$err_file"
+      if ! codex login status >/dev/null 2>&1; then
+        echo "❌ Codex not logged in. Run: codex login"
         rm -f "$tmp_file" "$err_file"
         return 1
       fi
-      ;;
-    copilot)
-      if ! command -v gh >/dev/null 2>&1; then
-        echo "❌ gh not found in PATH"
-        rm -f "$tmp_file" "$err_file"
-        return 1
-      fi
-      if ! gh auth status -h github.com >/dev/null 2>&1; then
-        echo "❌ GitHub not logged in. Run: gh auth login -h github.com"
-        rm -f "$tmp_file" "$err_file"
-        return 1
-      fi
-      if ! gh copilot --model "$model" -p "$prompt" >"$tmp_file" 2>"$err_file"; then
-        echo "❌ Copilot generation failed"
-        echo "---- gh copilot stderr ----"
+      if ! codex exec --model "$model" --ephemeral -o "$tmp_file" "$prompt" >/dev/null 2>"$err_file"; then
+        echo "❌ Codex generation failed"
+        echo "---- codex stderr ----"
         cat "$err_file"
         rm -f "$tmp_file" "$err_file"
         return 1
