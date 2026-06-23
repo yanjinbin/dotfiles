@@ -3,11 +3,13 @@
 #   gcma [agent] [model]
 
 unalias gcma 2>/dev/null
+unalias 'gcma!' 2>/dev/null
 
 _gcma_help() {
   cat <<'EOF_HELP'
 Usage:
   gcma [agent] [model]
+  gcma! [agent] [model]   # amend the previous commit (like gcan!)
 
 Agents:
   agy     (default)
@@ -19,13 +21,15 @@ Examples:
   gcma agy "Gemini 3.1 Pro (High)"
   gcma claude sonnet
   gcma codex gpt-5.3-codex
+  gcma!                   # regenerate message and amend HEAD
+  gcma! claude sonnet
   gcma --help
 
 Run Mode:
-  1) Args: gcma [agent] [model]
+  1) Args: gcma [agent] [model]; gcma! adds --amend (amends HEAD instead of a new commit)
   2) Defaults: agent=$GCMA_DEFAULT_AGENT or agy; model=$GCMA_DEFAULT_MODEL or per-agent default
-  3) Context: staged summary + name-status + unified diff
-  4) Flow: auth check -> generate -> local validate -> confirm -> git commit
+  3) Context: staged summary + name-status + unified diff (vs HEAD~1 in amend mode)
+  4) Flow: auth check -> generate -> local validate -> confirm -> git commit [--amend]
 
 Notes:
   1) Stage only what you want to describe. Unstaged and untracked changes are ignored.
@@ -73,6 +77,8 @@ gcma() {
   local provider="${GCMA_DEFAULT_AGENT:-agy}"
   local model=""
   local explicit_provider=0
+  local amend=0
+  local diff_base=""
   local default_model=""
   local tmp_file
   local err_file
@@ -94,6 +100,11 @@ gcma() {
     "Claude Opus 4.6 (Thinking)"
     "GPT-OSS 120B (Medium)"
   )
+
+  if [[ "${1:-}" == "--amend" ]]; then
+    amend=1
+    shift
+  fi
 
   case "${1:-}" in
     -h|--help|help)
@@ -118,12 +129,31 @@ gcma() {
     return 1
   fi
 
-  staged_summary="$(git diff --cached --summary 2>/dev/null)"
-  staged_name_status="$(git diff --cached --name-status 2>/dev/null)"
-  staged_diff="$(git diff --cached --no-color --no-ext-diff --unified=0 --minimal 2>/dev/null)"
+  # In amend mode, compare the index against HEAD~1 so the regenerated message
+  # reflects the full content of the amended commit (last commit + staged changes).
+  if (( amend )); then
+    if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
+      echo "❌ --amend requires an existing commit to amend"
+      return 1
+    fi
+    if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+      diff_base="HEAD~1"
+    else
+      # Root commit: diff against the empty tree
+      diff_base="$(git hash-object -t tree /dev/null)"
+    fi
+  fi
+
+  staged_summary="$(git diff --cached --summary $diff_base 2>/dev/null)"
+  staged_name_status="$(git diff --cached --name-status $diff_base 2>/dev/null)"
+  staged_diff="$(git diff --cached --no-color --no-ext-diff --unified=0 --minimal $diff_base 2>/dev/null)"
 
   if [[ -z "$staged_summary" && -z "$staged_name_status" && -z "$staged_diff" ]]; then
-    echo "❌ No staged changes. Run git add first."
+    if (( amend )); then
+      echo "❌ Nothing to commit for amend (empty diff vs HEAD~1)."
+    else
+      echo "❌ No staged changes. Run git add first."
+    fi
     return 1
   fi
 
@@ -256,14 +286,29 @@ Staged unified diff ends."
   fi
 
   echo ""
-  echo "💡 Suggested commit: (agent: $provider, model: $model)"
+  if (( amend )); then
+    echo "💡 Suggested commit (amend HEAD): (agent: $provider, model: $model)"
+  else
+    echo "💡 Suggested commit: (agent: $provider, model: $model)"
+  fi
   echo "$msg"
   echo ""
 
-  read "?Use this commit? (y/n): " confirm
+  if (( amend )); then
+    read "?Amend HEAD with this commit? (y/n): " confirm
+  else
+    read "?Use this commit? (y/n): " confirm
+  fi
   if [[ "$confirm" == "y" ]]; then
-    git commit -m "$msg"
+    if (( amend )); then
+      git commit --amend -m "$msg"
+    else
+      git commit -m "$msg"
+    fi
   else
     echo "❌ Aborted"
   fi
 }
+
+# gcma! : amend variant, mirrors oh-my-zsh's gcan!
+alias 'gcma!'='gcma --amend'
