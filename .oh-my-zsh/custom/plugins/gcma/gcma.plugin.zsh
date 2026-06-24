@@ -34,7 +34,7 @@ Run Mode:
 Notes:
   1) Stage only what you want to describe. Unstaged and untracked changes are ignored.
   2) Auth is checked before generation: codex login status or claude auth status (agy uses its own configured session).
-  3) Defaults: agy -> "Gemini 3.5 Flash (Medium)", claude -> sonnet, codex -> gpt-5.3-codex.
+  3) Defaults: agy -> "Gemini 3.1 Pro (High)", claude -> sonnet, codex -> gpt-5.3-codex.
   4) agy valid models: Gemini 3.5 Flash (Medium/High/Low), Gemini 3.1 Pro (Low/High), Claude Sonnet 4.6 (Thinking), Claude Opus 4.6 (Thinking), GPT-OSS 120B (Medium)
   5) Injected context has 3 sections: summary, name-status, and unified diff.
   6) Diff context is compacted (U0 + minimal) without truncation; added/removed lines are preserved.
@@ -158,7 +158,7 @@ gcma() {
   fi
 
   case "$provider" in
-    agy)    default_model="Gemini 3.5 Flash (Medium)" ;;
+    agy)    default_model="Gemini 3.1 Pro (High)" ;;
     claude) default_model="sonnet" ;;
     codex)  default_model="gpt-5.3-codex" ;;
   esac
