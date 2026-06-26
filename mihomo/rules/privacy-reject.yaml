@@ -16,11 +16,15 @@ payload:
   - DOMAIN,log-link.zijieapi.com
   # ime-net-sdk 后台长连接 / 遥测
   - DOMAIN,ime-gw.oceancloudapi.com
+  - DOMAIN,aweme.snssdk.com
   # 字节系日志与埋点接口
+  - DOMAIN-SUFFIX,applogcdn.com
   - DOMAIN-SUFFIX,zijieapi.com
   # 字节网络探测 / 配置下发
   - DOMAIN-SUFFIX,dig.bdurl.net
   
+  
   # ===== Others =====
   # keyboard holder
   - DOMAIN-SUFFIX,leavesc.com
+  - DOMAIN,lbsapi.m.jd.com
