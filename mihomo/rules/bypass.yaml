@@ -5,12 +5,17 @@ payload:
   - DOMAIN-SUFFIX,frontier-audio-ime-quic.doubao.com
   - DOMAIN-SUFFIX,frontier-audio-ime-ws.doubao.com
 
-  # NBA直播
+  # 体育直播
   - DOMAIN-KEYWORD,sportsteam
-  # - DOMAIN-SUFFIX,sportsteam368.com
-  # - DOMAIN-SUFFIX,sportsteam356.com
-  # - DOMAIN-SUFFIX,sportsteam25.com
+  - DOMAIN-SUFFIX,sportsteam368.com
+  - DOMAIN-SUFFIX,sportsteam356.com
+  - DOMAIN-SUFFIX,sportsteam25.com
+  - DOMAIN-SUFFIX,yjjcfw.com
   - DOMAIN-SUFFIX,bbs456.com
+  - DOMAIN-SUFFIX,ntcwix.com
+  - DOMAIN-SUFFIX,qmuiw.com
+  - DOMAIN-SUFFIX,gzxdby.com
+  - DOMAIN-SUFFIX,yjjcfw.com
   - DOMAIN-SUFFIX,yumixiu768.com
   - DOMAIN-SUFFIX,livehwc4.com
   - DOMAIN-SUFFIX,htfbudv.com
