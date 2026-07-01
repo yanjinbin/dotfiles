@@ -1,6 +1,7 @@
 # =============================================================================
 #  ~/.zshrc
-#  Last optimized: 2026-04
+#  Last synced: 2026-07
+#  注意：本文件已隐去真实主机名/IP/密钥路径等隐私信息，克隆后请按需替换占位符
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -32,12 +33,15 @@ plugins=(
   z
   you-should-use
   tmux
-  zsh-autosuggestions
   gcma
-  zsh-syntax-highlighting   # ⚠️ 必须最后一个
+  zsh-autosuggestions
+  zsh-syntax-highlighting
 )
 
 source "$ZSH/oh-my-zsh.sh"
+
+# zsh-autosuggestions 灰色提示颜色（默认 fg=8 太暗看不见，改亮）
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=245'
 
 # -----------------------------------------------------------------------------
 # PATH 配置
@@ -114,13 +118,14 @@ alias t='history | tail -100'
 alias wattage='system_profiler SPPowerDataType | grep Wattage -C 5'
 alias myip="curl -s http://ip-api.com/json | jq -r '\"\(.country) \(.regionName) \(.city) \(.isp) \(.query)\"'"
 
+# SSH（真实主机/密钥路径为隐私信息，请在本机 .zshrc.local 或此处按需填写）
+# alias loginaliyun='ssh -i ~/.ssh/<your_key> <user>@<your_server_ip>'
 
 # ipv6 开关（仅限 Wi-Fi）
 alias ipv6off="networksetup -setv6off Wi-Fi && echo '✅ IPv6 已关闭'"
 alias ipv6on="networksetup -setv6automatic Wi-Fi && echo '✅ IPv6 已恢复'"
 
-#alias AI
-alias gmn="gemini --yolo"
+# AI CLI 快捷别名
 alias cx="codex -c model_reasoning_effort="high" --dangerously-bypass-approvals-and-sandbox -c model_reasoning_summary="detailed" -c model_supports_reasoning_summaries=true"
 alias cc="claude --dangerously-skip-permissions"
 
@@ -169,12 +174,24 @@ claude-privacy-status() {
 alias claudeon='claude-privacy-off'
 alias claudeoff='claude-privacy-on'
 
-
+# Claude Code 权限模式快捷别名
+alias claude-bypass="claude --permission-mode bypassPermissions"
+alias claude-auto="claude --permission-mode auto"
+alias claude-edit="claude --permission-mode acceptEdits"
+alias claude-plan="claude --permission-mode plan"
+alias claude-ask="claude --permission-mode dontAsk"
 
 # -----------------------------------------------------------------------------
 # 实用函数
 # -----------------------------------------------------------------------------
-ai_update() {
+ai() {
+  case "$1" in
+    upgrade) _ai_upgrade ;;
+    *) echo "Usage: ai upgrade" ;;
+  esac
+}
+
+_ai_upgrade() {
   local RESET='\033[0m'
   local BOLD='\033[1m'
   local DIM='\033[2m'
@@ -219,43 +236,49 @@ ai_update() {
   _row() {
     local icon=$1 name=$2 before=$3 after=$4
     if [[ "$before" == "$after" ]]; then
-      printf "  %s  %-8s ${DIM}%-24s${RESET} ${YELLOW}↔${RESET} ${DIM}%s${RESET}\n" "$icon" "$name" "$before" "already latest"
+      printf "  %s  %-18s ${DIM}%-24s${RESET} ${YELLOW}↔${RESET} ${DIM}%s${RESET}\n" "$icon" "$name" "$before" "already latest"
     else
-      printf "  %s  %-8s ${DIM}%-24s${RESET} ${GREEN}→${RESET} ${GREEN}${BOLD}%s${RESET}\n" "$icon" "$name" "$before" "$after"
+      printf "  %s  %-18s ${DIM}%-24s${RESET} ${GREEN}→${RESET} ${GREEN}${BOLD}%s${RESET}\n" "$icon" "$name" "$before" "$after"
     fi
+  }
+
+  # Antigravity agy 更新：非 npm 包，重跑官方 install 脚本拉最新二进制
+  _update_agy() {
+    curl -fsSL https://antigravity.google/cli/install.sh | bash
   }
 
   setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR 2>/dev/null
   set +m 2>/dev/null
 
-  local g_before c_before x_before
-  g_before=$(gemini --version 2>/dev/null || echo "—")
+  local c_before x_before a_before
   c_before=$(claude --version 2>/dev/null || echo "—")
   x_before=$(codex --version 2>/dev/null || echo "—")
+  a_before=$(agy --version 2>/dev/null || echo "—")
 
   _banner
 
-  printf "  ${DIM}%s${RESET}\n" "·············································"
-  _run "gemini  " npm update -g @google/gemini-cli
-  _run "claude  " claude update
-  _run "codex   " npm update -g @openai/codex
-  printf "  ${DIM}%s${RESET}\n" "·············································"
+  printf "  ${DIM}%s${RESET}\n" "·················································"
+  _run "Anthropic claude " claude update
+  _run "OpenAI codex     " npm update -g @openai/codex
+  _run "Antigravity agy  " _update_agy
+  printf "  ${DIM}%s${RESET}\n" "·················································"
 
   echo ""
 
-  local g_after c_after x_after
-  g_after=$(gemini --version 2>/dev/null || echo "—")
+  local c_after x_after a_after
   c_after=$(claude --version 2>/dev/null || echo "—")
   x_after=$(codex --version 2>/dev/null || echo "—")
+  a_after=$(agy --version 2>/dev/null || echo "—")
 
-  _row "🪐" "gemini" "$g_before" "$g_after"
-  _row "🦀" "claude" "$c_before" "$c_after"
-  _row "🐙" "codex"  "$x_before" "$x_after"
+  _row "🦀" "Anthropic claude" "$c_before" "$c_after"
+  _row "🐙" "OpenAI codex"     "$x_before" "$x_after"
+  _row "🛸" "Antigravity agy"  "$a_before" "$a_after"
 
   echo ""
   printf "  \033[38;5;213m✨\033[38;5;183m✨\033[38;5;153m✨\033[0m  ${DIM}all done!${RESET}\n"
   echo ""
 }
+
 
 # mkdir 后自动 cd 进入
 mkcd() { mkdir -p "$1" && cd "$1"; }
@@ -281,24 +304,39 @@ ff() { find . -name "*$1*" 2>/dev/null; }
 # 端口占用查询
 port() { lsof -i :"$1"; }
 
-
-gmr() {
-  [ "$1" = "on" ] && npm config set proxy http://127.0.0.1:7890 && npm config set https-proxy http://127.0.0.1:7890 || (npm config delete proxy 2>/dev/null; npm config delete https-proxy 2>/dev/null)
-  npm uninstall -g @google/gemini-cli 2>/dev/null
-  npm cache clean --force
-  npm install -g @google/gemini-cli
-}
-
-# gmr on   # 走代理
-# gmr off  # 不走代理
-
-
 # >>>> p10k configure start >>>>
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 # <<<< p10k configure end <<<<
 
-export APP_IDENTITY="BloomBar Development"
+# -----------------------------------------------------------------------------
+# 其他工具集成 & 环境变量
+# -----------------------------------------------------------------------------
+# APP_IDENTITY：具体项目/工作标识，克隆本文件后请替换为自己的项目名
+export APP_IDENTITY="Local Development"
 
-# Added by Antigravity
-export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+# gcma（自定义 oh-my-zsh 插件，见 custom/plugins/gcma）默认使用的 AI agent
+# agy = Antigravity，默认模型见插件内 default_model（Gemini 3.1 Pro (High)）
+export GCMA_DEFAULT_AGENT=agy
+
+export PATH="$HOME/.local/bin:$PATH"
+
+# opencode CLI
+export PATH="$HOME/.opencode/bin:$PATH"
+
+# iTerm2 shell 集成（非 iTerm2 环境下该文件不存在，安全跳过）
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
+
+# >>> otty shell integration >>>
+# Added by Otty — toggle in Settings > Shell > Shell Integration.
+# Inert unless launched by Otty (it sets $OTTY_SHELL_INTEGRATION).
+if [ -n "$OTTY_SHELL_INTEGRATION" ] && [ -r "$OTTY_SHELL_INTEGRATION/otty-integration.zsh" ]; then
+  . "$OTTY_SHELL_INTEGRATION/otty-integration.zsh"
+fi
+# <<< otty shell integration <<<
