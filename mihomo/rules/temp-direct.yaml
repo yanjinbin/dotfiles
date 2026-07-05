@@ -1,0 +1,3 @@
+payload:
+  - DOMAIN-SUFFIX,internal-service.com
+  # 想临时直连的域名往这丢
