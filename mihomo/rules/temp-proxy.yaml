@@ -1,0 +1,4 @@
+payload:
+  - DOMAIN-SUFFIX,example.com
+  - DOMAIN-KEYWORD,sometest
+  # 想临时代理的域名往这丢
