@@ -17,5 +17,5 @@ payload:
 
   # other services
   - DOMAIN-SUFFIX,28.al
-  - DOMAIN-SUFFIX,seagm.com
-  - DOMAIN-SUFFIX,seagmcdn.com
+  # - DOMAIN-SUFFIX,seagm.com
+  # - DOMAIN-SUFFIX,seagmcdn.com
