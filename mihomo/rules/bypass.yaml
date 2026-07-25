@@ -1,4 +1,10 @@
 payload:
+
+  # 新华三
+  - DOMAIN-SUFFIX,h3c.com
+  - DOMAIN-SUFFIX,h3c.com.cn
+  # 苹果礼品卡购买 sea group 子公司
+  - DOMAIN-SUFFIX,seagm.com
   # 豆包输入法
   - DOMAIN-SUFFIX,ime.doubao.com
   - DOMAIN-SUFFIX,speech.bytedance.com

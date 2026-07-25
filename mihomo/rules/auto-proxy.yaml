@@ -1,15 +1,25 @@
 # NAME: auto-proxy
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
-# UPDATED: 2026-04-27 09:20:02
-# DOMAIN-SUFFIX: 8
-# TOTAL: 8
+# UPDATED: 2026-07-26
+# DOMAIN-SUFFIX: 10
+# TOTAL: 10
 
 payload:
+  # figma 服务
+  - DOMAIN-SUFFIX,prodregistryv2.org
+  - DOMAIN-SUFFIX,figma.com
+  - DOMAIN-SUFFIX,featureassets.org
+  # google play store
+  - DOMAIN-SUFFIX,xn--ngstr-lra8j.com
+  - DOMAIN-SUFFIX,services.googleapis.cn
   # vscode / dev tools
   - DOMAIN-SUFFIX,visualstudio.com
   - DOMAIN-SUFFIX,vsassets.io
   - DOMAIN-SUFFIX,vsmarketplacebadge.apphb.com
+  # h3c
+  - DOMAIN-SUFFIX,h3c.com
+  - DOMAIN-SUFFIX,h3c.com.cn
 
   # microsoft ecosystem
   - DOMAIN-SUFFIX,microsoft.com
@@ -17,5 +27,3 @@ payload:
 
   # other services
   - DOMAIN-SUFFIX,28.al
-  # - DOMAIN-SUFFIX,seagm.com
-  # - DOMAIN-SUFFIX,seagmcdn.com

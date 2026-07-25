@@ -1,4 +1,4 @@
-# NAME: Gemini+
+# NAME: antigravity+
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
 # UPDATED: 2026-07-16
@@ -69,7 +69,7 @@ payload:
   # =====================================================
   # Vertex AI / Gemini API
   # =====================================================
-  - DOMAIN-SUFFIX,generativelanguage.googleapis.com
+
   - DOMAIN-SUFFIX,googleapis.com
   - DOMAIN-SUFFIX,apis.google.com
 
