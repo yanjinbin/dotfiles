@@ -1,0 +1,5 @@
+payload:
+  - DOMAIN,www.youtube.com
+  - DOMAIN-SUFFIX,youtube.com
+  - DOMAIN,accounts.youtube.com
+  - DOMAIN-SUFFIX,youtubei.googleapis.com

@@ -8,7 +8,6 @@
 # TOTAL: 72
 
 payload:
-
   # =====================================================
   # Antigravity 智能体 & 平台后端
   # =====================================================
@@ -22,7 +21,6 @@ payload:
   - DOMAIN-SUFFIX,trygravity.ai
 
   - DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com
-
 
   # =====================================================
   # Gemini 网页端 & AI Studio
@@ -38,16 +36,15 @@ payload:
 
   - DOMAIN,makersuite.google.com
 
-
   # =====================================================
   # Google 登录 / OAuth / Identity
   # =====================================================
 
   - DOMAIN-SUFFIX,accounts.google.com
-
+  - DOMAIN,myaccount.google.com
+  - DOMAIN,account.google.com
   - DOMAIN-SUFFIX,oauth2.googleapis.com
   - DOMAIN-SUFFIX,oauthaccountmanager.googleapis.com
-
 
   # =====================================================
   # Google Client API
@@ -65,17 +62,15 @@ payload:
   - DOMAIN-SUFFIX,clients9.google.com
   - DOMAIN-SUFFIX,clients10.google.com
 
-
   # =====================================================
   # Vertex AI / Gemini API
   # =====================================================
-
+  - DOMAIN-SUFFIX,generativelanguage.googleapis.com
   - DOMAIN-SUFFIX,googleapis.com
   - DOMAIN-SUFFIX,apis.google.com
 
   - DOMAIN-SUFFIX,aiplatform.googleapis.com
   - DOMAIN-SUFFIX,vertexai.google
-
 
   # =====================================================
   # Gemini / AI Studio 新后端 Alkali
@@ -84,7 +79,6 @@ payload:
   - DOMAIN-SUFFIX,alkali-pa.googleapis.com
   - DOMAIN-SUFFIX,alkalimakersuite.googleapis.com
   - DOMAIN-SUFFIX,alkalimakersuite-pa.clients6.google.com
-
 
   # =====================================================
   # Google AI / DeepMind
@@ -96,13 +90,11 @@ payload:
   - DOMAIN-SUFFIX,ai.google
   - DOMAIN-SUFFIX,generativeai.google
 
-
   # =====================================================
   # Google 用户资源
   # =====================================================
 
   - DOMAIN-SUFFIX,googleusercontent.com
-
 
   # =====================================================
   # Google 官方 / 新域名
@@ -110,7 +102,6 @@ payload:
 
   - DOMAIN-SUFFIX,withgoogle.com
   - DOMAIN-SUFFIX,goog
-
 
   # =====================================================
   # Google CDN / Static
@@ -123,13 +114,11 @@ payload:
 
   - DOMAIN-SUFFIX,gcp.gvt2.com
 
-
   # =====================================================
   # Google Video / Media
   # =====================================================
 
   - DOMAIN-SUFFIX,googlevideo.com
-
 
   # =====================================================
   # Gemini / Cloud Code / AI Backend
@@ -145,7 +134,6 @@ payload:
 
   - DOMAIN-SUFFIX,play.googleapis.com
 
-
   # =====================================================
   # Google Network / Telemetry
   # =====================================================
@@ -153,7 +141,6 @@ payload:
   - DOMAIN-SUFFIX,nel.goog
   - DOMAIN-SUFFIX,nel.cloudflare.com
   - DOMAIN-SUFFIX,googletagmanager.com
-
 
   # =====================================================
   # NotebookLM / Colab / Developer

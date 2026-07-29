@@ -44,7 +44,8 @@ payload:
   # =====================================================
 
   - DOMAIN-SUFFIX,accounts.google.com
-
+  - DOMAIN,myaccount.google.com
+  - DOMAIN,account.google.com
   - DOMAIN-SUFFIX,oauth2.googleapis.com
   - DOMAIN-SUFFIX,oauthaccountmanager.googleapis.com
 
