@@ -1,0 +1,40 @@
+# NAME: OpenAI+
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
+# UPDATED: 2026-08-03
+# DOMAIN: 1
+# DOMAIN-SUFFIX: 19
+# DOMAIN-KEYWORD: 0
+# TOTAL: 20
+
+payload:
+  # 核心域名
+  - DOMAIN-SUFFIX,openai.com
+  - DOMAIN-SUFFIX,chatgpt.com
+  - DOMAIN-SUFFIX,chat.com
+  - DOMAIN-SUFFIX,sora.com
+  - DOMAIN-SUFFIX,oaistatic.com
+  - DOMAIN-SUFFIX,oaiusercontent.com
+  - DOMAIN-SUFFIX,crixet.com
+
+  # 人机验证（Arkose）
+  - DOMAIN-SUFFIX,client-api.arkoselabs.com
+  - DOMAIN,openai-api.arkoselabs.com
+
+  # 语音模式（LiveKit）
+  - DOMAIN-SUFFIX,chatgpt.livekit.cloud
+  - DOMAIN-SUFFIX,host.livekit.cloud
+  - DOMAIN-SUFFIX,turn.livekit.cloud
+
+  # CDN 与后端（Cloudflare + Azure）
+  - DOMAIN-SUFFIX,openai.com.cdn.cloudflare.net
+  - DOMAIN-SUFFIX,openaicom.imgix.net
+  - DOMAIN-SUFFIX,openaiapi-site.azureedge.net
+  - DOMAIN-SUFFIX,production-openaicom-storage.azureedge.net
+  - DOMAIN-SUFFIX,openaicomproductionae4b.blob.core.windows.net
+  - DOMAIN-SUFFIX,openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net
+  - DOMAIN-SUFFIX,webpubsub.azure.com
+
+  # 遥测
+  - DOMAIN-SUFFIX,o33249.ingest.sentry.io
+  - DOMAIN-SUFFIX,browser-intak

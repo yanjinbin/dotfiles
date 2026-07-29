@@ -340,3 +340,79 @@ if [ -n "$OTTY_SHELL_INTEGRATION" ] && [ -r "$OTTY_SHELL_INTEGRATION/otty-integr
   . "$OTTY_SHELL_INTEGRATION/otty-integration.zsh"
 fi
 # <<< otty shell integration <<<
+
+
+# ==========================================================
+# 🌍 Timezone Switch
+# ~/.zshrc
+# ==========================================================
+
+# 通用时区切换
+_tz_switch() {
+    if [[ -z "$1" ]]; then
+        unset TZ
+        local title="🖥️ 系统默认时区"
+    else
+        export TZ="$1"
+        local title="$2"
+    fi
+
+    echo
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo " $title"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "🕒 TZ        : ${TZ:-System Default}"
+    echo "🌏 时区缩写  : $(date +%Z)"
+    echo "📅 当前时间  : $(date '+%Y-%m-%d %H:%M:%S %a')"
+    echo
+}
+
+# 主命令
+tz() {
+    case "$1" in
+        jp|tokyo)
+            _tz_switch "Asia/Tokyo" "🇯🇵 东京时区"
+            ;;
+        sg|singapore)
+            _tz_switch "Asia/Singapore" "🇸🇬 新加坡时区"
+            ;;
+        la|us|california|losangeles)
+            _tz_switch "America/Los_Angeles" "🇺🇸 美国洛杉矶（加州）时区"
+            ;;
+        system|default|reset)
+            _tz_switch
+            ;;
+        *)
+            cat <<'EOF'
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 🌍 时区切换
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+用法：
+  tz <参数>
+
+参数：
+
+  jp        🇯🇵 东京
+  sg        🇸🇬 新加坡
+  la        🇺🇸 洛杉矶（加州）
+  system    🖥️ 恢复系统默认时区
+
+示例：
+
+  tz jp
+  tz sg
+  tz la
+  tz system
+
+EOF
+            ;;
+    esac
+}
+
+# 兼容旧命令（可选）
+alias tokyo_time='tz jp'
+alias singapore_time='tz sg'
+alias la_time='tz la'
+alias system_time='tz system'

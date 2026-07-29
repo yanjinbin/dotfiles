@@ -1,0 +1,13 @@
+#   # 只放搜索入口域名；Google 其他服务仍由后面的 GEOSITE,google 兜底。
+payload:
+  - DOMAIN,www.google.com
+  - DOMAIN,google.com
+  - DOMAIN,www.google.com.hk
+  - DOMAIN,google.com.hk
+  - DOMAIN,www.google.com.tw
+  - DOMAIN,google.com.tw
+  - DOMAIN,www.google.co.jp
+  - DOMAIN,google.co.jp
+  - DOMAIN,www.google.com.sg
+  - DOMAIN,google.com.sg
+  - DOMAIN-KEYWORD,www.google.
