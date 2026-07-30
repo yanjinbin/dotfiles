@@ -33,6 +33,14 @@ source ~/.zshrc
     export GCMA_DEFAULT_MODEL=gemini-3.1-pro-preview
     ```
 
+- `jjma` — 为当前 jj change 生成 Conventional Commit 描述，支持大 diff 分块总结
+  - 详细说明：[`.oh-my-zsh/custom/plugins/jjma/README.md`](.oh-my-zsh/custom/plugins/jjma/README.md)
+  - 默认配置：
+
+    ```zsh
+    export JJMA_DEFAULT_AGENT=agy
+    ```
+
 ## 说明
 
 - 默认面向 `macOS + zsh + Homebrew`。
