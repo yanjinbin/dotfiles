@@ -1,0 +1,5 @@
+payload:
+  # ── Apple Push Notification Service ──
+
+  # 主域名（最关键）
+  - DOMAIN-SUFFIX,apps.apple.com

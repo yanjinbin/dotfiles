@@ -165,3 +165,12 @@ payload:
   - DOMAIN-KEYWORD,colab
   - DOMAIN-KEYWORD,developerprofiles
   - DOMAIN-KEYWORD,generativelanguage
+
+  # lh3.googleusercontent.com  googletagmanager.com
+  - DOMAIN-SUFFIX,lh.googleusercontent.com
+  - DOMAIN-SUFFIX,lh0.googleusercontent.com
+  - DOMAIN-SUFFIX,lh1.googleusercontent.com
+  - DOMAIN-SUFFIX,lh2.googleusercontent.com
+  - DOMAIN-SUFFIX,lh3.googleusercontent.com
+  - DOMAIN-SUFFIX,googletagmanager.com
+

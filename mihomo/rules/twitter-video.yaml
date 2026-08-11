@@ -1,3 +1,4 @@
+# 废弃
 # NAME: TwitterVideo
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles
@@ -31,4 +32,3 @@ payload:
   # 虽 Periscope 已停止独立运营，但 X 的实时直播技术（如直播视频流）仍大量使用其域名
   - DOMAIN-SUFFIX,periscope.tv
   - DOMAIN-SUFFIX,pscp.tv
-
