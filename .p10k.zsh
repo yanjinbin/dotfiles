@@ -33,6 +33,7 @@
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     os_icon                 # os identifier
     dir                     # current directory
+    jj_status               # Jujutsu working-copy status
     vcs                     # git status
     # prompt_char           # prompt symbol
   )

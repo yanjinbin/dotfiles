@@ -21,6 +21,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # p10k-jj-status、Oh My Zsh jj 别名和动态补全。
 # 不 source zsh-jj.plugin.zsh，因为它会重设 PROMPT。
 typeset -U fpath
+autoload -Uz vcs_info
 # 用户级命令补全（例如 Otty）；必须在 Oh My Zsh 初始化前加入。
 fpath=("${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions" $fpath)
 if [[ -d "${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-jj/functions" ]]; then

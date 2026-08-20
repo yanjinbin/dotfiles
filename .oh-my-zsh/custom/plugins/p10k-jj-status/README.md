@@ -27,14 +27,21 @@ plugins=(
     p10k-jj-status
 )
 
-# Example: manual
+# ~/.p10k.zsh (the segment must be enabled explicitly)
+typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
+    dir
+    jj_status
+    vcs
+)
+
+```
+
+For a manual installation, source the plugin directly:
+
+```zsh
 source ~/path-to-copy/p10k-jj-status.plugin.zsh
 ```
 
-There's one (1) configuration variable `POWERLEVEL9K_JJ_STATUS_COMMAND`.
-The default command is a slightly modified version of jj's
-`template-aliases.builtin_log_oneline` with some boilerplate command line
-arguments.
-It works out-of-the-box without additional jj configuration.
-If customized, it is probably a good idea to put the template and a command
-alias into the jj config.
+The current implementation refreshes JJ's working-copy snapshot, displays the
+short change ID plus a changed-file count, and uses `zsh-async` when available.
+It falls back to synchronous rendering when `zsh-async` is not installed.

@@ -26,6 +26,7 @@ source ~/.zshrc
 
 - 框架：Oh My Zsh + Powerlevel10k（含即时提示）
 - 插件：`git`、`jj`、`uv`、`pnpm`、`docker-compose`、`z`、`you-should-use`、`tmux`、`jjma`、`p10k-jj-status`、`zsh-autosuggestions`、`zsh-syntax-highlighting`
+- JJ 提示：`zsh-jj` 提供 `vcs_info` 的 JJ 后端（仅加载其 `functions/`，不 source 会重设 `PROMPT` 的完整插件）；`p10k-jj-status` 提供异步 JJ working-copy 段，需在 `.p10k.zsh` 的 `POWERLEVEL9K_LEFT_PROMPT_ELEMENTS` 或 `RIGHT_PROMPT_ELEMENTS` 中加入 `jj_status`
 - PATH：`~/.local/bin`、`~/.opencode/bin`、pnpm、Maven、Go（GOPROXY 腾讯镜像）、Rust（rsproxy.cn）、fnm（Node）
 - 别名 / 函数：
   - eza 列表：`ls`、`ll`、`lla`、`lld`、`llf`、`lt`、`lt3`、`lt4`
@@ -76,6 +77,15 @@ source ~/.zshrc
 
     ```zsh
     export JJMA_DEFAULT_AGENT=agy
+    ```
+
+- `zsh-jj` / `p10k-jj-status` — JJ 状态提示组件
+  - 详细说明：[`.oh-my-zsh/custom/plugins/zsh-jj/README.md`](.oh-my-zsh/custom/plugins/zsh-jj/README.md)、[`.oh-my-zsh/custom/plugins/p10k-jj-status/README.md`](.oh-my-zsh/custom/plugins/p10k-jj-status/README.md)
+  - 安装到 Oh My Zsh：
+
+    ```bash
+    cp -R .oh-my-zsh/custom/plugins/zsh-jj ~/.oh-my-zsh/custom/plugins/
+    cp -R .oh-my-zsh/custom/plugins/p10k-jj-status ~/.oh-my-zsh/custom/plugins/
     ```
 
 ## 说明
