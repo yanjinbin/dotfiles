@@ -30,7 +30,7 @@ source ~/.zshrc
 - 别名 / 函数：
   - eza 列表：`ls`、`ll`、`lla`、`lld`、`llf`、`lt`、`lt3`、`lt4`
   - uv：`ur`、`ua`、`us`、`uvp`
-  - 工具：`mkcd`、`extract`、`ff`、`port`、`myip`、`flushdns`、`ipv6on`、`ipv6off`
+  - 工具：`c`（clear）、`y`（yazi）、`t`（history）、`wattage`、`myip`、`nvup`（Neovim 插件/Mason 更新）、`flushdns`、`ipv6on`、`ipv6off`、`mkcd`、`extract`、`ff`、`port`
   - 时区：`tz jp|sg|la|system`（默认系统时区，需要时用 `tz` 临时切换）
   - 代理：`proxyon` / `proxyoff`（127.0.0.1:7890）
 - AI CLI（详见下节）：Claude 隐私开关与权限别名、`codex` 包装函数、`ocx_service`、`ai upgrade`
@@ -41,8 +41,8 @@ source ~/.zshrc
 
 | 工具 | 定位 | 安装 | 维护 / 升级 |
 |------|------|------|-------------|
-| Claude Code | 长上下文 agent CLI | `npm install -g @anthropic-ai/claude-code` | `ai upgrade claude` |
-| OpenAI Codex | 本地代码 agent | 官方 standalone 包（`~/.codex/packages/standalone`，入口 `~/.local/bin/codex`） | `ai upgrade codex`（走 GitHub release，不占 API quota） |
+| Claude Code | 长上下文 agent CLI | `curl -fsSL https://claude.ai/install.sh | bash`（安装/升级通用） | `ai upgrade claude` |
+| OpenAI Codex | 本地代码 agent | 官方 standalone 包（`~/.codex/packages/standalone`，入口 `~/.local/bin/codex`） | `ai upgrade codex`（走 `chatgpt.com/codex/install.sh`，默认 releases.openai.com，不吃 GitHub API quota） |
 | Antigravity agy | agent CLI / workflow | `curl -fsSL https://antigravity.google/cli/install.sh | bash`（`~/.local/bin/agy`） | `ai upgrade agy` / `agy update` |
 | herdr | 多 agent 编排 CLI / runtime | `curl -fsSL https://herdr.dev/install.sh | sh`（或 `brew install herdr`） | `ai upgrade herdr` / `herdr update` |
 | OpenCodeX ocx | Codex 网关 / 代理服务 | `npm install -g @bitkyc08/opencodex` + `ocx service install`（launchd 常驻） | `ocx_service update` / `ocx update` |
