@@ -54,7 +54,7 @@ source ~/.zshrc
 - Codex：`cx`（默认 `--yolo` + high reasoning）、`cx-safe`、`cx-never`、`cx-request`、`cx-untrusted`
 - agy：`ag`、`ag-edit`、`ag-plan`
 - OCX 服务：`ocxon` / `ocxoff` / `ocxstatus` / `ocxr` / `ocxh` / `ocxd` / `ocxl`
-- 升级：`ai upgrade [claude|codex|agy]`（无参数时全部升级；实现在 `~/.config/zsh/ai-upgrade.zsh`）
+- 升级：`ai upgrade`（无参数时升级整套 AI toolchain：claude / codex / agy / herdr / opencode / opencodex；也可单升如 `ai upgrade claude`；实现在 `~/.config/zsh/ai-upgrade.zsh`）
 
 > 注：上述版本为 2026-08-10 实测（codex-cli 0.147.0、agy 1.1.10、opencodex 2.10.2、otty 1.3.1、opencode 1.18.16）；Claude Code 当时未安装（未出现在 PATH 中），安装后请用 `ai upgrade claude` 校验。
 
