@@ -42,7 +42,7 @@ source ~/.zshrc
 | 工具 | 定位 | 安装 | 维护 / 升级 |
 |------|------|------|-------------|
 | Claude Code | 长上下文 agent CLI | `curl -fsSL https://claude.ai/install.sh | bash`（安装/升级通用） | `ai upgrade claude` |
-| OpenAI Codex | 本地代码 agent | 官方 standalone 包（`~/.codex/packages/standalone`，入口 `~/.local/bin/codex`） | `ai upgrade codex`（走 `chatgpt.com/codex/install.sh`，默认 releases.openai.com，不吃 GitHub API quota） |
+| OpenAI Codex | 本地代码 agent | `curl -fsSL https://chatgpt.com/codex/install.sh | sh`（非交互：`CODEX_NON_INTERACTIVE=1 sh`；装在 `~/.codex/packages/standalone`，入口 `~/.local/bin/codex`） | `ai upgrade codex`（同上） |
 | Antigravity agy | agent CLI / workflow | `curl -fsSL https://antigravity.google/cli/install.sh | bash`（`~/.local/bin/agy`） | `ai upgrade agy` / `agy update` |
 | herdr | 多 agent 编排 CLI / runtime | `curl -fsSL https://herdr.dev/install.sh | sh`（或 `brew install herdr`） | `ai upgrade herdr` / `herdr update` |
 | OpenCodeX ocx | Codex 网关 / 代理服务 | `npm install -g @bitkyc08/opencodex` + `ocx service install`（launchd 常驻） | `ocx_service update` / `ocx update` |
