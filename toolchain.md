@@ -48,6 +48,7 @@ Linux 上主要保留 `zsh`、常用 CLI、`lazygit`、`tig`、`jj` 这一层；
 |------|------|----------|
 | Codex | 本地代码 agent | 面向 repo 的实现、排障、重构和验证 |
 | agy | agent CLI / workflow | 快速调起自动化任务和轻量 agent 流程 |
+| herdr | 多 agent 编排 CLI / runtime | 同时管理 claude / codex / copilot 等多个 agent pane |
 | Claude | 长上下文推理 | 复杂方案分析、架构解释、代码审查辅助 |
 
 AI 工具不单独作为聊天窗口使用，而是尽量落到“读仓库、改文件、跑验证、给结果”的闭环里。
