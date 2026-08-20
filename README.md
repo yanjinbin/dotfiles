@@ -9,6 +9,7 @@ macOS 开发环境配置仓库，集中管理终端、编辑器、包管理与�
 - Package: `Brewfile`
 - Network: `mihomo/rules/*.yaml`
 - Script: `brew_backup_restore.sh`
+- Terminal: [iTerm2 可迁移配置](iterm2/README.md)（偏好导出与恢复脚本）
 - Tool Chain: [Mac / Linux Tool Chain](toolchain.md)
 
 ## 快速恢复
@@ -20,6 +21,14 @@ ln -sf "$(pwd)/.p10k.zsh" ~/.p10k.zsh
 ln -sf "$(pwd)/.vimrc" ~/.vimrc
 ln -sf "$(pwd)/.tmux.conf" ~/.tmux.conf
 source ~/.zshrc
+```
+
+`Brewfile` 同时安装 iTerm2 与 MesloLGS Nerd Font；完成安装后再导入偏好。
+
+iTerm2 偏好恢复（先退出 iTerm2）：
+
+```bash
+./iterm2/install.sh
 ```
 
 ## Shell 配置（~/.zshrc）
