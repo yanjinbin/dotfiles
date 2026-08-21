@@ -49,6 +49,7 @@ plugins=(
   z
   you-should-use
   tmux
+  opencodex
   # Git commit 工作流插件，保留为注释
   # gcma 
   jjma
