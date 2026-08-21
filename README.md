@@ -43,7 +43,7 @@ iTerm2 偏好恢复（先退出 iTerm2）：
   - 工具：`c`（clear）、`y`（yazi）、`t`（history）、`wattage`、`myip`、`nvup`（Neovim 插件/Mason 更新）、`flushdns`、`ipv6on`、`ipv6off`、`mkcd`、`extract`、`ff`、`port`
   - 时区：`tz jp|sg|la|system`（默认系统时区，需要时用 `tz` 临时切换）
   - 代理：`proxyon` / `proxyoff`（127.0.0.1:7890）
-- AI CLI（详见下节）：Claude 隐私开关与权限别名、`codex` 包装函数、`ocx_service`、`ai upgrade`
+- AI CLI（详见下节）：`codex` 包装函数、`ai upgrade`
 
 ## AI Agent Coding 工具
 
@@ -51,23 +51,19 @@ iTerm2 偏好恢复（先退出 iTerm2）：
 
 | 工具 | 定位 | 安装 | 维护 / 升级 |
 |------|------|------|-------------|
-| Claude Code | 长上下文 agent CLI | `curl -fsSL https://claude.ai/install.sh | bash`（安装/升级通用） | `ai upgrade claude` |
 | OpenAI Codex | 本地代码 agent | `curl -fsSL https://chatgpt.com/codex/install.sh | sh`（非交互：`CODEX_NON_INTERACTIVE=1 sh`；装在 `~/.codex/packages/standalone`，入口 `~/.local/bin/codex`） | `ai upgrade codex`（同上） |
 | Antigravity agy | agent CLI / workflow | `curl -fsSL https://antigravity.google/cli/install.sh | bash`（`~/.local/bin/agy`） | `ai upgrade agy` / `agy update` |
 | herdr | 多 agent 编排 CLI / runtime | `curl -fsSL https://herdr.dev/install.sh | sh`（或 `brew install herdr`） | `ai upgrade herdr` / `herdr update` |
-| OpenCodeX ocx | Codex 网关 / 代理服务 | `npm install -g @bitkyc08/opencodex` + `ocx service install`（launchd 常驻） | `ocx_service update` / `ocx update` |
 | Otty | 终端 / agent 辅助入口 | Otty 应用内 Shell Integration 安装（`~/.local/bin/otty`） | 应用内更新 |
 | opencode | 本地 agent | `curl -fsSL https://opencode.ai/install | bash`（`~/.opencode/bin/opencode`） | `opencode upgrade` |
 
 常用入口（来自 `~/.zshrc`）：
 
-- Claude：`cc`（跳过权限确认）、`cc-bypass`、`cc-auto`、`cc-edit`、`cc-plan`、`cc-ask`；隐私 `claude-private` / `claude-normal` / `claude-status`
 - Codex：`cx`（默认 `--yolo` + high reasoning）、`cx-safe`、`cx-never`、`cx-request`、`cx-untrusted`
 - agy：`ag`、`ag-edit`、`ag-plan`
-- OCX 服务：`ocxon` / `ocxoff` / `ocxstatus` / `ocxr` / `ocxh` / `ocxd` / `ocxl`
-- 升级：`ai upgrade`（无参数时升级整套 AI toolchain：claude / codex / agy / herdr / opencode / opencodex；也可单升如 `ai upgrade claude`；实现在 `~/.config/zsh/ai-upgrade.zsh`）
+- 升级：`ai upgrade`（无参数时升级整套 AI toolchain：codex / agy / herdr / opencode；也可单升如 `ai upgrade codex`；实现在 `~/.config/zsh/ai-upgrade.zsh`）
 
-> 注：上述版本为 2026-08-20 实测（codex-cli 0.148.0、agy 1.1.15、claude 2.1.237、opencode 1.18.18、opencodex 2.27.0、herdr 0.8.2、otty 1.4.1）。版本以各自 `--version` 为准，可用 `ai upgrade` 单独或整套刷新。
+> 注：上述版本为 2026-08-20 实测（codex-cli 0.148.0、agy 1.1.15、opencode 1.18.18、herdr 0.8.2、otty 1.4.1）。版本以各自 `--version` 为准，可用 `ai upgrade` 单独或整套刷新。
 
 ## 插件文档
 

@@ -41,17 +41,16 @@ HIST_STAMPS="yyyy-mm-dd"
 # 插件列表（注意：zsh-syntax-highlighting 必须放最后）
 plugins=(
   # 仅保留 gst 等 Git aliases；P10k 的 Git vcs segment 仍在 ~/.p10k.zsh 中关闭
-  git  
+  git
   jj
   uv
-  pnpm
   docker-compose
   z
   you-should-use
   tmux
   opencodex
   # Git commit 工作流插件，保留为注释
-  # gcma 
+  # gcma
   jjma
   p10k-jj-status
   zsh-autosuggestions
@@ -141,11 +140,6 @@ alias t='history | tail -100'
 alias wattage='system_profiler SPPowerDataType | grep Wattage -C 5'
 alias myip="curl -s http://ip-api.com/json | jq -r '\"\(.country) \(.regionName) \(.city) \(.isp) \(.query)\"'"
 
-# 阿里云 SSH 登录
-# 注意：请确保 ~/.ssh/<your_key> 是正确的私钥文件，并且具有适当的权限（通常是 600）。
-# 如果密钥受密码保护，可能需要使用 ssh-agent 进行管理。
-
-# alias loginaliyun='ssh -i ~/.ssh/<your_key> <user>@<your_server_ip>'
 
 # -----------------------------------------------------------------------------
 # IPv6 开关（仅限 Wi-Fi）
@@ -264,138 +258,8 @@ proxyoff() {
 
 
 # ==========================================================
-# 🔒 Claude Code Privacy Control
-# Claude Code 隐私 / 遥测控制
-# ==========================================================
-
-
-claude-privacy-on() {
-
-  export DISABLE_TELEMETRY=1
-  export DO_NOT_TRACK=1
-  export DISABLE_ERROR_REPORTING=1
-  export CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1
-  export DISABLE_FEEDBACK_COMMAND=1
-  export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
-
-  echo ""
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo " 🔒 Claude Code 隐私模式已开启"
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo ""
-  echo " ✅ 遥测收集          已关闭"
-  echo " ✅ 数据追踪          已保护"
-  echo " ✅ 错误报告          已关闭"
-  echo " ✅ 用户反馈调查      已关闭"
-  echo " ✅ Feedback 命令     已隐藏"
-  echo " ✅ 非必要流量        已关闭"
-  echo ""
-
-}
-
-
-claude-privacy-off() {
-
-  unset DISABLE_TELEMETRY
-  unset DO_NOT_TRACK
-  unset DISABLE_ERROR_REPORTING
-  unset CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY
-  unset DISABLE_FEEDBACK_COMMAND
-  unset CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
-
-  echo ""
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo " 🔓 Claude Code 默认模式已恢复"
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo ""
-  echo " ↩ 遥测收集          默认状态"
-  echo " ↩ 数据追踪          默认状态"
-  echo " ↩ 错误报告          默认状态"
-  echo " ↩ 用户反馈调查      默认状态"
-  echo " ↩ Feedback 命令     默认状态"
-  echo " ↩ 非必要流量        默认状态"
-  echo ""
-
-}
-
-
-claude-privacy-status() {
-
-  echo ""
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo " 🔍 Claude Code 隐私状态"
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo ""
-
-  [[ "${DISABLE_TELEMETRY}" == "1" ]] \
-    && echo " 🔒 遥测收集          已关闭" \
-    || echo " ⚪ 遥测收集          默认开启"
-
-  [[ "${DO_NOT_TRACK}" == "1" ]] \
-    && echo " 🛡️ 数据追踪          已保护" \
-    || echo " ⚪ 数据追踪          默认状态"
-
-  [[ "${DISABLE_ERROR_REPORTING}" == "1" ]] \
-    && echo " 🐞 错误报告          已关闭" \
-    || echo " ⚪ 错误报告          默认状态"
-
-  [[ "${CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY}" == "1" ]] \
-    && echo " 📝 用户反馈调查      已关闭" \
-    || echo " ⚪ 用户反馈调查      默认状态"
-
-  [[ "${DISABLE_FEEDBACK_COMMAND}" == "1" ]] \
-    && echo " 💬 Feedback 命令     已隐藏" \
-    || echo " ⚪ Feedback 命令     默认状态"
-
-  [[ "${CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC}" == "1" ]] \
-    && echo " 🌐 非必要流量        已关闭" \
-    || echo " ⚪ 非必要流量        默认状态"
-
-
-  echo ""
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo ""
-
-}
-
-
-# ==========================================================
 # 🤖 AI CLI
 # ==========================================================
-
-# ------------------------------------------------------------------
-# Claude Code：隐私控制
-# ------------------------------------------------------------------
-
-alias claude-private='claude-privacy-on'
-alias claude-normal='claude-privacy-off'
-alias claude-status='claude-privacy-status'
-
-# 默认启用隐私模式；仅在显式执行 claude-status 时显示详情。
-claude-privacy-on >/dev/null
-
-# ------------------------------------------------------------------
-# Claude Code：启动与权限模式
-# ------------------------------------------------------------------
-
-# 常用入口：跳过权限确认（高风险）
-alias cc='claude --dangerously-skip-permissions'
-
-# 明确命名的不同权限模式
-alias cc-bypass='claude --permission-mode bypassPermissions'
-alias cc-auto='claude --permission-mode auto'
-alias cc-edit='claude --permission-mode acceptEdits'
-alias cc-plan='claude --permission-mode plan'
-alias cc-ask='claude --permission-mode dontAsk'
-
-# 兼容旧命令
-alias claude-bypass='cc-bypass'
-alias claude-auto='cc-auto'
-alias claude-edit='cc-edit'
-alias claude-plan='cc-plan'
-alias claude-ask='cc-ask'
-
-
 
 # ------------------------------------------------------------------
 # OpenAI Codex：启动与审批模式
@@ -465,65 +329,6 @@ alias ag-plan='agy --mode plan'
 alias agyd='ag'
 alias agy-edit='ag-edit'
 alias agy-plan='ag-plan'
-
-# ------------------------------------------------------------------
-# opencodex：统一使用官方后台服务管理
-# ------------------------------------------------------------------
-
-# claude-env.sh hook 由 opencodex 自动维护在文件末尾。
-
-ocx_service() {
-  (( $+commands[ocx] )) || {
-    echo "ocx 未安装或不在 PATH 中"
-    return 127
-  }
-
-  local action="${1:-status}"
-  local log_file="${OPENCODEX_HOME:-$HOME/.opencodex}/service.log"
-
-  case "$action" in
-    install)        command ocx service install ;;
-    start)          command ocx service start ;;
-    on|repair|restart)
-                    command ocx service repair ;;
-    off|stop)       command ocx service stop ;;
-    status)         command ocx service status ;;
-    health)         command ocx health --json ;;
-    doctor)         command ocx doctor ;;
-    sync)           command ocx sync ;;
-    update)         command ocx update ;;
-    gui)            command ocx gui ;;
-    log|logs)
-      local lines="${2:-100}"
-      [[ "$lines" == <-> ]] || {
-        echo "日志行数必须是正整数"
-        return 2
-      }
-      [[ -r "$log_file" ]] || {
-        echo "OCX 日志不存在：$log_file"
-        return 1
-      }
-      command tail -n "$lines" -- "$log_file"
-      ;;
-    *)
-      echo "用法：ocx_service {install|start|repair|stop|status|health|doctor|sync|update|gui|logs [行数]}"
-      return 2
-      ;;
-  esac
-}
-
-# 兼容原有入口；on 现在会刷新并重启已安装的 launchd 服务。
-ocx_on()     { ocx_service repair; }
-ocx_off()    { ocx_service stop; }
-ocx_status() { ocx_service status; }
-
-alias ocxon='ocx_on'
-alias ocxoff='ocx_off'
-alias ocxstatus='ocx_status'
-alias ocxr='ocx_service repair'
-alias ocxh='ocx_service health'
-alias ocxd='ocx_service doctor'
-alias ocxl='ocx_service logs'
 
 # -----------------------------------------------------------------------------
 # AI CLI 升级命令
@@ -614,17 +419,29 @@ fi
 
 
 
-# opencodex claude-env hook
-if [ -f ~/.opencodex/claude-env.sh ]; then
-  source ~/.opencodex/claude-env.sh
-fi
-
-
-
 # >>>> p10k configure start >>>>
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 # <<<< p10k configure end <<<<
+
+
+# fnm
+FNM_PATH="/opt/homebrew/opt/fnm/bin"
+if [ -d "$FNM_PATH" ]; then
+  eval "$(fnm env --shell zsh)"
+fi
+
+# pnpm
+export PNPM_HOME="/Users/yanjinbin/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/yanjinbin/.local/bin:$PATH"
 
 # >>> otty shell integration >>>
 # Added by Otty — toggle in Settings > Shell > Shell Integration.

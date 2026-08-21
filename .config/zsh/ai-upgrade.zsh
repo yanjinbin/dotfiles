@@ -6,34 +6,30 @@
 ai() {
   case "$1" in
     upgrade) shift; _ai_upgrade "$@" ;;
-    *) echo "Usage: ai upgrade [claude|codex|agy|herdr|opencode|opencodex] [all]" ;;
+    *) echo "Usage: ai upgrade [codex|agy|herdr|opencode] [all]" ;;
   esac
 }
 
 _ai_upgrade() {
   local targets=("$@")
-  # 不指定目标时 = 升级整条 AI toolchain（claude/codex/agy/herdr/opencode/opencodex）
-  [[ ${#targets[@]} -eq 0 ]] && targets=(claude codex agy herdr opencode opencodex)
+  # 不指定目标时 = 升级整条 AI toolchain（codex/agy/herdr/opencode）
+  [[ ${#targets[@]} -eq 0 ]] && targets=(codex agy herdr opencode)
 
-  local do_claude=0
   local do_codex=0
   local do_agy=0
   local do_herdr=0
   local do_opencode=0
-  local do_ocx=0
   local target
 
   for target in "${targets[@]}"; do
     case "$target" in
-      all) do_claude=1; do_codex=1; do_agy=1; do_herdr=1; do_opencode=1; do_ocx=1 ;;
-      claude|c) do_claude=1 ;;
+      all) do_codex=1; do_agy=1; do_herdr=1; do_opencode=1 ;;
       codex|x) do_codex=1 ;;
       agy|antigravity|a) do_agy=1 ;;
       herdr|h) do_herdr=1 ;;
       opencode|op) do_opencode=1 ;;
-      opencodex|ocx|o) do_ocx=1 ;;
       *)
-        echo "Usage: ai upgrade [claude|codex|agy|herdr|opencode|opencodex] [all]"
+        echo "Usage: ai upgrade [codex|agy|herdr|opencode] [all]"
         return 2
         ;;
     esac
@@ -90,16 +86,10 @@ _ai_upgrade() {
   }
 
   # 官方安装/升级命令：
-  #   claude:  https://claude.ai/install.sh          （安装/升级通用）
   #   codex:   https://chatgpt.com/codex/install.sh   （默认走 releases.openai.com，不吃 GitHub API quota）
   #   agy:     首次安装用 install.sh；已安装用 agy update（install.sh 检测到已存在会直接退出）
   #   herdr:     herdr update
   #   opencode:  opencode upgrade
-  #   opencodex: ocx update
-  _ai_upgrade_claude() {
-    curl -fsSL https://claude.ai/install.sh | bash
-  }
-
   _ai_upgrade_codex() {
     curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 sh
   }
@@ -120,48 +110,36 @@ _ai_upgrade() {
     opencode upgrade
   }
 
-  _ai_upgrade_ocx() {
-    ocx update
-  }
-
   setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR 2>/dev/null
   set +m 2>/dev/null
 
-  local c_before x_before a_before h_before o_before oc_before
-  (( do_claude )) && c_before=$(claude --version 2>/dev/null || echo "—")
+  local x_before a_before h_before o_before
   (( do_codex )) && x_before=$(codex --version 2>/dev/null || echo "—")
   (( do_agy )) && a_before=$(agy --version 2>/dev/null || echo "—")
   (( do_herdr )) && h_before=$(herdr --version 2>/dev/null || echo "—")
   (( do_opencode )) && o_before=$(opencode --version 2>/dev/null || echo "—")
-  (( do_ocx )) && oc_before=$(opencodex --version 2>/dev/null || echo "—")
 
   _banner
 
   printf "  ${DIM}%s${RESET}\n" "·················································"
-  (( do_claude )) && _run "Anthropic claude " _ai_upgrade_claude
   (( do_codex )) && _run "OpenAI codex     " _ai_upgrade_codex
   (( do_agy )) && _run "Antigravity agy  " _ai_upgrade_agy
   (( do_herdr )) && _run "herdr            " _ai_upgrade_herdr
   (( do_opencode )) && _run "opencode         " _ai_upgrade_opencode
-  (( do_ocx )) && _run "opencodex(ocx)   " _ai_upgrade_ocx
   printf "  ${DIM}%s${RESET}\n" "·················································"
 
   echo ""
 
-  local c_after x_after a_after h_after o_after oc_after
-  (( do_claude )) && c_after=$(claude --version 2>/dev/null || echo "—")
+  local x_after a_after h_after o_after
   (( do_codex )) && x_after=$(codex --version 2>/dev/null || echo "—")
   (( do_agy )) && a_after=$(agy --version 2>/dev/null || echo "—")
   (( do_herdr )) && h_after=$(herdr --version 2>/dev/null || echo "—")
   (( do_opencode )) && o_after=$(opencode --version 2>/dev/null || echo "—")
-  (( do_ocx )) && oc_after=$(opencodex --version 2>/dev/null || echo "—")
 
-  (( do_claude )) && _row "🦀" "Anthropic claude" "$c_before" "$c_after"
   (( do_codex )) && _row "🐙" "OpenAI codex"     "$x_before" "$x_after"
   (( do_agy )) && _row "🛸" "Antigravity agy"  "$a_before" "$a_after"
   (( do_herdr )) && _row "🧭" "herdr"            "$h_before" "$h_after"
   (( do_opencode )) && _row "💻" "opencode"         "$o_before" "$o_after"
-  (( do_ocx )) && _row "🔌" "opencodex"        "$oc_before" "$oc_after"
 
   echo ""
   printf "  \033[38;5;213m✨\033[38;5;183m✨\033[38;5;153m✨\033[0m  ${DIM}all done!${RESET}\n"
