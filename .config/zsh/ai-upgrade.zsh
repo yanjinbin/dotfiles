@@ -6,15 +6,16 @@
 ai() {
   case "$1" in
     upgrade) shift; _ai_upgrade "$@" ;;
-    *) echo "Usage: ai upgrade [codex|agy|herdr|opencode] [all]" ;;
+    *) echo "Usage: ai upgrade [claude|codex|agy|herdr|opencode] [all]" ;;
   esac
 }
 
 _ai_upgrade() {
   local targets=("$@")
-  # 不指定目标时 = 升级整条 AI toolchain（codex/agy/herdr/opencode）
-  [[ ${#targets[@]} -eq 0 ]] && targets=(codex agy herdr opencode)
+  # 不指定目标时 = 升级整条 AI toolchain
+  [[ ${#targets[@]} -eq 0 ]] && targets=(claude codex agy herdr opencode)
 
+  local do_claude=0
   local do_codex=0
   local do_agy=0
   local do_herdr=0
@@ -23,13 +24,14 @@ _ai_upgrade() {
 
   for target in "${targets[@]}"; do
     case "$target" in
-      all) do_codex=1; do_agy=1; do_herdr=1; do_opencode=1 ;;
+      all) do_claude=1; do_codex=1; do_agy=1; do_herdr=1; do_opencode=1 ;;
+      claude|cc|c) do_claude=1 ;;
       codex|x) do_codex=1 ;;
       agy|antigravity|a) do_agy=1 ;;
       herdr|h) do_herdr=1 ;;
       opencode|op) do_opencode=1 ;;
       *)
-        echo "Usage: ai upgrade [codex|agy|herdr|opencode] [all]"
+        echo "Usage: ai upgrade [claude|codex|agy|herdr|opencode] [all]"
         return 2
         ;;
     esac
@@ -86,17 +88,22 @@ _ai_upgrade() {
   }
 
   # 官方安装/升级命令：
+  #   claude:  https://claude.ai/install.sh
   #   codex:   https://chatgpt.com/codex/install.sh   （默认走 releases.openai.com，不吃 GitHub API quota）
   #   agy:     首次安装用 install.sh；已安装用 agy update（install.sh 检测到已存在会直接退出）
   #   herdr:     herdr update
   #   opencode:  opencode upgrade
+  _ai_upgrade_claude() {
+    curl -fsSL https://claude.ai/install.sh | bash
+  }
+
   _ai_upgrade_codex() {
     curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 sh
   }
 
   _ai_upgrade_agy() {
     if command -v agy >/dev/null 2>&1; then
-      agy update
+      command agy update
     else
       curl -fsSL https://antigravity.google/cli/install.sh | bash
     fi
@@ -110,18 +117,28 @@ _ai_upgrade() {
     opencode upgrade
   }
 
-  setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR 2>/dev/null
+  setopt LOCAL_OPTIONS PIPE_FAIL NO_NOTIFY NO_MONITOR 2>/dev/null
   set +m 2>/dev/null
 
-  local x_before a_before h_before o_before
-  (( do_codex )) && x_before=$(codex --version 2>/dev/null || echo "—")
-  (( do_agy )) && a_before=$(agy --version 2>/dev/null || echo "—")
-  (( do_herdr )) && h_before=$(herdr --version 2>/dev/null || echo "—")
-  (( do_opencode )) && o_before=$(opencode --version 2>/dev/null || echo "—")
+  local c_before x_before a_before h_before o_before
+  (( do_claude )) && c_before=$(command claude --version 2>/dev/null || echo "—")
+  (( do_codex )) && x_before=$(command codex --version 2>/dev/null || echo "—")
+  (( do_agy )) && a_before=$(command agy --version 2>/dev/null || echo "—")
+  (( do_herdr )) && h_before=$(command herdr --version 2>/dev/null || echo "—")
+  (( do_opencode )) && o_before=$(command opencode --version 2>/dev/null || echo "—")
 
   _banner
 
+  local enabled=()
+  (( do_claude )) && enabled+=("Claude Code")
+  (( do_codex )) && enabled+=("OpenAI Codex")
+  (( do_agy )) && enabled+=("Antigravity AGY")
+  (( do_herdr )) && enabled+=("herdr")
+  (( do_opencode )) && enabled+=("opencode")
+  printf "  ${BOLD}本次升级：${RESET}%s\n\n" "${(j: · :)enabled}"
+
   printf "  ${DIM}%s${RESET}\n" "·················································"
+  (( do_claude )) && _run "Anthropic Claude " _ai_upgrade_claude
   (( do_codex )) && _run "OpenAI codex     " _ai_upgrade_codex
   (( do_agy )) && _run "Antigravity agy  " _ai_upgrade_agy
   (( do_herdr )) && _run "herdr            " _ai_upgrade_herdr
@@ -130,12 +147,16 @@ _ai_upgrade() {
 
   echo ""
 
-  local x_after a_after h_after o_after
-  (( do_codex )) && x_after=$(codex --version 2>/dev/null || echo "—")
-  (( do_agy )) && a_after=$(agy --version 2>/dev/null || echo "—")
-  (( do_herdr )) && h_after=$(herdr --version 2>/dev/null || echo "—")
-  (( do_opencode )) && o_after=$(opencode --version 2>/dev/null || echo "—")
+  rehash
 
+  local c_after x_after a_after h_after o_after
+  (( do_claude )) && c_after=$(command claude --version 2>/dev/null || echo "—")
+  (( do_codex )) && x_after=$(command codex --version 2>/dev/null || echo "—")
+  (( do_agy )) && a_after=$(command agy --version 2>/dev/null || echo "—")
+  (( do_herdr )) && h_after=$(command herdr --version 2>/dev/null || echo "—")
+  (( do_opencode )) && o_after=$(command opencode --version 2>/dev/null || echo "—")
+
+  (( do_claude )) && _row "🦀" "Anthropic Claude"  "$c_before" "$c_after"
   (( do_codex )) && _row "🐙" "OpenAI codex"     "$x_before" "$x_after"
   (( do_agy )) && _row "🛸" "Antigravity agy"  "$a_before" "$a_after"
   (( do_herdr )) && _row "🧭" "herdr"            "$h_before" "$h_after"
