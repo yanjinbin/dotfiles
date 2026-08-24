@@ -159,8 +159,8 @@ _ai_upgrade() {
   (( do_claude )) && _row "🦀" "Anthropic Claude"  "$c_before" "$c_after"
   (( do_codex )) && _row "🐙" "OpenAI codex"     "$x_before" "$x_after"
   (( do_agy )) && _row "🛸" "Antigravity agy"  "$a_before" "$a_after"
-  (( do_herdr )) && _row "🧭" "herdr"            "$h_before" "$h_after"
-  (( do_opencode )) && _row "💻" "opencode"         "$o_before" "$o_after"
+  (( do_herdr )) && _row "🐑" "herdr"            "$h_before" "$h_after"
+  (( do_opencode )) && _row "🧰" "opencode"         "$o_before" "$o_after"
 
   echo ""
   printf "  \033[38;5;213m✨\033[38;5;183m✨\033[38;5;153m✨\033[0m  ${DIM}all done!${RESET}\n"
