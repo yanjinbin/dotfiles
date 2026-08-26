@@ -391,15 +391,6 @@ if (( $+commands[jj] )); then
   unset _jj_completion_cache
 fi
 
-
-
-# # opencodex claude-env hook
-# if [ -f ~/.opencodex/claude-env.sh ]; then
-#   source ~/.opencodex/claude-env.sh
-# fi
-
-
-
 # >>>> p10k configure start >>>>
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
