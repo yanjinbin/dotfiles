@@ -132,7 +132,7 @@ plugins=(
   # Git commit 工作流插件，保留为注释
   # gcma
   jjma
-  fuck-nazi-dario
+  dario-amodei-sucks
   p10k-jj-status
   zsh-autosuggestions
   zsh-syntax-highlighting
