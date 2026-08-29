@@ -133,6 +133,7 @@ plugins=(
   # gcma
   jjma
   dario-amodei-sucks
+  dario-amodei-mother-die
   p10k-jj-status
   zsh-autosuggestions
   zsh-syntax-highlighting
