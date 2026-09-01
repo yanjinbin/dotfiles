@@ -9,7 +9,7 @@ _ai_cli_require() {
   return 127
 }
 
-cc() {
+_ai_cc_run() {
   local mode=normal
   [[ "$1" == normal || "$1" == plan || "$1" == yolo ]] && { mode="$1"; shift; }
   _ai_cli_require claude || return
@@ -21,8 +21,8 @@ cc() {
   esac
 }
 
-cx() {
-  local mode=normal
+_ai_cx_run() {
+  local mode=yolo
   local -a tuning=(
     -c model_reasoning_effort='"high"'
     -c model_reasoning_summary='"detailed"'
@@ -38,7 +38,7 @@ cx() {
   esac
 }
 
-ag() {
+_ai_ag_run() {
   local mode=normal
   [[ "$1" == normal || "$1" == plan || "$1" == yolo ]] && { mode="$1"; shift; }
   _ai_cli_require agy || return
@@ -50,10 +50,12 @@ ag() {
   esac
 }
 
-_ai_proxy_usage() {
+_ai_cli_usage() {
   cat <<'EOF'
 用法：
+  cx  [地区] [normal|plan|yolo] [Codex 参数...]
   cxp [地区] [normal|plan|yolo] [Codex 参数...]
+  cc  [地区] [normal|plan|yolo] [Claude 参数...]
   ccp [地区] [normal|plan|yolo] [Claude 参数...]
 
 地区（可选，同时设置 timezone 和 locale）：
@@ -67,14 +69,17 @@ _ai_proxy_usage() {
   --locale <locale>
 
 不指定地区、timezone 或 locale 时，默认使用台湾台北。
+带 p 的命令与普通命令仅相差一次性代理。
 EOF
 }
 
-aip() (
+_ai_cli_env() (
   emulate -L zsh
 
-  local cli="$1"
-  shift
+  local proxy_enabled="$1"
+  local cli_label="$2"
+  local runner="$3"
+  shift 3
 
   local region="taipei"
   local timezone=""
@@ -115,8 +120,8 @@ aip() (
         customized=1
         shift
         ;;
-      --proxy-help)
-        _ai_proxy_usage
+      --env-help|--proxy-help)
+        _ai_cli_usage
         return 0
         ;;
       --)
@@ -178,21 +183,38 @@ aip() (
     export LC_ALL="$cli_locale"
   fi
 
-  export http_proxy="http://127.0.0.1:7890"
-  export https_proxy="$http_proxy"
-  export all_proxy="socks5h://127.0.0.1:7890"
-  export HTTP_PROXY="$http_proxy"
-  export HTTPS_PROXY="$https_proxy"
-  export ALL_PROXY="$all_proxy"
+  if (( proxy_enabled )); then
+    export http_proxy="http://127.0.0.1:7890"
+    export https_proxy="$http_proxy"
+    export all_proxy="socks5h://127.0.0.1:7890"
+    export HTTP_PROXY="$http_proxy"
+    export HTTPS_PROXY="$https_proxy"
+    export ALL_PROXY="$all_proxy"
+    echo "🟢 AI Proxy ON → 127.0.0.1:7890（$cli_label）"
+  fi
 
-  echo "🟢 AI Proxy ON → 127.0.0.1:7890（$cli）"
   echo "🌐 AI CLI ENV → Region=$region_label | Timezone=${TZ:-System Default} | Locale=${LC_ALL:-${LANG:-System Default}}"
-  "$cli" "$@"
+  "$runner" "$@"
 )
 
-cxp() { aip cx "$@"; }
-ccp() { aip cc "$@"; }
-agp() { aip ag "$@"; }
+ai_env() {
+  local cli="$1"
+  shift
+  _ai_cli_env 0 "$cli" "$cli" "$@"
+}
+
+aip() {
+  local cli="$1"
+  shift
+  _ai_cli_env 1 "$cli" "$cli" "$@"
+}
+
+cx()  { _ai_cli_env 0 cx _ai_cx_run "$@"; }
+cxp() { _ai_cli_env 1 cx _ai_cx_run "$@"; }
+cc()  { _ai_cli_env 0 cc _ai_cc_run "$@"; }
+ccp() { _ai_cli_env 1 cc _ai_cc_run "$@"; }
+ag()  { _ai_cli_env 0 ag _ai_ag_run "$@"; }
+agp() { _ai_cli_env 1 ag _ai_ag_run "$@"; }
 agyp() { agp "$@"; }
 
 ocx_service() {
