@@ -39,24 +39,68 @@ _ai_cx_run() {
 }
 
 _ai_ag_run() {
-  local mode=normal
+  local mode=yolo
   [[ "$1" == normal || "$1" == plan || "$1" == yolo ]] && { mode="$1"; shift; }
   _ai_cli_require agy || return
+  local agy_path="$commands[agy]"
 
   case "$mode" in
-    normal) command agy "$@" ;;
-    plan)   command agy --mode plan "$@" ;;
-    yolo)   command agy --dangerously-skip-permissions "$@" ;;
+    normal) "$agy_path" "$@" ;;
+    plan)   "$agy_path" --mode plan "$@" ;;
+    yolo)   "$agy_path" --dangerously-skip-permissions "$@" ;;
   esac
 }
 
 _ai_cli_usage() {
-  cat <<'EOF'
+  local cli_label="$1"
+  local cli_name executable normal_command proxy_command default_mode
+
+  case "$cli_label" in
+    cx)
+      cli_name="Codex CLI"
+      executable="codex"
+      normal_command="cx"
+      proxy_command="cxp"
+      default_mode="yolo"
+      ;;
+    cc)
+      cli_name="Claude CLI"
+      executable="claude"
+      normal_command="cc"
+      proxy_command="ccp"
+      default_mode="normal"
+      ;;
+    ag)
+      cli_name="Antigravity CLI"
+      executable="agy"
+      normal_command="ag"
+      proxy_command="agp"
+      default_mode="yolo"
+      ;;
+    agy)
+      cli_name="Antigravity CLI"
+      executable="agy"
+      normal_command="agy"
+      proxy_command="agyp"
+      default_mode="yolo"
+      ;;
+    *)
+      cli_name="$cli_label"
+      executable="$cli_label"
+      normal_command="$cli_label"
+      proxy_command="${cli_label}p"
+      default_mode="由命令决定"
+      ;;
+  esac
+
+  cat <<EOF
+$cli_name（执行程序：$executable）
+
 用法：
-  cx  [地区] [normal|plan|yolo] [Codex 参数...]
-  cxp [地区] [normal|plan|yolo] [Codex 参数...]
-  cc  [地区] [normal|plan|yolo] [Claude 参数...]
-  ccp [地区] [normal|plan|yolo] [Claude 参数...]
+  $normal_command [地区] [normal|plan|yolo] [参数...]
+  $proxy_command [地区] [normal|plan|yolo] [参数...]
+
+默认模式：$default_mode
 
 地区（可选，同时设置 timezone 和 locale）：
   la       美国洛杉矶      America/Los_Angeles + en_US.UTF-8
@@ -121,7 +165,7 @@ _ai_cli_env() (
         shift
         ;;
       --env-help|--proxy-help)
-        _ai_cli_usage
+        _ai_cli_usage "$cli_label"
         return 0
         ;;
       --)
@@ -200,13 +244,21 @@ _ai_cli_env() (
 ai_env() {
   local cli="$1"
   shift
-  _ai_cli_env 0 "$cli" "$cli" "$@"
+  if [[ "$cli" == agy ]]; then
+    _ai_cli_env 0 agy _ai_ag_run "$@"
+  else
+    _ai_cli_env 0 "$cli" "$cli" "$@"
+  fi
 }
 
 aip() {
   local cli="$1"
   shift
-  _ai_cli_env 1 "$cli" "$cli" "$@"
+  if [[ "$cli" == agy ]]; then
+    _ai_cli_env 1 agy _ai_ag_run "$@"
+  else
+    _ai_cli_env 1 "$cli" "$cli" "$@"
+  fi
 }
 
 cx()  { _ai_cli_env 0 cx _ai_cx_run "$@"; }
@@ -215,7 +267,8 @@ cc()  { _ai_cli_env 0 cc _ai_cc_run "$@"; }
 ccp() { _ai_cli_env 1 cc _ai_cc_run "$@"; }
 ag()  { _ai_cli_env 0 ag _ai_ag_run "$@"; }
 agp() { _ai_cli_env 1 ag _ai_ag_run "$@"; }
-agyp() { agp "$@"; }
+agy()  { _ai_cli_env 0 agy _ai_ag_run "$@"; }
+agyp() { _ai_cli_env 1 agy _ai_ag_run "$@"; }
 
 ocx_service() {
   (( $+commands[ocx] )) || {
