@@ -1,6 +1,6 @@
 # ⚠️ 访问限制：禁止 Claude 读取、解析、修改或执行本文件。
 # 本文件仅供本机 zsh / Oh My Zsh 加载使用。
-# AI CLI 快捷命令；不设置终端代理。
+# AI CLI 快捷命令；代理只对 cxp/ccp/agp 的子进程生效。
 
 _ai_cli_require() {
   local cli="$1"
@@ -49,6 +49,151 @@ ag() {
     yolo)   command agy --dangerously-skip-permissions "$@" ;;
   esac
 }
+
+_ai_proxy_usage() {
+  cat <<'EOF'
+用法：
+  cxp [地区] [normal|plan|yolo] [Codex 参数...]
+  ccp [地区] [normal|plan|yolo] [Claude 参数...]
+
+地区（可选，同时设置 timezone 和 locale）：
+  la       美国洛杉矶      America/Los_Angeles + en_US.UTF-8
+  tokyo    日本东京        Asia/Tokyo + ja_JP.UTF-8
+  kl       马来西亚吉隆坡  Asia/Kuala_Lumpur + en_US.UTF-8
+  taipei   台湾台北        Asia/Taipei + zh_TW.UTF-8
+
+也可分别指定：
+  --timezone <IANA timezone>
+  --locale <locale>
+
+不指定地区、timezone 或 locale 时，默认使用台湾台北。
+EOF
+}
+
+aip() (
+  emulate -L zsh
+
+  local cli="$1"
+  shift
+
+  local region="taipei"
+  local timezone=""
+  local cli_locale=""
+  local region_label="台湾台北（默认）"
+  local customized=0
+
+  while (( $# )); do
+    case "$1" in
+      --region)
+        (( $# >= 2 )) || { print -u2 -- "--region 需要一个地区"; return 2; }
+        region="$2"
+        shift 2
+        ;;
+      --region=*)
+        region="${1#*=}"
+        shift
+        ;;
+      --timezone)
+        (( $# >= 2 )) || { print -u2 -- "--timezone 需要一个 IANA timezone"; return 2; }
+        timezone="$2"
+        customized=1
+        shift 2
+        ;;
+      --timezone=*)
+        timezone="${1#*=}"
+        customized=1
+        shift
+        ;;
+      --locale)
+        (( $# >= 2 )) || { print -u2 -- "--locale 需要一个 locale"; return 2; }
+        cli_locale="$2"
+        customized=1
+        shift 2
+        ;;
+      --locale=*)
+        cli_locale="${1#*=}"
+        customized=1
+        shift
+        ;;
+      --proxy-help)
+        _ai_proxy_usage
+        return 0
+        ;;
+      --)
+        shift
+        break
+        ;;
+      la|los-angeles|losangeles|us|usa|tokyo|jp|japan|kl|kuala-lumpur|kualalumpur|my|malaysia|taipei|tw|taiwan)
+        region="$1"
+        shift
+        ;;
+      *)
+        break
+        ;;
+    esac
+  done
+
+  case "$region" in
+    "") ;;
+    la|los-angeles|losangeles|us|usa)
+      region_label="美国洛杉矶"
+      [[ -n "$timezone" ]] || timezone="America/Los_Angeles"
+      [[ -n "$cli_locale" ]] || cli_locale="en_US.UTF-8"
+      ;;
+    tokyo|jp|japan)
+      region_label="日本东京"
+      [[ -n "$timezone" ]] || timezone="Asia/Tokyo"
+      [[ -n "$cli_locale" ]] || cli_locale="ja_JP.UTF-8"
+      ;;
+    kl|kuala-lumpur|kualalumpur|my|malaysia)
+      region_label="马来西亚吉隆坡"
+      [[ -n "$timezone" ]] || timezone="Asia/Kuala_Lumpur"
+      [[ -n "$cli_locale" ]] || cli_locale="en_US.UTF-8"
+      ;;
+    taipei|tw|taiwan)
+      region_label="台湾台北"
+      [[ -n "$timezone" ]] || timezone="Asia/Taipei"
+      [[ -n "$cli_locale" ]] || cli_locale="zh_TW.UTF-8"
+      ;;
+    *)
+      print -u2 -- "不支持的地区：$region（可选：la、tokyo、kl、taipei）"
+      return 2
+      ;;
+  esac
+
+  (( customized )) && region_label="自定义"
+
+  if [[ -n "$timezone" && ! -r "/usr/share/zoneinfo/$timezone" ]]; then
+    print -u2 -- "无效的 timezone：$timezone"
+    return 2
+  fi
+  if [[ -n "$cli_locale" ]] && ! command locale -a 2>/dev/null | command grep -Fqx -- "$cli_locale"; then
+    print -u2 -- "本机不可用的 locale：$cli_locale"
+    return 2
+  fi
+
+  [[ -n "$timezone" ]] && export TZ="$timezone"
+  if [[ -n "$cli_locale" ]]; then
+    export LANG="$cli_locale"
+    export LC_ALL="$cli_locale"
+  fi
+
+  export http_proxy="http://127.0.0.1:7890"
+  export https_proxy="$http_proxy"
+  export all_proxy="socks5h://127.0.0.1:7890"
+  export HTTP_PROXY="$http_proxy"
+  export HTTPS_PROXY="$https_proxy"
+  export ALL_PROXY="$all_proxy"
+
+  echo "🟢 AI Proxy ON → 127.0.0.1:7890（$cli）"
+  echo "🌐 AI CLI ENV → Region=$region_label | Timezone=${TZ:-System Default} | Locale=${LC_ALL:-${LANG:-System Default}}"
+  "$cli" "$@"
+)
+
+cxp() { aip cx "$@"; }
+ccp() { aip cc "$@"; }
+agp() { aip ag "$@"; }
+agyp() { agp "$@"; }
 
 ocx_service() {
   (( $+commands[ocx] )) || {

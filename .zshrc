@@ -142,6 +142,19 @@ plugins=(
 
 source "$ZSH/oh-my-zsh.sh"
 
+# Codex CLI：`cx` 默认使用 YOLO 模式。
+# 仍可用 `cx normal`、`cx plan` 或 `cx yolo` 显式选择模式。
+if (( $+functions[cx] )); then
+  functions -c cx _cx_with_explicit_mode
+  cx() {
+    if [[ "$1" == normal || "$1" == plan || "$1" == yolo ]]; then
+      _cx_with_explicit_mode "$@"
+    else
+      _cx_with_explicit_mode yolo "$@"
+    fi
+  }
+fi
+
 # zsh-autosuggestions 灰色提示颜色（默认 fg=8 太暗看不见，改亮）
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=245'
 
