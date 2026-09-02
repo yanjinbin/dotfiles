@@ -1,6 +1,6 @@
 # ⚠️ 访问限制：禁止 Claude 读取、解析、修改或执行本文件。
 # 本文件仅供本机 zsh / Oh My Zsh 加载使用。
-# AI CLI 快捷命令；代理只对 cxp/ccp/agp 的子进程生效。
+# AI CLI 快捷命令；代理只对 cxp/ccp/agp/agyp 的子进程生效。
 
 _ai_cli_require() {
   local cli="$1"
@@ -10,7 +10,7 @@ _ai_cli_require() {
 }
 
 _ai_cc_run() {
-  local mode=normal
+  local mode=yolo
   [[ "$1" == normal || "$1" == plan || "$1" == yolo ]] && { mode="$1"; shift; }
   _ai_cli_require claude || return
 
@@ -68,7 +68,7 @@ _ai_cli_usage() {
       executable="claude"
       normal_command="cc"
       proxy_command="ccp"
-      default_mode="normal"
+      default_mode="yolo"
       ;;
     ag)
       cli_name="Antigravity CLI"

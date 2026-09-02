@@ -59,8 +59,9 @@ iTerm2 偏好恢复（先退出 iTerm2）：
 
 常用入口（来自 `~/.zshrc`）：
 
-- Codex：`cx`（默认 `--yolo` + high reasoning）、`cx-safe`、`cx-never`、`cx-request`、`cx-untrusted`
-- agy：`ag`、`ag-edit`、`ag-plan`
+- Codex：`cx` / `cxp`（默认 YOLO；`p` 后缀启用一次性代理）
+- Claude：`cc` / `ccp`（默认 YOLO；`p` 后缀启用一次性代理）
+- agy：`ag` / `agp` / `agy` / `agyp`（默认 YOLO；`p` 后缀启用一次性代理）
 - 升级：`ai upgrade`（无参数时升级整套 AI toolchain：codex / agy / herdr / opencode；也可单升如 `ai upgrade codex`；实现在 `~/.config/zsh/ai-upgrade.zsh`）
 
 > 注：上述版本为 2026-08-20 实测（codex-cli 0.148.0、agy 1.1.15、opencode 1.18.18、herdr 0.8.2、otty 1.4.1）。版本以各自 `--version` 为准，可用 `ai upgrade` 单独或整套刷新。
