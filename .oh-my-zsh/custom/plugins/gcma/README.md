@@ -50,37 +50,27 @@ source ~/.zshrc
 在 `~/.zshrc` 中设置环境变量：
 
 ```bash
-# agy（默认 agent）
+# 默认只选择 agent；model 由该 CLI 自行选择
 export GCMA_DEFAULT_AGENT=agy
-export GCMA_DEFAULT_MODEL="Gemini 3.1 Pro (High)"
 
-# Claude
+# 只有需要固定 model 时才设置
 export GCMA_DEFAULT_AGENT=claude
 export GCMA_DEFAULT_MODEL=sonnet
 ```
 
 **注意**：`GCMA_DEFAULT_MODEL` 仅对默认 agent 生效。通过 CLI 显式指定不同 agent 时（如 `gcma claude`），使用该 agent 的内置默认 model，`GCMA_DEFAULT_MODEL` 不生效。
 
-不设置则退回到 `agy + "Gemini 3.5 Flash (Medium)"`。
+不设置 `GCMA_DEFAULT_MODEL` 时，不传 `--model`，由对应 CLI 使用其当前默认 model。
 
-## Agent 默认 model
+## 指定 model
 
-| Agent  | 默认 model                 | model 校验 |
-|--------|----------------------------|-----------|
-| agy    | Gemini 3.5 Flash (Medium)  | 白名单校验 |
-| claude | sonnet                     | 透传       |
-| codex  | gpt-5.3-codex              | 透传       |
+`gcma [agent] [model]` 的 model 是可选参数。插件不维护 model 白名单，显式值直接交给 CLI 校验，避免本地列表过期。
 
-agy 合法 model：
-
-- `Gemini 3.5 Flash (Medium)`
-- `Gemini 3.5 Flash (High)`
-- `Gemini 3.5 Flash (Low)`
-- `Gemini 3.1 Pro (Low)`
-- `Gemini 3.1 Pro (High)`
-- `Claude Sonnet 4.6 (Thinking)`
-- `Claude Opus 4.6 (Thinking)`
-- `GPT-OSS 120B (Medium)`
+```bash
+agy models
+claude --help
+codex --help
+```
 
 ## 使用
 
@@ -105,10 +95,9 @@ gcma
 指定 agent / model（覆盖环境变量）：
 
 ```bash
-gcma agy "Gemini 3.1 Pro (High)"
+gcma agy "<model from: agy models>"
 gcma claude sonnet
-gcma claude claude-sonnet-4-6
-gcma codex gpt-5.3-codex
+gcma codex "<model name>"
 ```
 
 ## gcma!（amend 上一个 commit）
@@ -152,5 +141,5 @@ gcma! claude sonnet            # 指定 agent / model 同样适用
 3. **提示 Invalid format**
    - agent 输出未通过本地校验，直接重试一次或换 model
 
-4. **提示 Invalid agy model**
-   - 传入的 agy model 不在白名单中，请从上表「agy 合法 model」中选择
+4. **提示 model 无效**
+   - 运行 `agy models` 或对应 CLI 的 `--help`，再传入受支持的 model

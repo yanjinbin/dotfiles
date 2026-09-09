@@ -18,24 +18,24 @@ Agents:
 
 Examples:
   gcma
-  gcma agy "Gemini 3.1 Pro (High)"
+  gcma agy "<model from: agy models>"
   gcma claude sonnet
-  gcma codex gpt-5.3-codex
+  gcma codex "<model name>"
   gcma!                   # regenerate message and amend HEAD
   gcma! claude sonnet
   gcma --help
 
 Run Mode:
   1) Args: gcma [agent] [model]; gcma! adds --amend (amends HEAD instead of a new commit)
-  2) Defaults: agent=$GCMA_DEFAULT_AGENT or agy; model=$GCMA_DEFAULT_MODEL or per-agent default
+  2) Defaults: agent=$GCMA_DEFAULT_AGENT or agy; model=provider CLI default
   3) Context: staged summary + name-status + unified diff (vs HEAD~1 in amend mode)
   4) Flow: auth check -> generate -> local validate -> confirm -> git commit [--amend]
 
 Notes:
   1) Stage only what you want to describe. Unstaged and untracked changes are ignored.
   2) Auth is checked before generation: codex login status or claude auth status (agy uses its own configured session).
-  3) Defaults: agy -> "Gemini 3.1 Pro (High)", claude -> sonnet, codex -> gpt-5.3-codex.
-  4) agy valid models: Gemini 3.5 Flash (Medium/High/Low), Gemini 3.1 Pro (Low/High), Claude Sonnet 4.6 (Thinking), Claude Opus 4.6 (Thinking), GPT-OSS 120B (Medium)
+  3) Omit model to follow the provider CLI default; set GCMA_DEFAULT_MODEL or pass [model] to pin one.
+  4) List or inspect models with: agy models, claude --help, codex --help.
   5) Injected context has 3 sections: summary, name-status, and unified diff.
   6) Diff context is compacted (U0 + minimal) without truncation; added/removed lines are preserved.
   7) Local validation requires Conventional Commits pattern and max length 72.
@@ -79,7 +79,7 @@ gcma() {
   local explicit_provider=0
   local amend=0
   local diff_base=""
-  local default_model=""
+  local model_label
   local tmp_file
   local err_file
   local prompt
@@ -89,17 +89,8 @@ gcma() {
   local staged_summary
   local staged_name_status
   local staged_diff
+  local -a model_args=()
   local pattern='^(feat|fix|docs|style|refactor|test|chore|ci|build|perf|revert|hotfix)(\([^)]+\))?: .+'
-  local agy_valid_models=(
-    "Gemini 3.5 Flash (Medium)"
-    "Gemini 3.5 Flash (High)"
-    "Gemini 3.5 Flash (Low)"
-    "Gemini 3.1 Pro (Low)"
-    "Gemini 3.1 Pro (High)"
-    "Claude Sonnet 4.6 (Thinking)"
-    "Claude Opus 4.6 (Thinking)"
-    "GPT-OSS 120B (Medium)"
-  )
 
   if [[ "${1:-}" == "--amend" ]]; then
     amend=1
@@ -157,31 +148,12 @@ gcma() {
     return 1
   fi
 
-  case "$provider" in
-    agy)    default_model="Gemini 3.1 Pro (High)" ;;
-    claude) default_model="sonnet" ;;
-    codex)  default_model="gpt-5.3-codex" ;;
-  esac
-  # GCMA_DEFAULT_MODEL only applies when using the default agent (not overridden via CLI)
-  if [[ -z "$model" ]]; then
-    if (( !explicit_provider )) && [[ -n "${GCMA_DEFAULT_MODEL:-}" ]]; then
-      model="$GCMA_DEFAULT_MODEL"
-    else
-      model="$default_model"
-    fi
+  # GCMA_DEFAULT_MODEL applies only when the provider was not overridden.
+  if [[ -z "$model" ]] && (( !explicit_provider )) && [[ -n "${GCMA_DEFAULT_MODEL:-}" ]]; then
+    model="$GCMA_DEFAULT_MODEL"
   fi
-
-  if [[ "$provider" == "agy" ]]; then
-    local valid=0
-    for m in "${agy_valid_models[@]}"; do
-      [[ "$m" == "$model" ]] && valid=1 && break
-    done
-    if (( !valid )); then
-      echo "❌ Invalid agy model: $model"
-      echo "Valid options: ${agy_valid_models[*]}"
-      return 1
-    fi
-  fi
+  model_label="${model:-CLI default}"
+  [[ -n "$model" ]] && model_args=(--model "$model")
 
   prompt="$(_gcma_prompt_base)
 
@@ -207,7 +179,7 @@ Staged unified diff ends."
         rm -f "$tmp_file" "$err_file"
         return 1
       fi
-      if ! command agy --model "$model" -p "$prompt" >"$tmp_file" 2>"$err_file"; then
+      if ! command agy "${model_args[@]}" -p "$prompt" >"$tmp_file" 2>"$err_file"; then
         echo "❌ agy generation failed"
         echo "---- agy stderr ----"
         cat "$err_file"
@@ -226,7 +198,7 @@ Staged unified diff ends."
         rm -f "$tmp_file" "$err_file"
         return 1
       fi
-      if ! claude -p --output-format text --permission-mode bypassPermissions --model "$model" "$prompt" >"$tmp_file" 2>"$err_file"; then
+      if ! claude -p --output-format text --permission-mode bypassPermissions "${model_args[@]}" "$prompt" >"$tmp_file" 2>"$err_file"; then
         echo "❌ Claude generation failed"
         echo "---- claude stderr ----"
         cat "$err_file"
@@ -245,7 +217,7 @@ Staged unified diff ends."
         rm -f "$tmp_file" "$err_file"
         return 1
       fi
-      if ! codex exec --model "$model" --ephemeral -o "$tmp_file" "$prompt" >/dev/null 2>"$err_file"; then
+      if ! codex exec "${model_args[@]}" --ephemeral -o "$tmp_file" "$prompt" >/dev/null 2>"$err_file"; then
         echo "❌ Codex generation failed"
         echo "---- codex stderr ----"
         cat "$err_file"
@@ -287,9 +259,9 @@ Staged unified diff ends."
 
   echo ""
   if (( amend )); then
-    echo "💡 Suggested commit (amend HEAD): (agent: $provider, model: $model)"
+    echo "💡 Suggested commit (amend HEAD): (agent: $provider, model: $model_label)"
   else
-    echo "💡 Suggested commit: (agent: $provider, model: $model)"
+    echo "💡 Suggested commit: (agent: $provider, model: $model_label)"
   fi
   echo "$msg"
   echo ""

@@ -52,10 +52,12 @@ jjma
 指定 agent 或 model：
 
 ```bash
-jjma agy "Gemini 3.1 Pro (High)"
+jjma agy "<model from: agy models>"
 jjma claude sonnet
-jjma codex gpt-5.3-codex
+jjma codex "<model name>"
 ```
+
+省略 model 时，插件不传 `--model`，由对应 CLI 使用其当前默认 model。只有需要固定 model 时，才传第二个参数或设置 `JJMA_DEFAULT_MODEL`。
 
 编辑旧 change 后重新生成描述：
 

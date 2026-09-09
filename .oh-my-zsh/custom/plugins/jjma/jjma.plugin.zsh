@@ -16,16 +16,16 @@ Agents:
 
 Examples:
   jjma
-  jjma agy "Gemini 3.1 Pro (High)"
+  jjma agy "<model from: agy models>"
   jjma claude sonnet
-  jjma codex gpt-5.3-codex
+  jjma codex "<model name>"
   jj edit <change-id> && jjma
   jj edit @- && jjma
   jjma --help
 
 Run Mode:
   1) Target: the exact revision currently checked out as the jj working copy (@)
-  2) Defaults: agent=$JJMA_DEFAULT_AGENT or agy; model=$JJMA_DEFAULT_MODEL or per-agent default
+  2) Defaults: agent=$JJMA_DEFAULT_AGENT or agy; model=provider CLI default
   3) Context: the shell captures the pinned revision with read-only jj commands
   4) Flow: snapshot -> silent analysis -> validate -> snapshot check -> confirm -> jj describe
 
@@ -35,7 +35,7 @@ Notes:
   3) The AI never runs shell commands; it receives context captured by the parent shell.
   4) A small diff uses one AI call; a large diff is summarized in bounded chunks and aggregated.
   5) If @ changes during analysis or confirmation, the suggestion is discarded.
-  6) Defaults: agy -> "Gemini 3.1 Pro (High)", claude -> sonnet, codex -> gpt-5.3-codex.
+  6) Omit model to follow the provider CLI default; set JJMA_DEFAULT_MODEL or pass [model] to pin one.
   7) Local validation requires Conventional Commits format and a maximum length of 72.
   8) Messages ending with a period are rejected.
   9) The description is changed only after you confirm with y.
@@ -170,6 +170,8 @@ _jjma_run_agent() {
 
   : >| "$output_file"
   : >| "$error_file"
+  local -a model_args=()
+  [[ -n "$model" ]] && model_args=(--model "$model")
 
   case "$provider" in
     agy)
@@ -180,7 +182,7 @@ _jjma_run_agent() {
             --sandbox \
             --output-format text \
             --print-timeout "$print_timeout" \
-            --model "$model" \
+            "${model_args[@]}" \
             -p "$prompt"
       ) </dev/null >"$output_file" 2>"$error_file"
       ;;
@@ -191,13 +193,13 @@ _jjma_run_agent() {
             -p \
             --output-format text \
             --permission-mode plan \
-            --model "$model" \
+            "${model_args[@]}" \
             "$prompt"
       ) </dev/null >"$output_file" 2>"$error_file"
       ;;
     codex)
       command codex exec \
-        --model "$model" \
+        "${model_args[@]}" \
         --sandbox read-only \
         --cd "$repo_root" \
         --ephemeral \
@@ -247,7 +249,7 @@ jjma() {
   local provider="${JJMA_DEFAULT_AGENT:-agy}"
   local model=""
   local explicit_provider=0
-  local default_model=""
+  local model_label
   local repo_root
   local snapshot
   local current_commit_id
@@ -284,16 +286,6 @@ jjma() {
   local msg
   local confirm
   local pattern='^(feat|fix|docs|style|refactor|test|chore|ci|build|perf|revert|hotfix)(\([^)]+\))?: .+$'
-  local agy_valid_models=(
-    "Gemini 3.5 Flash (Medium)"
-    "Gemini 3.5 Flash (High)"
-    "Gemini 3.5 Flash (Low)"
-    "Gemini 3.1 Pro (Low)"
-    "Gemini 3.1 Pro (High)"
-    "Claude Sonnet 4.6 (Thinking)"
-    "Claude Opus 4.6 (Thinking)"
-    "GPT-OSS 120B (Medium)"
-  )
 
   case "${1:-}" in
     -h|--help|help)
@@ -370,33 +362,11 @@ jjma() {
     return 1
   fi
 
-  case "$provider" in
-    agy)    default_model="Gemini 3.1 Pro (High)" ;;
-    claude) default_model="sonnet" ;;
-    codex)  default_model="gpt-5.3-codex" ;;
-  esac
-
   # JJMA_DEFAULT_MODEL applies only when the provider was not overridden.
-  if [[ -z "$model" ]]; then
-    if (( !explicit_provider )) && [[ -n "${JJMA_DEFAULT_MODEL:-}" ]]; then
-      model="$JJMA_DEFAULT_MODEL"
-    else
-      model="$default_model"
-    fi
+  if [[ -z "$model" ]] && (( !explicit_provider )) && [[ -n "${JJMA_DEFAULT_MODEL:-}" ]]; then
+    model="$JJMA_DEFAULT_MODEL"
   fi
-
-  if [[ "$provider" == "agy" ]]; then
-    local valid=0
-    local candidate
-    for candidate in "${agy_valid_models[@]}"; do
-      [[ "$candidate" == "$model" ]] && valid=1 && break
-    done
-    if (( !valid )); then
-      echo "❌ Invalid agy model: $model"
-      echo "Valid options: ${agy_valid_models[*]}"
-      return 1
-    fi
-  fi
+  model_label="${model:-CLI default}"
 
   case "$provider" in
     agy)
@@ -609,7 +579,7 @@ $(command sed -n '1,300p' "$summary_file")"
   fi
 
   echo ""
-  echo "💡 Suggested description for @ ($change_id_short): (agent: $provider, model: $model)"
+  echo "💡 Suggested description for @ ($change_id_short): (agent: $provider, model: $model_label)"
   echo "$msg"
   echo ""
 
