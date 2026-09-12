@@ -326,6 +326,7 @@ $cli_name（执行程序：$executable）
   查看原生命令帮助：$model_help
 
 地区（可选，同时设置 timezone 和 locale）：
+  sg       新加坡          Asia/Singapore + zh_CN.UTF-8
   la       美国洛杉矶      America/Los_Angeles + en_US.UTF-8
   tokyo    日本东京        Asia/Tokyo + ja_JP.UTF-8
   kl       马来西亚吉隆坡  Asia/Kuala_Lumpur + en_US.UTF-8
@@ -335,7 +336,8 @@ $cli_name（执行程序：$executable）
   --timezone <IANA timezone>
   --locale <locale>
 
-不指定地区、timezone 或 locale 时，默认使用美国洛杉矶。
+不指定地区时，cx/cc 默认使用新加坡，其他命令默认使用美国洛杉矶。
+可通过 --timezone 或 --locale 覆盖对应设置。
 带 p 的命令与普通命令仅相差一次性代理。
 EOF
   if [[ "$cli_label" == cx ]]; then
@@ -362,6 +364,7 @@ _ai_cli_env() (
   shift 3
 
   local region="la"
+  [[ "$cli_label" == cx || "$cli_label" == cc ]] && region="sg"
   local timezone=""
   local cli_locale=""
   local region_label="美国洛杉矶（默认）"
@@ -408,7 +411,7 @@ _ai_cli_env() (
         shift
         break
         ;;
-      la|los-angeles|losangeles|us|usa|tokyo|jp|japan|kl|kuala-lumpur|kualalumpur|my|malaysia|taipei|tw|taiwan)
+      sg|singapore|la|los-angeles|losangeles|us|usa|tokyo|jp|japan|kl|kuala-lumpur|kualalumpur|my|malaysia|taipei|tw|taiwan)
         region="$1"
         shift
         ;;
@@ -420,6 +423,11 @@ _ai_cli_env() (
 
   case "$region" in
     "") ;;
+    sg|singapore)
+      region_label="新加坡"
+      [[ -n "$timezone" ]] || timezone="Asia/Singapore"
+      [[ -n "$cli_locale" ]] || cli_locale="zh_CN.UTF-8"
+      ;;
     la|los-angeles|losangeles|us|usa)
       region_label="美国洛杉矶"
       [[ -n "$timezone" ]] || timezone="America/Los_Angeles"
@@ -441,7 +449,7 @@ _ai_cli_env() (
       [[ -n "$cli_locale" ]] || cli_locale="zh_TW.UTF-8"
       ;;
     *)
-      print -u2 -- "不支持的地区：$region（可选：la、tokyo、kl、taipei）"
+      print -u2 -- "不支持的地区：$region（可选：sg、la、tokyo、kl、taipei）"
       return 2
       ;;
   esac
