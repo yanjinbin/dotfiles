@@ -184,10 +184,13 @@ _ai_cc_run() {
 
 _ai_cx_run() {
   local mode=yolo
+  local default_summary="${AI_CX_REASONING_SUMMARY:-none}"
+  local hide_reasoning=true
+  [[ "$default_summary" != none ]] && hide_reasoning=false
   local -a tuning=(
     -c model_reasoning_effort='"high"'
-    -c model_reasoning_summary='"none"'
-    -c hide_agent_reasoning=true
+    -c "model_reasoning_summary=\"$default_summary\""
+    -c "hide_agent_reasoning=$hide_reasoning"
     -c show_raw_agent_reasoning=false
   )
   local session_model="${AI_CX_MODEL:-}"
@@ -332,7 +335,7 @@ $cli_name（执行程序：$executable）
   --timezone <IANA timezone>
   --locale <locale>
 
-不指定地区、timezone 或 locale 时，默认使用台湾台北。
+不指定地区、timezone 或 locale 时，默认使用美国洛杉矶。
 带 p 的命令与普通命令仅相差一次性代理。
 EOF
   if [[ "$cli_label" == cx ]]; then
@@ -358,10 +361,10 @@ _ai_cli_env() (
   local runner="$3"
   shift 3
 
-  local region="taipei"
+  local region="la"
   local timezone=""
   local cli_locale=""
-  local region_label="台湾台北（默认）"
+  local region_label="美国洛杉矶（默认）"
   local customized=0
 
   while (( $# )); do
@@ -496,10 +499,10 @@ aip() {
 
 cx()  { _ai_cli_env 0 cx _ai_cx_run "$@"; }
 cxp() { _ai_cli_env 1 cx _ai_cx_run "$@"; }
-cxa() { cx -r a "$@"; }
-cxc() { cx -r c "$@"; }
-cxd() { cx -r d "$@"; }
-cxn() { cx -r n "$@"; }
+cxa() { local AI_CX_REASONING_SUMMARY=auto; cx "$@"; }
+cxc() { local AI_CX_REASONING_SUMMARY=concise; cx "$@"; }
+cxd() { local AI_CX_REASONING_SUMMARY=detailed; cx "$@"; }
+cxn() { local AI_CX_REASONING_SUMMARY=none; cx "$@"; }
 cc()  { _ai_cli_env 0 cc _ai_cc_run "$@"; }
 ccp() { _ai_cli_env 1 cc _ai_cc_run "$@"; }
 ag()  { _ai_cli_env 0 ag _ai_ag_run "$@"; }
