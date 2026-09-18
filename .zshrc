@@ -132,8 +132,8 @@ plugins=(
   # Git commit 工作流插件，保留为注释
   # gcma
   jjma
-  dario-amodei-sucks
-  dario-amodei-mother-die
+  perferc-little-agnle
+  codex-niubikelas
   p10k-jj-status
   zsh-autosuggestions
   zsh-syntax-highlighting
