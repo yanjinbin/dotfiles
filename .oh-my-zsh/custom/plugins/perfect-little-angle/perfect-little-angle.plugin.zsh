@@ -168,7 +168,11 @@ EOF
 _ai_cc_run() {
   local mode=yolo
   local session_model="${AI_CC_MODEL:-}"
-  local -a model_args=()
+  local -a model_args=() display_args=()
+  case "${AI_CC_VERBOSE:-}" in
+    true) display_args=(--verbose) ;;
+    false) display_args=(--settings '{"viewMode":"default","verbose":false}') ;;
+  esac
   [[ "$1" == normal || "$1" == plan || "$1" == yolo ]] && { mode="$1"; shift; }
   _ai_cli_require claude || return
   if [[ -n "$session_model" ]] && ! _ai_cli_has_model_arg "$@"; then
@@ -176,9 +180,9 @@ _ai_cc_run() {
   fi
 
   case "$mode" in
-    normal) command claude "${model_args[@]}" "$@" ;;
-    plan)   command claude --permission-mode plan "${model_args[@]}" "$@" ;;
-    yolo)   command claude --dangerously-skip-permissions "${model_args[@]}" "$@" ;;
+    normal) command claude "${display_args[@]}" "${model_args[@]}" "$@" ;;
+    plan)   command claude --permission-mode plan "${display_args[@]}" "${model_args[@]}" "$@" ;;
+    yolo)   command claude --dangerously-skip-permissions "${display_args[@]}" "${model_args[@]}" "$@" ;;
   esac
 }
 
@@ -260,6 +264,71 @@ _ai_ag_run() {
   esac
 }
 
+_ai_cli_default_region() {
+  local cli_label="$1"
+  local region=la
+  case "$cli_label" in
+    cx|cc) region=sg ;;
+    ag|agy) cli_label=agy ;;
+    *) print -r -- "$region"; return ;;
+  esac
+  local config_file="${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions/$cli_label"
+  if [[ -f "$config_file" ]]; then
+    region="$(command cat -- "$config_file")" || return
+  fi
+  print -r -- "$region"
+}
+
+_ai_cli_region_command() {
+  emulate -L zsh
+  local cli_label="$1"
+  shift
+  case "$cli_label" in
+    cx|cc) ;;
+    ag|agy) cli_label=agy ;;
+    *) print -u2 -- "不支持的 AI CLI：$cli_label"; return 2 ;;
+  esac
+  local action="${1:-current}"
+  local region config_dir config_file temp_file
+  config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions"
+  config_file="$config_dir/$cli_label"
+
+  case "$action" in
+    current)
+      (( $# <= 1 )) || { print -u2 -- "用法：$cli_label region current"; return 2; }
+      region="$(_ai_cli_default_region "$cli_label")" || return
+      print -r -- "$cli_label 默认地区：$region"
+      return 0
+      ;;
+    set)
+      (( $# == 2 )) && [[ -n "$2" ]] || {
+        print -u2 -- "用法：$cli_label region set <sg|la|tokyo|kl|taipei>"
+        return 2
+      }
+      region="$2"
+      ;;
+    reset)
+      (( $# == 1 )) || { print -u2 -- "用法：$cli_label region reset"; return 2; }
+      region=la
+      [[ "$cli_label" == cx || "$cli_label" == cc ]] && region=sg
+      ;;
+    *)
+      print -u2 -- "用法：$cli_label region [current|set <地区>|reset]"
+      return 2
+      ;;
+  esac
+
+  _ai_cli_env 0 "$cli_label" true --region "$region" >/dev/null || return
+  command mkdir -p -- "$config_dir" || return
+  temp_file="$(command mktemp "$config_file.XXXXXX")" || return
+  if print -r -- "$region" > "$temp_file" && command mv -f -- "$temp_file" "$config_file"; then
+    print -r -- "$cli_label 默认地区已保存：$region（新终端同样生效）"
+  else
+    command rm -f -- "$temp_file"
+    return 1
+  fi
+}
+
 _ai_cli_usage() {
   local cli_label="$1"
   local cli_name executable normal_command proxy_command default_mode model_help
@@ -311,6 +380,7 @@ _ai_cli_usage() {
 $cli_name（执行程序：$executable）
 
 用法：
+  $normal_command help
   $normal_command [地区] [normal|plan|yolo] [参数...]
   $proxy_command [地区] [normal|plan|yolo] [参数...]
 
@@ -336,7 +406,14 @@ $cli_name（执行程序：$executable）
   --timezone <IANA timezone>
   --locale <locale>
 
-不指定地区时，cx/cc 默认使用新加坡，其他命令默认使用美国洛杉矶。
+默认地区（持久保存，同时设置 timezone 和 locale）：
+  $normal_command region current       查看默认地区
+  $normal_command region set la        默认使用美国洛杉矶
+  $normal_command region reset         恢复内置默认地区
+
+未保存设置时，cx/cc 默认使用新加坡，其他命令默认使用美国洛杉矶。
+cx/cxa/cxc/cxd/cxn/cxp 共用地区设置，cc/ccn/ccd/ccp/ccpn/ccpd 共用地区设置，ag/agy 及代理命令共用地区设置。
+单次指定地区可覆盖保存的默认地区。
 可通过 --timezone 或 --locale 覆盖对应设置。
 带 p 的命令与普通命令仅相差一次性代理。
 EOF
@@ -344,13 +421,29 @@ EOF
     cat <<'EOF'
 
 推理显示：
-  默认隐藏推理过程。
+  保留交互会话，只切换显示，不改变思考强度。
+  简洁显示：cxn（隐藏推理摘要，仍显示工具活动和回答）
+  详细显示：cxd（显示模型提供的详细推理摘要）
+  cx 默认隐藏推理摘要。
   选择本次摘要：cx -r
   快捷命令：cxa | cxc | cxd | cxn
   参数选择：cx -r a | cx -r c | cx -r d | cx -r n
   分别对应：auto | concise | detailed | none，也支持完整名称。
   恢复会话并选择：cx -r resume --last
   代理模式选择：cxp -r
+  代理简洁 / 详细：cxp -r n / cxp -r d
+EOF
+  elif [[ "$cli_label" == cc ]]; then
+    cat <<'EOF'
+
+交互显示：
+  保留交互会话，只切换显示，不改变思考强度。
+  简洁显示：ccn（关闭 verbose，使用普通视图）
+  详细显示：ccd（开启 verbose，展开工具输出和执行细节）
+  代理简洁 / 详细：ccpn / ccpd
+  cc / ccp 沿用 Claude 自身的显示设置。
+  快捷命令支持原有参数，例如：ccd --continue、ccn sg plan。
+  会话中按 Ctrl+O 查看详细记录；实际思考内容以 Claude 提供的内容为准。
 EOF
   fi
 }
@@ -363,8 +456,14 @@ _ai_cli_env() (
   local runner="$3"
   shift 3
 
-  local region="la"
-  [[ "$cli_label" == cx || "$cli_label" == cc ]] && region="sg"
+  if [[ "$1" == region ]]; then
+    shift
+    _ai_cli_region_command "$cli_label" "$@"
+    return $?
+  fi
+
+  local region
+  region="$(_ai_cli_default_region "$cli_label")" || return
   local timezone=""
   local cli_locale=""
   local region_label="美国洛杉矶（默认）"
@@ -403,7 +502,7 @@ _ai_cli_env() (
         customized=1
         shift
         ;;
-      --env-help|--proxy-help)
+      help|--env-help|--proxy-help)
         _ai_cli_usage "$cli_label"
         return 0
         ;;
@@ -513,6 +612,10 @@ cxd() { local AI_CX_REASONING_SUMMARY=detailed; cx "$@"; }
 cxn() { local AI_CX_REASONING_SUMMARY=none; cx "$@"; }
 cc()  { _ai_cli_env 0 cc _ai_cc_run "$@"; }
 ccp() { _ai_cli_env 1 cc _ai_cc_run "$@"; }
+ccn() { local AI_CC_VERBOSE=false; cc "$@"; }
+ccd() { local AI_CC_VERBOSE=true; cc "$@"; }
+ccpn() { local AI_CC_VERBOSE=false; ccp "$@"; }
+ccpd() { local AI_CC_VERBOSE=true; ccp "$@"; }
 ag()  { _ai_cli_env 0 ag _ai_ag_run "$@"; }
 agp() { _ai_cli_env 1 ag _ai_ag_run "$@"; }
 agy()  { _ai_cli_env 0 agy _ai_ag_run "$@"; }
