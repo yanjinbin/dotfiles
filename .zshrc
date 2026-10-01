@@ -129,8 +129,9 @@ plugins=(
   z
   you-should-use
   tmux
+  herdr
   # Git commit 工作流插件，保留为注释
-  # gcma
+  gcma
   jjma
   perfect-little-angle
   codex-niubikelas
@@ -148,15 +149,15 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=245'
 # -----------------------------------------------------------------------------
 # PATH 配置（path 与 PATH 自动同步，并按首次出现顺序去重）
 # -----------------------------------------------------------------------------
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 export PNPM_HOME="${HOME}/Library/pnpm"
 export MAVEN_HOME="$HOME/apache-maven-3.6.3"
 export GOPATH="$HOME/GolandProjects"
 export GOBIN="$GOPATH/bin"
-export GOPROXY="https://mirrors.tencent.com/go/"
 
-# Rust 镜像
-export RUSTUP_DIST_SERVER="https://rsproxy.cn"
-export RUSTUP_UPDATE_ROOT="https://rsproxy.cn/rustup"
 
 # fnm（Node.js 版本管理）
 FNM_PATH="/opt/homebrew/opt/fnm/bin"
@@ -172,6 +173,9 @@ path=(
   $path
 )
 export PATH
+
+# 自定义 herdr 插件优先加载，因此在 PATH 就绪后显式加载官方别名和会话选择器。
+source "$ZSH/plugins/herdr/herdr.plugin.zsh"
 
 # fnm 环境初始化
 if [[ -x "$FNM_PATH/fnm" ]]; then
@@ -414,6 +418,17 @@ esac
 [[ -r "$HOME/.config/zsh/private.zsh" ]] && source "$HOME/.config/zsh/private.zsh"
 
 # <<<< paddle 测试环境key end <<<<<<
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/yanjinbin/.local/bin:$PATH"
+
+
+# Commit+ command line tools
+export PATH="$HOME/.local/bin:$PATH"
 
 # >>> otty shell integration >>>
 # Added by Otty — toggle in Settings > Shell > Shell Integration.

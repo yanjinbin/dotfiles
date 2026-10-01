@@ -91,14 +91,14 @@ function prompt_jj_status() {
 
     if (( $+functions[async_job] )); then
         async_job "$_P10K_JJ_STATUS_WORKER" _p10k_jj_status_render "$workspace"
-        p10k segment -t '$_P10K_JJ_STATUS_DISPLAY' -e
+        p10k segment -b "${P10K_JJ_STATUS_BACKGROUND:-30}" -f "${P10K_JJ_STATUS_FOREGROUND:-255}" -t '$_P10K_JJ_STATUS_DISPLAY' -e
         return
     fi
 
     result="$(_p10k_jj_status_render "$workspace")" || return
     _p10k_jj_status_callback _p10k_jj_status_render 0 "$result" 0 '' 0
     [[ -n "$_P10K_JJ_STATUS_DISPLAY" ]] || return
-    p10k segment -t "$_P10K_JJ_STATUS_DISPLAY"
+    p10k segment -b "${P10K_JJ_STATUS_BACKGROUND:-30}" -f "${P10K_JJ_STATUS_FOREGROUND:-255}" -t "$_P10K_JJ_STATUS_DISPLAY"
 }
 
 # Reinitialize cleanly when ~/.zshrc is sourced more than once.

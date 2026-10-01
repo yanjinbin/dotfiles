@@ -33,6 +33,7 @@
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     os_icon                 # os identifier
     dir                     # current directory
+    jj_status               # jujutsu status
     vcs                     # git status
     # prompt_char           # prompt symbol
   )
@@ -215,9 +216,9 @@
 
   ##################################[ dir: current directory ]##################################
   # Current directory background color.
-  typeset -g POWERLEVEL9K_DIR_BACKGROUND=4
+  typeset -g POWERLEVEL9K_DIR_BACKGROUND=${P10K_DIR_BACKGROUND:-24}
   # Default current directory foreground color.
-  typeset -g POWERLEVEL9K_DIR_FOREGROUND=254
+  typeset -g POWERLEVEL9K_DIR_FOREGROUND=${P10K_DIR_FOREGROUND:-255}
   # If directory is too long, shorten some of its segments to the shortest possible unique
   # prefix. The shortened directory can be tab-completed to the original.
   typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
@@ -355,10 +356,10 @@
 
   #####################################[ vcs: git status ]######################################
   # Version control background colors.
-  typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=2
-  typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=3
-  typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=2
-  typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND=3
+  typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=${P10K_GIT_CLEAN_BACKGROUND:-23}
+  typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=${P10K_GIT_MODIFIED_BACKGROUND:-94}
+  typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=${P10K_GIT_UNTRACKED_BACKGROUND:-23}
+  typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND=${P10K_GIT_CONFLICTED_BACKGROUND:-124}
   typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND=8
 
   # Branch icon. Set this parameter to '\UE0A0 ' for the popular Powerline branch icon.
@@ -387,10 +388,10 @@
     fi
 
     # Styling for different parts of Git status.
-    local       meta='%7F' # white foreground
-    local      clean='%0F' # black foreground
-    local   modified='%0F' # black foreground
-    local  untracked='%0F' # black foreground
+    local       meta="%F{${P10K_GIT_FOREGROUND:-255}}"
+    local      clean="%F{${P10K_GIT_FOREGROUND:-255}}"
+    local   modified="%F{${P10K_GIT_FOREGROUND:-255}}"
+    local  untracked="%F{${P10K_GIT_FOREGROUND:-255}}"
     local conflicted='%1F' # red foreground
 
     local res

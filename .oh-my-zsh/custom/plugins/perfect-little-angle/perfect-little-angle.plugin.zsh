@@ -191,6 +191,7 @@ _ai_cx_run() {
   local default_summary="${AI_CX_REASONING_SUMMARY:-none}"
   local hide_reasoning=true
   [[ "$default_summary" != none ]] && hide_reasoning=false
+  local service_tier=default
   local -a tuning=(
     -c model_reasoning_effort='"high"'
     -c "model_reasoning_summary=\"$default_summary\""
@@ -202,6 +203,7 @@ _ai_cx_run() {
   while (( $# )); do
     case "$1" in
       normal|plan|yolo) mode="$1"; shift ;;
+      --fast) service_tier=fast; shift ;;
       -r|--reasoning)
         shift
         local summary choice
@@ -234,6 +236,7 @@ _ai_cx_run() {
       *) break ;;
     esac
   done
+  tuning+=(-c "service_tier=\"$service_tier\"")
   _ai_cli_require codex || return
   if [[ -n "$session_model" ]] && ! _ai_cli_has_model_arg "$@"; then
     model_args=(--model "$session_model")
@@ -245,6 +248,8 @@ _ai_cx_run() {
     yolo)   command codex --dangerously-bypass-approvals-and-sandbox "${tuning[@]}" "${model_args[@]}" "$@" ;;
   esac
 }
+
+_ai_cxf_run() { _ai_cx_run --fast "$@"; }
 
 _ai_ag_run() {
   local mode=yolo
@@ -419,6 +424,11 @@ cx/cxa/cxc/cxd/cxn/cxp 共用地区设置，cc/ccn/ccd/ccp/ccpn/ccpd 共用地�
 EOF
   if [[ "$cli_label" == cx ]]; then
     cat <<'EOF'
+
+速度模式：
+  cx / cxp 默认使用普通模式。
+  cxf / cxpf 显式启用 fast；p 表示一次性代理，f 表示 fast。
+  参数用法不变，例如：cxf resume --last、cxpf plan。
 
 推理显示：
   保留交互会话，只切换显示，不改变思考强度。
@@ -610,6 +620,8 @@ cxa() { local AI_CX_REASONING_SUMMARY=auto; cx "$@"; }
 cxc() { local AI_CX_REASONING_SUMMARY=concise; cx "$@"; }
 cxd() { local AI_CX_REASONING_SUMMARY=detailed; cx "$@"; }
 cxn() { local AI_CX_REASONING_SUMMARY=none; cx "$@"; }
+cxf() { _ai_cli_env 0 cx _ai_cxf_run "$@"; }
+cxpf() { _ai_cli_env 1 cx _ai_cxf_run "$@"; }
 cc()  { _ai_cli_env 0 cc _ai_cc_run "$@"; }
 ccp() { _ai_cli_env 1 cc _ai_cc_run "$@"; }
 ccn() { local AI_CC_VERBOSE=false; cc "$@"; }

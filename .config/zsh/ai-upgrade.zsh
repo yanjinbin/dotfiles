@@ -43,6 +43,10 @@ Usage:
   ai help <cx|cc|agy> model <list|current|default>
   ai upgrade [claude|codex|agy|herdr|opencode] [all]
 
+Codex 速度：
+  cx / cxp      普通模式（默认）
+  cxf / cxpf    fast 模式（显式启用）
+
 模型选择：
   cx --model <model> [args...]
   cc --model <model> [args...]

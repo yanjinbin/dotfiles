@@ -4,7 +4,7 @@ macOS 开发环境配置仓库，集中管理终端、编辑器、包管理与�
 
 ## 仓库内容
 
-- Shell: `.zshrc`、`.p10k.zsh`、`.oh-my-zsh/`（插件与命令）
+- Shell: `.zshrc`、`.p10k.zsh`、`.oh-my-zsh/`（插件与命令）、`.config/zsh/ai-upgrade.zsh`（AI 工具升级）
 - Editor: `.vimrc`、`.spacemacs`、`settings.json`、`launch.json`
 - Package: `Brewfile`
 - Network: `mihomo/rules/*.yaml`
@@ -33,17 +33,19 @@ iTerm2 偏好恢复（先退出 iTerm2）：
 
 ## Shell 配置（~/.zshrc）
 
+- 仓库中的 `.zshrc` 与本机 `~/.zshrc` 保持一致；当前使用独立文件，修改后需同步。
 - 框架：Oh My Zsh + Powerlevel10k（含即时提示）
-- 插件：`git`、`jj`、`uv`、`pnpm`、`docker-compose`、`z`、`you-should-use`、`tmux`、`jjma`、`p10k-jj-status`、`zsh-autosuggestions`、`zsh-syntax-highlighting`
+- 插件：`git`、`jj`、`uv`、`pnpm`、`docker-compose`、`z`、`you-should-use`、`tmux`、`herdr`、`gcma`、`jjma`、`perfect-little-angle`、`codex-niubikelas`、`p10k-jj-status`、`zsh-autosuggestions`、`zsh-syntax-highlighting`
+- herdr：PATH 就绪后显式加载 `$ZSH/plugins/herdr/herdr.plugin.zsh`，提供官方别名和 `hrdrs` 会话选择器；恢复环境时需确保此文件存在。
 - JJ 提示：`zsh-jj` 提供 `vcs_info` 的 JJ 后端（仅加载其 `functions/`，不 source 会重设 `PROMPT` 的完整插件）；`p10k-jj-status` 提供异步 JJ working-copy 段，需在 `.p10k.zsh` 的 `POWERLEVEL9K_LEFT_PROMPT_ELEMENTS` 或 `RIGHT_PROMPT_ELEMENTS` 中加入 `jj_status`
-- PATH：`~/.local/bin`、`~/.opencode/bin`、pnpm、Maven、Go（GOPROXY 腾讯镜像）、Rust（rsproxy.cn）、fnm（Node）
+- PATH：先加载 `/opt/homebrew/bin/brew shellenv`，再配置 `~/.local/bin`、`~/.opencode/bin`、pnpm、Maven、Go、fnm（Node）；不再设置 Go 或 Rust 镜像。
+- Shell 集成：按文件或环境变量加载 fzf、iTerm2 和 Otty；本机私有配置从 `~/.config/zsh/private.zsh` 加载。
 - 别名 / 函数：
   - eza 列表：`ls`、`ll`、`lla`、`lld`、`llf`、`lt`、`lt3`、`lt4`
   - uv：`ur`、`ua`、`us`、`uvp`
   - 工具：`c`（clear）、`y`（yazi）、`t`（history）、`wattage`、`myip`、`nvup`（Neovim 插件/Mason 更新）、`flushdns`、`ipv6on`、`ipv6off`、`mkcd`、`extract`、`ff`、`port`
   - 时区：`tz jp|sg|la|system`（默认系统时区，需要时用 `tz` 临时切换）
-  - 代理：`proxyon` / `proxyoff`（127.0.0.1:7890）
-- AI CLI（详见下节）：`codex` 包装函数、`ai upgrade`
+- AI CLI（详见下节）：`perfect-little-angle` 提供快捷命令并加载 `ai upgrade`；`codex-niubikelas` 提供只读代理与端点检查。代理快捷命令使用 `127.0.0.1:7890`。
 
 ## AI Agent Coding 工具
 
@@ -60,6 +62,7 @@ iTerm2 偏好恢复（先退出 iTerm2）：
 常用入口（来自 `~/.zshrc`）：
 
 - Codex：`cx` / `cxp`（默认 YOLO；`p` 后缀启用一次性代理）
+- Codex 速度：`cx` / `cxp` 默认普通模式；`cxf` / `cxpf` 显式启用 fast，其他参数用法不变。
 - Codex 推理摘要：默认隐藏；`cxa` 自动、`cxc` 简短、`cxd` 详细、`cxn` 关闭；`cx -r` 打开选择菜单，快捷命令支持追加参数，例如 `cxd resume --last`
 - Claude：`cc` / `ccp`（默认 YOLO；`p` 后缀启用一次性代理）
 - Claude 交互显示：`ccn` 简洁（关闭 verbose）、`ccd` 详细（开启 verbose）；代理入口为 `ccpn` / `ccpd`。`cc` / `ccp` 沿用原生显示设置。支持原有参数，例如 `ccd --continue`、`ccn sg plan`。
