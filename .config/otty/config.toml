@@ -1,0 +1,56 @@
+theme = "Ayu Dark"
+theme-dark = "Ayu Dark"
+foreground = "#b3b1ad"
+background = "#0a0e14"
+palette-0 = "#01060e"
+palette-1 = "#ea6c73"
+palette-2 = "#91b362"
+palette-3 = "#f9af4f"
+palette-4 = "#53bdfa"
+palette-5 = "#fae994"
+palette-6 = "#90e1c6"
+palette-7 = "#c7c7c7"
+palette-8 = "#686868"
+palette-9 = "#f07178"
+palette-10 = "#c2d94c"
+palette-11 = "#ffb454"
+palette-12 = "#59c2ff"
+palette-13 = "#ffee99"
+palette-14 = "#95e6cb"
+language = "chinese"
+
+open-with-app = "VS Code|com.microsoft.VSCode"
+open-with-app = "Xcode|com.apple.dt.Xcode"
+
+privilege-sound-on-error = true
+
+privilege-notification-on-finish = true
+
+font-size = 19
+
+dock-icon-animate-progress = true
+
+font-family = "MesloLGS NF Herdr"
+font-family-fallback = ["Herdr Agent Icons Max"]
+
+# palette-15 = "#f2f2f2" (reset to default)
+
+# selection-foreground = "#fafaff" (reset to default)
+# cursor-text = "#565656" (reset to default)
+
+# selection-background = "#264f78" (reset to default)
+# cursor-color = "#60cdff" (reset to default)
+
+copy-on-select = true
+
+text-blink = true
+
+adjust-cell-height = "20%"
+
+# default-git-client = "com.github.GitHubClient" (reset to default)
+
+notification-sound = ["error", "finish", "app"]
+
+omit-otty-prefix = true
+
+cli-allow-overwrite = true

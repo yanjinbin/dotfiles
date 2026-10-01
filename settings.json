@@ -129,6 +129,11 @@
 		"**/yarn.lock": true
 	},
 
+	"files.exclude": {
+		"**/node_modules": true,
+		"**/.idea": true,
+		"**/.vscode": true
+	},
 	"files.associations": {
 		"*.wxss": "css",
 		"*.wxml": "html",

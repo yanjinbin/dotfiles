@@ -1,0 +1,107 @@
+# Changelog
+
+## Unreleased
+
+## 0.5.1
+
+- Auto titles now treat the folder-derived agent name that launchers such as
+  herdr-newtab-plus pass to `herdr agent start` as a default, so those tabs
+  get task titles too.
+
+## 0.5.0
+
+- Follow Claude and Codex task titles every two seconds, including while the
+  popup is closed. Start one watcher through startup and agent-detection hooks.
+- Persist ownership of automatic names so later task titles update them while
+  manual tab, pane, and agent names remain untouched.
+- Keep all naming I/O out of the popup; handle unavailable state storage,
+  avoid duplicate idle snapshots, and isolate ownership and locks by server.
+- Reconnect after server restarts, check registration through the API, reload
+  upgraded watcher code without releasing its lock, and add start/stop actions.
+- Give status glyphs more space after vendor logos and color working titles orange.
+- Require Herdr 0.9.0 for startup hooks and agent session metadata.
+
+## 0.4.0
+
+- Automatically name default Claude tabs from local session transcripts when
+  the bar opens or refreshes. Preserve existing tab, pane and agent names,
+  including names set by another plugin. Set `HERDR_AUTO_TITLE_TRANSCRIPT=false`
+  to opt out; clear a tab's name to let the bar fill it again.
+- Refresh the demo with task titles shown once, leading agent logos, and
+  documentation for automatic tab naming and icon setup.
+- Lead agent rows with Claude, Codex, Pi, Grok, Kimi, Gemini, Cursor and OpenCode
+  logos when the Herdr Agent Icons Max font is installed, with colored text
+  fallbacks and optional font overrides.
+
+## 0.3.0
+
+- `%` filters to named panes: one row per pane you gave a name with
+  `herdr pane rename`, led by that name, and Enter focuses that exact pane.
+  Named panes also show up in Everything and its searches; unnamed panes stay
+  out of the way. (#5, thanks @silva96)
+- The top bar always names the active filter — `everything`, `@ agents`,
+  `% panes`, `$ shells`, or `! needs you` — as a highlighted label, instead of
+  showing a chip only when a filter is on. A scoped empty state names the
+  filter that came up empty rather than saying "this filter". (#4, thanks
+  @silva96)
+- `ctrl+j` moves the selection down, as documented, instead of confirming the
+  row: the decoder read its `0x0A` byte as Enter, so the movement binding
+  never fired. Enter itself is unaffected — terminals send `0x0D` for it.
+  (#6, thanks @skarakayali-lh)
+- The deterministic README demo now shows the `%` panes filter and the
+  always-visible filter label, and the README points at
+  [herdr-newtab-plus](https://github.com/jeffarese/herdr-newtab-plus) for the
+  tab-opening half of the loop.
+
+## 0.2.1
+
+- `"preview": false` now means the preview starts hidden rather than staying
+  hidden: `ctrl+o` brings it up for the rest of the run. `ctrl+o` also opens the
+  preview in a popup that `"auto"` considers too narrow, so one press always
+  flips what is on screen.
+
+## 0.2.0
+
+- `ctrl+r` opens an inline editor for the selected row's tab name. `enter`
+  saves through `tab.rename`, `esc` keeps the old name, and failures leave the
+  editor open for correction.
+- Claude, Codex, Kimi, Gemini, Cursor, and OpenCode labels use distinct,
+  configurable colors. Folder or workspace metadata is omitted when the same
+  name is already visible in the title or summary.
+- The deterministic README demo now shows both the agent colors and the
+  `ctrl+r` rename interaction.
+- `delete`, and `backspace` once it has nothing left to erase, close the
+  selected row's tab after a confirmation in the footer; `enter` or `y` goes
+  through with it, `esc` or any other key calls it off. A tab running more than
+  one agent says how many go with it. Forward delete in the query moved to
+  `ctrl+d`.
+- Agent rows lead with the tab's own name and trail it with the agent's current
+  summary, dropping the summary when a narrow row has no space for it or when it
+  only repeats the name.
+- Matches are highlighted wherever the row draws the text they landed in — the
+  tab name, the agent's summary, the directory, the agent name, the workspace —
+  instead of only in the tab name, which left a row matched entirely on its
+  summary with nothing lit up at all.
+- Matched characters are underlined as well as colored and bold, so the fuzzy
+  subsequence is legible when it lands one letter at a time.
+- Secondary text (summaries, agent names, running times) is a readable gray
+  chosen from the terminal's background rather than the terminal's dim color,
+  which left it near-invisible on a selected row. Separators and rules keep the
+  dim color, so the row still reads in tiers. Override with `colors.muted`.
+- Rows show how long their process has been running — the agent session, or
+  whatever a plain tab is running. Read once per pane from `pane.process_info`
+  and `ps`, then ticked locally.
+
+## 0.1.0
+
+Initial release. Requires herdr 0.7.4+ and Python 3.9+.
+
+- Fuzzy bar over agents, agent-less tabs, and workspaces, matched on title,
+  working directory, agent name and kind, branch, workspace, and tab number.
+- Live status glyphs and colors mirroring herdr's sidebar, refreshed while open.
+- Resting order: recents first, then blocked, done, working, idle; the current
+  row is never first, so open-then-Enter behaves like alt-tab.
+- Preview column tailing the selected pane.
+- `@` agents, `$` shells, and `!` needs-you filters, plus tab to cycle them.
+- Mouse click and wheel support, bracketed paste, CJK-safe layout.
+- Terminal-native colors with optional overrides in `config.json`.

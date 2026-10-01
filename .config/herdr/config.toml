@@ -1,0 +1,85 @@
+onboarding = false
+[keys]
+
+[[keys.command]]
+key = "prefix+shift+r"
+type = "plugin_action"
+command = "herdr-agent-usage.refresh"
+description = "refresh all agent quotas"
+
+[[keys.command]]
+key = "prefix+shift+q"
+type = "plugin_action"
+command = "herdr-agent-usage.open-settings"
+description = "open agent quota settings"
+
+[[keys.command]]
+key = "prefix+k"
+type = "plugin_action"
+command = "herdr-bar.open"
+description = "command bar"
+
+
+[ui.toast]
+delivery = "herdr"
+
+[ui]
+
+# >>> herdr-radar tab-bar block
+tab_bar_right_separator = " · "
+tab_bar_right = [
+  { type = 'command', command = 'cat "/Users/yanjinbin/.local/state/herdr/plugins/hhdebb.herdr-radar/tabbar.txt"', interval_seconds = 6, timeout_seconds = 2 },
+]
+# <<< herdr-radar tab-bar block
+
+status_indicators = "symbols"
+agent_panel_sort = "spaces" # herdr-agent-usage
+
+[theme]
+name = "one-dark"
+auto_switch = true
+dark_name = "one-dark"
+light_name = "one-light"
+
+# Use built-in names so rows stay visible without plugin metadata.
+[ui.sidebar.agents]
+row_gap = 1
+rows = [[{ token = "state_icon", bold = false, dim = false }, { token = "agent", bold = true, dim = false }], [{ token = "terminal_title_stripped", bold = false, dim = false }]]
+
+[ui.sidebar.agents.rows_by_agent]
+claude = [[{ token = "state_icon", bold = false, dim = false }, { token = "agent", bold = true, dim = false }], [{ token = "terminal_title_stripped", bold = false, dim = false }], [{ token = "$quota_group", bold = true, dim = false }], [{ token = "$quota_icon", bold = false, dim = false }, { token = "$quota_provider_model", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", bold = false, dim = false }], [{ token = "$quota_week_inline_normal", bold = false, dim = false }, { token = "$quota_week_inline_warning", bold = false, dim = false }, { token = "$quota_week_inline_danger", bold = false, dim = false }, { token = "$quota_week_inline_unknown", bold = false, dim = false }], [{ token = "$quota_5h_normal", bold = false, dim = false }, { token = "$quota_5h_warning", bold = false, dim = false }, { token = "$quota_5h_danger", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }, { token = "$quota_week_normal", bold = false, dim = false }, { token = "$quota_week_warning", bold = false, dim = false }, { token = "$quota_week_danger", bold = false, dim = false }, { token = "$quota_week_unknown", bold = false, dim = false }, { token = "$quota_month_normal", bold = false, dim = false }, { token = "$quota_month_warning", bold = false, dim = false }, { token = "$quota_month_danger", bold = false, dim = false }, { token = "$quota_month_unknown", bold = false, dim = false }], [{ token = "$quota_nest_gap", bold = false, dim = false }]]
+codex = [[{ token = "state_icon", bold = false, dim = false }, { token = "agent", bold = true, dim = false }], [{ token = "terminal_title_stripped", bold = false, dim = false }], [{ token = "$quota_group", bold = true, dim = false }], [{ token = "$quota_icon", bold = false, dim = false }, { token = "$quota_provider_model", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", bold = false, dim = false }], [{ token = "$quota_week_inline_normal", bold = false, dim = false }, { token = "$quota_week_inline_warning", bold = false, dim = false }, { token = "$quota_week_inline_danger", bold = false, dim = false }, { token = "$quota_week_inline_unknown", bold = false, dim = false }], [{ token = "$quota_5h_normal", bold = false, dim = false }, { token = "$quota_5h_warning", bold = false, dim = false }, { token = "$quota_5h_danger", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }, { token = "$quota_week_normal", bold = false, dim = false }, { token = "$quota_week_warning", bold = false, dim = false }, { token = "$quota_week_danger", bold = false, dim = false }, { token = "$quota_week_unknown", bold = false, dim = false }, { token = "$quota_month_normal", bold = false, dim = false }, { token = "$quota_month_warning", bold = false, dim = false }, { token = "$quota_month_danger", bold = false, dim = false }, { token = "$quota_month_unknown", bold = false, dim = false }], [{ token = "$quota_nest_gap", bold = false, dim = false }]]
+agy = [[{ token = "state_icon", bold = false, dim = false }, { token = "agent", bold = true, dim = false }], [{ token = "terminal_title_stripped", bold = false, dim = false }], [{ token = "$quota_group", bold = true, dim = false }], [{ token = "$quota_icon", bold = false, dim = false }, { token = "$quota_provider_model", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", bold = false, dim = false }], [{ token = "$quota_week_inline_normal", bold = false, dim = false }, { token = "$quota_week_inline_warning", bold = false, dim = false }, { token = "$quota_week_inline_danger", bold = false, dim = false }, { token = "$quota_week_inline_unknown", bold = false, dim = false }], [{ token = "$quota_5h_normal", bold = false, dim = false }, { token = "$quota_5h_warning", bold = false, dim = false }, { token = "$quota_5h_danger", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }, { token = "$quota_week_normal", bold = false, dim = false }, { token = "$quota_week_warning", bold = false, dim = false }, { token = "$quota_week_danger", bold = false, dim = false }, { token = "$quota_week_unknown", bold = false, dim = false }, { token = "$quota_month_normal", bold = false, dim = false }, { token = "$quota_month_warning", bold = false, dim = false }, { token = "$quota_month_danger", bold = false, dim = false }, { token = "$quota_month_unknown", bold = false, dim = false }], [{ token = "$quota_nest_gap", bold = false, dim = false }]]
+opencode = [[{ token = "state_icon", bold = false, dim = false }, { token = "agent", bold = true, dim = false }], [{ token = "terminal_title_stripped", bold = false, dim = false }], [{ token = "$quota_group", bold = true, dim = false }], [{ token = "$quota_icon", bold = false, dim = false }, { token = "$quota_provider_model", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", bold = false, dim = false }], [{ token = "$quota_week_inline_normal", bold = false, dim = false }, { token = "$quota_week_inline_warning", bold = false, dim = false }, { token = "$quota_week_inline_danger", bold = false, dim = false }, { token = "$quota_week_inline_unknown", bold = false, dim = false }], [{ token = "$quota_5h_normal", bold = false, dim = false }, { token = "$quota_5h_warning", bold = false, dim = false }, { token = "$quota_5h_danger", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }, { token = "$quota_week_normal", bold = false, dim = false }, { token = "$quota_week_warning", bold = false, dim = false }, { token = "$quota_week_danger", bold = false, dim = false }, { token = "$quota_week_unknown", bold = false, dim = false }, { token = "$quota_month_normal", bold = false, dim = false }, { token = "$quota_month_warning", bold = false, dim = false }, { token = "$quota_month_danger", bold = false, dim = false }, { token = "$quota_month_unknown", bold = false, dim = false }], [{ token = "$quota_nest_gap", bold = false, dim = false }]]
+pi = [[{ token = "$quota_group", bold = true, dim = false }], [{ token = "terminal_title_stripped", bold = false, dim = false }], [{ token = "$quota_icon", fg = "#e9e9f0", bold = false, dim = false, rules = [{ contains = "⁠", fg = "#94e2d5" }, { contains = "⁡", fg = "#f9e2af" }, { contains = "⁢", fg = "#f38ba8" }] }, { token = "$quota_provider_model", fg = "#e9e9f0", bold = true, dim = false }], [{ token = "$quota_topic", bold = false, dim = false }], [{ token = "$quota_error", fg = "#e4b957", bold = false, dim = false }], [{ token = "$quota_week_inline_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_week_inline_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_week_inline_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_week_inline_unknown", bold = false, dim = false }], [{ token = "$quota_5h_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_5h_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_5h_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_5h_unknown", bold = false, dim = false }, { token = "$quota_week_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_week_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_week_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_week_unknown", bold = false, dim = false }, { token = "$quota_month_normal", fg = "#82d978", bold = false, dim = false }, { token = "$quota_month_warning", fg = "#e4b957", bold = false, dim = false }, { token = "$quota_month_danger", fg = "#f16f7e", bold = false, dim = false }, { token = "$quota_month_unknown", bold = false, dim = false }], [{ token = "$quota_nest_gap", bold = false, dim = false }]] # herdr-agent-usage-provider
+
+[ui.sidebar.spaces]
+row_gap = 0
+rows = [[{ token = "state_icon", bold = false, dim = false }, { token = "workspace", bold = true, dim = false }], [{ token = "branch", bold = false, dim = false }, { token = "git_status", bold = false, dim = false }]]
+
+[ui.sound]
+enabled = true
+
+# Keep sidebar text readable in both terminal appearances.
+
+[theme.custom.dark]
+sidebar_bg = "#202226"
+panel_bg = "#202226"
+active_row_bg = "#32363e"
+selection_bg = "#3b424c"
+text = "#edf0f3"
+subtext0 = "#d2d6dc"
+overlay0 = "#aeb5bf"
+overlay1 = "#c2c8d0"
+accent = "#a8c7fa"
+
+[theme.custom.light]
+sidebar_bg = "#f2f1ed"
+panel_bg = "#f2f1ed"
+active_row_bg = "#dce3eb"
+selection_bg = "#ccd8e6"
+text = "#252a31"
+subtext0 = "#343c46"
+overlay0 = "#505b68"
+overlay1 = "#414b57"
+accent = "#244f80"

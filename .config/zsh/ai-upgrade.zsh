@@ -140,7 +140,7 @@ _ai_upgrade() {
   _row() {
     local icon=$1 name=$2 before=$3 after=$4 ok=$5
     if (( ok != 0 )) || [[ "$after" == "—" ]]; then
-      printf "  %s  %-18s ${DIM}%-24s${RESET} ${RED}✘${RESET} ${RED}%s${RESET}\n" "$icon" "$name" "$before" "upgrade failed"
+      printf "  %s  %-18s ${DIM}%-24s${RESET} ${RED}✘${RESET} ${RED}%s${RESET}\n" "$icon" "$name" "$before" "install/update failed"
     elif [[ "$before" == "$after" ]]; then
       printf "  %s  %-18s ${DIM}%-24s${RESET} ${YELLOW}↔${RESET} ${DIM}%s${RESET}\n" "$icon" "$name" "$before" "already latest"
     else
@@ -152,8 +152,8 @@ _ai_upgrade() {
   #   claude:  https://claude.ai/install.sh
   #   codex:   https://chatgpt.com/codex/install.sh   （默认走 releases.openai.com，不吃 GitHub API quota）
   #   agy:     首次安装用 install.sh；已安装用 agy update（install.sh 检测到已存在会直接退出）
-  #   herdr:     herdr update
-  #   opencode:  opencode upgrade
+  #   herdr:     首次安装用 install.sh；已安装用 herdr update
+  #   opencode:  首次安装用 install；已安装用 opencode upgrade
   _ai_upgrade_claude() {
     curl -fsSL https://claude.ai/install.sh | bash
   }
@@ -163,7 +163,7 @@ _ai_upgrade() {
   }
 
   _ai_upgrade_agy() {
-    if command -v agy >/dev/null 2>&1; then
+    if (( $+commands[agy] )); then
       command agy update
     else
       curl -fsSL https://antigravity.google/cli/install.sh | bash
@@ -171,11 +171,19 @@ _ai_upgrade() {
   }
 
   _ai_upgrade_herdr() {
-    command herdr update
+    if (( $+commands[herdr] )); then
+      command herdr update
+    else
+      curl -fsSL https://herdr.dev/install.sh | sh
+    fi
   }
 
   _ai_upgrade_opencode() {
-    command opencode upgrade
+    if (( $+commands[opencode] )); then
+      command opencode upgrade
+    else
+      curl -fsSL https://opencode.ai/install | bash
+    fi
   }
 
   setopt LOCAL_OPTIONS PIPE_FAIL NO_NOTIFY NO_MONITOR 2>/dev/null
@@ -196,7 +204,7 @@ _ai_upgrade() {
   (( do_agy )) && enabled+=("Antigravity AGY")
   (( do_herdr )) && enabled+=("herdr")
   (( do_opencode )) && enabled+=("opencode")
-  printf "  ${BOLD}本次升级：${RESET}%s\n\n" "${(j: · :)enabled}"
+  printf "  ${BOLD}本次安装/更新：${RESET}%s\n\n" "${(j: · :)enabled}"
 
   local c_rc=0 x_rc=0 a_rc=0 h_rc=0 o_rc=0
   printf "  ${DIM}%s${RESET}\n" "·················································"

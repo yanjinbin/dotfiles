@@ -1,0 +1,7 @@
+# Follow the selected Herdr theme instead of the desktop appearance.
+follow_appearance = false
+
+[colors]
+# Use the built-in theme background.
+active_row_bg_dark = ""
+active_row_bg_light = ""
