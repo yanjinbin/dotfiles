@@ -14,7 +14,7 @@ payload:
 
   - DOMAIN-KEYWORD,gemini
   - DOMAIN-KEYWORD,antigravity
-
+  - DOMAIN-SUFFIX,clientservices.googleapis.com
   - DOMAIN-SUFFIX,play.google.com
   - DOMAIN-SUFFIX,antigravity-unleash.goog
   - DOMAIN-SUFFIX,antigravity.google
