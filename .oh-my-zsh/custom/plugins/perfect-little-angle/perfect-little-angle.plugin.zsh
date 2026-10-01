@@ -269,20 +269,58 @@ _ai_ag_run() {
   esac
 }
 
-_ai_cli_default_region() {
+_ai_cli_region_config() (
+  emulate -L zsh
   local cli_label="$1"
-  local region=la
-  case "$cli_label" in
-    cx|cc) region=sg ;;
-    ag|agy) cli_label=agy ;;
-    *) print -r -- "$region"; return ;;
-  esac
-  local config_file="${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions/$cli_label"
-  if [[ -f "$config_file" ]]; then
-    region="$(command cat -- "$config_file")" || return
+  [[ "$cli_label" == ag ]] && cli_label=agy
+  local config_file="${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions.conf"
+  if [[ ! -f "$config_file" || ! -r "$config_file" ]]; then
+    print -u2 -- "地区配置不存在或不可读：$config_file"
+    return 2
   fi
-  print -r -- "$region"
-}
+
+  local -A regions
+  local line key value
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -z "$line" || "$line" == \#* ]] && continue
+    key="${line%%=*}"
+    value="${line#*=}"
+    if [[ "$line" != *=* || "$key" != (cc|cx|agy) ||
+          "$value" != (sg|la|tokyo|kl|taipei) || -n "${regions[$key]-}" ]]; then
+      print -u2 -- "地区配置格式无效或存在重复项：$config_file"
+      return 2
+    fi
+    regions[$key]="$value"
+  done < "$config_file"
+  for key in cc cx agy; do
+    if [[ -z "${regions[$key]-}" ]]; then
+      print -u2 -- "地区配置缺少 $key：$config_file"
+      return 2
+    fi
+  done
+  [[ "$cli_label" == (cc|cx|agy) ]] || {
+    print -u2 -- "地区配置不支持此 CLI：$cli_label"
+    return 2
+  }
+
+  if (( $# == 1 )); then
+    print -r -- "${regions[$cli_label]}"
+    return
+  fi
+  [[ "$2" == (sg|la|tokyo|kl|taipei) ]] || return 2
+  regions[$cli_label]="$2"
+
+  # 原子替换链接目标，保留指向仓库配置的软链接。
+  config_file="${config_file:A}"
+  local temp_file
+  temp_file="$(command mktemp "$config_file.XXXXXX")" || return
+  if printf 'cc=%s\ncx=%s\nagy=%s\n' "${regions[cc]}" "${regions[cx]}" "${regions[agy]}" > "$temp_file" &&
+      command mv -f -- "$temp_file" "$config_file"; then
+    return 0
+  fi
+  command rm -f -- "$temp_file"
+  return 1
+)
 
 _ai_cli_region_command() {
   emulate -L zsh
@@ -294,44 +332,35 @@ _ai_cli_region_command() {
     *) print -u2 -- "不支持的 AI CLI：$cli_label"; return 2 ;;
   esac
   local action="${1:-current}"
-  local region config_dir config_file temp_file
-  config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions"
-  config_file="$config_dir/$cli_label"
+  local region
 
   case "$action" in
     current)
       (( $# <= 1 )) || { print -u2 -- "用法：$cli_label region current"; return 2; }
-      region="$(_ai_cli_default_region "$cli_label")" || return
+      region="$(_ai_cli_region_config "$cli_label")" || return
       print -r -- "$cli_label 默认地区：$region"
+      print -r -- "配置文件：${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions.conf"
       return 0
       ;;
     set)
-      (( $# == 2 )) && [[ -n "$2" ]] || {
+      (( $# == 2 )) && [[ "$2" == (sg|la|tokyo|kl|taipei) ]] || {
         print -u2 -- "用法：$cli_label region set <sg|la|tokyo|kl|taipei>"
         return 2
       }
       region="$2"
       ;;
     reset)
-      (( $# == 1 )) || { print -u2 -- "用法：$cli_label region reset"; return 2; }
-      region=la
-      [[ "$cli_label" == cx || "$cli_label" == cc ]] && region=sg
-      ;;
+      print -u2 -- "地区配置没有内置默认值；请使用 $cli_label region set <sg|la|tokyo|kl|taipei>"
+      return 2 ;;
     *)
-      print -u2 -- "用法：$cli_label region [current|set <地区>|reset]"
+      print -u2 -- "用法：$cli_label region [current|set <地区>]"
       return 2
       ;;
   esac
 
   _ai_cli_env 0 "$cli_label" true --region "$region" >/dev/null || return
-  command mkdir -p -- "$config_dir" || return
-  temp_file="$(command mktemp "$config_file.XXXXXX")" || return
-  if print -r -- "$region" > "$temp_file" && command mv -f -- "$temp_file" "$config_file"; then
-    print -r -- "$cli_label 默认地区已保存：$region（新终端同样生效）"
-  else
-    command rm -f -- "$temp_file"
-    return 1
-  fi
+  _ai_cli_region_config "$cli_label" "$region" || return
+  print -r -- "$cli_label 默认地区已保存：$region（下次调用生效）"
 }
 
 _ai_cli_usage() {
@@ -414,10 +443,10 @@ $cli_name（执行程序：$executable）
 默认地区（持久保存，同时设置 timezone 和 locale）：
   $normal_command region current       查看默认地区
   $normal_command region set la        默认使用美国洛杉矶
-  $normal_command region reset         恢复内置默认地区
 
-未保存设置时，cx/cc 默认使用新加坡，其他命令默认使用美国洛杉矶。
-cx/cxa/cxc/cxd/cxn/cxp 共用地区设置，cc/ccn/ccd/ccp/ccpn/ccpd 共用地区设置，ag/agy 及代理命令共用地区设置。
+唯一配置文件：${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions.conf
+每次调用均读取此文件；没有内置默认值，也不读取旧 regions/ 目录。
+cx/cxa/cxc/cxd/cxn/cxp/cxf/cxpf 共用地区设置，cc/ccn/ccd/ccp/ccpn/ccpd 共用地区设置，ag/agy 及代理命令共用地区设置。
 单次指定地区可覆盖保存的默认地区。
 可通过 --timezone 或 --locale 覆盖对应设置。
 带 p 的命令与普通命令仅相差一次性代理。
@@ -472,11 +501,10 @@ _ai_cli_env() (
     return $?
   fi
 
-  local region
-  region="$(_ai_cli_default_region "$cli_label")" || return
+  local region=""
   local timezone=""
   local cli_locale=""
-  local region_label="美国洛杉矶（默认）"
+  local region_label=""
   local customized=0
 
   while (( $# )); do
@@ -530,8 +558,8 @@ _ai_cli_env() (
     esac
   done
 
+  [[ -n "$region" ]] || region="$(_ai_cli_region_config "$cli_label")" || return
   case "$region" in
-    "") ;;
     sg|singapore)
       region_label="新加坡"
       [[ -n "$timezone" ]] || timezone="Asia/Singapore"

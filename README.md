@@ -4,7 +4,7 @@ macOS 开发环境配置仓库，集中管理终端、编辑器、包管理与�
 
 ## 仓库内容
 
-- Shell: `.zshrc`、`.p10k.zsh`、`.oh-my-zsh/`（插件与命令）、`.config/zsh/ai-upgrade.zsh`（AI 工具升级）
+- Shell: `.zshrc`、`.p10k.zsh`、`.oh-my-zsh/`（插件与命令）、`.config/ai-cli/regions.conf`（AI 地区配置）、`.config/zsh/ai-upgrade.zsh`（AI 工具升级）
 - Editor: `.vimrc`、`.spacemacs`、`settings.json`、`launch.json`
 - Package: `Brewfile`
 - Network: `mihomo/rules/*.yaml`
@@ -20,6 +20,8 @@ ln -sf "$(pwd)/.zshrc" ~/.zshrc
 ln -sf "$(pwd)/.p10k.zsh" ~/.p10k.zsh
 ln -sf "$(pwd)/.vimrc" ~/.vimrc
 ln -sf "$(pwd)/.tmux.conf" ~/.tmux.conf
+mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli"
+ln -sf "$(pwd)/.config/ai-cli/regions.conf" "${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions.conf"
 source ~/.zshrc
 ```
 
@@ -70,10 +72,23 @@ iTerm2 偏好恢复（先退出 iTerm2）：
 - agy：`ag` / `agp` / `agy` / `agyp`（默认 YOLO；`p` 后缀启用一次性代理）
 - 模型：默认不传 `--model`，由各 CLI 选择当前默认模型；需要固定时使用 `cx|cc|agy --model <model>`
 - 模型选择：`ai help cx model list`（`cc` / `agy` 同理）；选中后作为当前 shell 默认，`model default` 恢复 CLI 默认
-- 默认地区：`cc region set la` / `cx region set sg`；`region current` 查看，`region reset` 恢复内置默认。可选 `sg`、`la`、`tokyo`、`kl`、`taipei`，同时设置 timezone 和 locale。各 CLI 分别保存，显示和代理快捷命令共用所属 CLI 的设置。
-- 地区配置保存在 `${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions/`，新终端生效。单次地区参数和 `--timezone` / `--locale` 可覆盖默认设置；未保存时 `cx` / `cc` 使用新加坡，其余使用洛杉矶。
+- 默认地区：`cc region set la` / `cx region set sg`；`region current` 查看地区及配置路径。可选 `sg`、`la`、`tokyo`、`kl`、`taipei`，同时设置 timezone 和 locale。各 CLI 独立配置，显示、速度和代理快捷命令共用所属 CLI 的设置。
+- 唯一配置入口为 `${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions.conf`，通过软链接指向仓库文件。`region set` 修改链接目标，每次调用读取最新配置；旧 `regions/` 目录不再读取。单次地区参数和 `--timezone` / `--locale` 仍可临时覆盖。
+- 不再提供内置默认值；配置缺失或无效时明确报错。原 `region reset` 改为提示使用 `region set` 显式选择地区。
 - 帮助：`cc help` / `cx help` / `cxd help` / `agy help`；保留 `ai help` / `ai help cx|cc|agy` 和 `--env-help`。`--help` 继续转发给原生 CLI。
 - 升级：`ai upgrade`（无参数时升级整套 AI toolchain：codex / agy / herdr / opencode；也可单升如 `ai upgrade codex`；实现在 `~/.config/zsh/ai-upgrade.zsh`）
+
+地区配置文件内容：
+
+```ini
+cc=la
+cx=la
+agy=la
+```
+
+`sg` 对应 `Asia/Singapore` 和 `zh_CN.UTF-8`；`la` 对应 `America/Los_Angeles` 和 `en_US.UTF-8`。插件统一将 locale 应用于 `LANG` 和 `LC_ALL`，只影响 CLI 及其子进程。
+
+为避免插件副本与仓库不同步，本机 `~/.oh-my-zsh/custom/plugins/perfect-little-angle/perfect-little-angle.plugin.zsh` 也通过软链接指向仓库中的同名文件。更新插件后，重新加载此文件或打开新终端即可使用新入口。
 
 > 注：上述版本为 2026-08-20 实测（codex-cli 0.148.0、agy 1.1.15、opencode 1.18.18、herdr 0.8.2、otty 1.4.1）。版本以各自 `--version` 为准，可用 `ai upgrade` 单独或整套刷新。
 

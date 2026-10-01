@@ -22,6 +22,9 @@ class ShortcutTest(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         root = Path(self.temp.name)
         self.config = root / "config"
+        self.regions = self.config / "ai-cli/regions.conf"
+        self.regions.parent.mkdir(parents=True)
+        self.regions.write_text("cc=sg\ncx=la\nagy=la\n")
         bin_dir = root / "bin"
         bin_dir.mkdir()
         stub = f"#!{sys.executable}\n" + '''import json, os, sys
@@ -56,14 +59,60 @@ print("RUNNER:" + json.dumps({
         self.assertIn("cc 默认地区：sg", self.shell("cc region current"))
         self.shell("cc region set la")
         self.assertIn("cc 默认地区：la", self.shell("cc region current"))
-        self.assertIn("cx 默认地区：sg", self.shell("cx region current"))
+        self.assertIn("cx 默认地区：la", self.shell("cx region current"))
         self.assertEqual(self.call("cc")["env"]["TZ"], "America/Los_Angeles")
-        self.shell("cc region reset")
+        self.shell("cc region set sg")
         self.assertIn("cc 默认地区：sg", self.shell("cc region current"))
+        self.assertEqual(self.regions.read_text(), "cc=sg\ncx=la\nagy=la\n")
+
+    def test_config_is_the_only_source_and_is_read_on_each_call(self):
+        legacy = self.config / "ai-cli/regions"
+        legacy.mkdir()
+        (legacy / "cx").write_text("tokyo\n")
+        self.assertEqual(self.call("cx")["env"]["TZ"], "America/Los_Angeles")
+        self.regions.write_text("cc=taipei\ncx=sg\nagy=kl\n")
+        for cli, timezone, locale in (("cc", "Asia/Taipei", "zh_TW.UTF-8"),
+                                      ("cx", "Asia/Singapore", "zh_CN.UTF-8"),
+                                      ("agy", "Asia/Kuala_Lumpur", "en_US.UTF-8")):
+            env = self.call(cli)["env"]
+            self.assertEqual((env["TZ"], env["LANG"], env["LC_ALL"]),
+                             (timezone, locale, locale))
+        self.assertEqual((legacy / "cx").read_text(), "tokyo\n")
+        output = self.shell('cx; printf "cc=sg\\ncx=tokyo\\nagy=la\\n" '
+                            '> "$XDG_CONFIG_HOME/ai-cli/regions.conf"; cx')
+        calls = [json.loads(line[7:]) for line in output.splitlines()
+                 if line.startswith("RUNNER:")]
+        self.assertEqual([call["env"]["TZ"] for call in calls],
+                         ["Asia/Singapore", "Asia/Tokyo"])
+
+    def test_missing_or_invalid_config_fails_without_hidden_defaults(self):
+        self.regions.unlink()
+        self.shell("cx", ok=False)
+        self.assertIn("region current", self.shell("cx help"))
+        for content in ("", "cc=sg\n", "cc=sg\ncx=la\nagy=invalid\n",
+                        "cc=sg\ncx=la\nagy=la\ncx=tokyo\n",
+                        "cc=sg\ncx=$(touch marker)\nagy=la\n"):
+            self.regions.write_text(content)
+            self.shell("cx", ok=False)
+            self.shell("cc region set la", ok=False)
+            self.assertEqual(self.regions.read_text(), content)
+
+    def test_reset_does_not_restore_a_hidden_default(self):
+        original = self.regions.read_text()
+        self.shell("cx region reset", ok=False)
+        self.assertEqual(self.regions.read_text(), original)
+
+    def test_set_preserves_a_symlink_to_the_tracked_config(self):
+        target = Path(self.temp.name) / "tracked-regions.conf"
+        self.regions.rename(target)
+        self.regions.symlink_to(target)
+        self.shell("cc region set tokyo")
+        self.assertTrue(self.regions.is_symlink())
+        self.assertEqual(target.read_text(), "cc=tokyo\ncx=la\nagy=la\n")
 
     def test_region_shared_by_display_and_proxy_shortcuts(self):
         self.shell("cxd region set tokyo")
-        for cli in ("cx", "cxa", "cxc", "cxd", "cxn", "cxp"):
+        for cli in ("cx", "cxa", "cxc", "cxd", "cxn", "cxp", "cxf", "cxpf"):
             self.assertEqual(self.call(cli)["env"]["TZ"], "Asia/Tokyo")
         self.shell("ccd region set taipei")
         for cli in ("cc", "ccn", "ccd", "ccp", "ccpn", "ccpd"):
@@ -107,6 +156,16 @@ print("RUNNER:" + json.dumps({
         args = self.call("cxp -r a")["args"]
         self.assertIn('model_reasoning_summary="auto"', args)
 
+    def test_codex_fast_shortcuts_preserve_region_proxy_and_arguments(self):
+        for cli, tier in (("cx", "default"), ("cxp", "default"),
+                          ("cxf", "fast"), ("cxpf", "fast")):
+            result = self.call(cli + " resume --last")
+            self.assertIn('service_tier="' + tier + '"', result["args"])
+            self.assertEqual(result["args"][-2:], ["resume", "--last"])
+            self.assertEqual(result["env"]["TZ"], "America/Los_Angeles")
+            if "p" in cli:
+                self.assertEqual(result["env"]["https_proxy"], "http://127.0.0.1:7890")
+
     def test_claude_display_modes_and_native_arguments(self):
         for cli in ("ccd", "ccpd"):
             result = self.call(cli + ' sg plan --continue "Keep spaces"')
@@ -128,7 +187,7 @@ print("RUNNER:" + json.dumps({
         for cli in ("cx", "cxa", "cxd", "cc", "ccn", "ccd", "ccpd", "agy"):
             output = self.shell(cli + " help")
             self.assertNotIn("RUNNER:", output)
-            for topic in ("region current", "region set la", "region reset"):
+            for topic in ("region current", "region set la", "regions.conf"):
                 self.assertIn(topic, output)
             self.assertEqual(output, self.shell(cli + " --env-help"))
         self.assertIn("--help", self.call("cc --help")["args"])
