@@ -72,9 +72,9 @@ github.com/yanjinbin  https://go-proverbs.github.io/ 、 rob pike、 https://dav
 - 用 development 替代 dev，给 SRE 相关服务 用在 prefix 或者 suffix 以区分， 用 production 替代 prod，给 SRE 相关服务 用在 prefix 或者 suffix 以区分
 
 ### 关于 git 分支管理
-- 本仓库只保留 `master` 分支，本地和远程保持一致。
-- 直接在 `master` 上修改、验证、提交并推送；除非用户明确要求，不创建其他分支。
-- 清理旧分支前，确认提交已合并；未合并的提交先用本地归档标签保留。
+默认只维护2套环境，生产环境和开发环境
+默认生产环境分支是 master，不可更改。 测试环境默认 dev 分支，如需更改，需要批准。
+默认从master分支 checkout 一支分支 feature/ hotfix/ ，本地测试通过下，合并到 dev 分支，进行开发环境自测和验收
 
 
 ## 关于golang
