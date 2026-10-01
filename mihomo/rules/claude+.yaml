@@ -11,6 +11,7 @@ payload:
   # === 核心域名 ===
   # Anthropic 主站及所有子域名（含 api/cdn/console/mcp/workbench）
   - DOMAIN-SUFFIX,anthropic.com
+  - DOMAIN-SUFFIX,claude.dev
   # Claude 网页版（含 downloads.claude.ai 等所有子域名）
   - DOMAIN-SUFFIX,claude.ai
   # Claude 备用域名
