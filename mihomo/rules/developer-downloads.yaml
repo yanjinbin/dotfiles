@@ -1,0 +1,59 @@
+# NAME: developer-downloads
+# AUTHOR: yanjinbin
+# DESCRIPTION: Official sources for Go, Node.js, npm, pnpm, Yarn, Java/JDK,
+# Maven, Gradle, Kotlin, Rust/Cargo, GitLab, Bitbucket, and SourceForge.
+# GitHub uses the existing github rule provider and is not duplicated here.
+# Parent domains also cover their websites and services, not only downloads.
+
+payload:
+  # Go
+  - DOMAIN,go.dev
+  - DOMAIN-SUFFIX,golang.org
+  - DOMAIN-SUFFIX,go.googlesource.com
+
+  # Node.js / npm / pnpm / Yarn
+  - DOMAIN-SUFFIX,npmjs.org
+  - DOMAIN-SUFFIX,npmjs.com
+  - DOMAIN-SUFFIX,nodejs.org
+  - DOMAIN-SUFFIX,pnpm.io
+  - DOMAIN-SUFFIX,yarnpkg.com
+
+  # Maven
+  - DOMAIN-SUFFIX,maven.org
+  - DOMAIN-SUFFIX,maven.apache.org
+  - DOMAIN-SUFFIX,sonatype.org
+  - DOMAIN-SUFFIX,sonatype.com
+
+  # Gradle
+  - DOMAIN-SUFFIX,gradle.org
+  - DOMAIN-SUFFIX,gradle.com
+
+  # Java / JDK
+  - DOMAIN-SUFFIX,openjdk.org
+  - DOMAIN-SUFFIX,java.net
+  - DOMAIN-SUFFIX,oracle.com
+  - DOMAIN-SUFFIX,oraclecloud.com
+  - DOMAIN-SUFFIX,adoptium.net
+  - DOMAIN-SUFFIX,adoptopenjdk.net
+  - DOMAIN-SUFFIX,temurin.com
+  - DOMAIN-SUFFIX,azul.com
+  - DOMAIN-SUFFIX,azulcdn.com
+
+  # Kotlin
+  - DOMAIN-SUFFIX,kotlinlang.org
+  - DOMAIN-SUFFIX,jetbrains.com
+  - DOMAIN-SUFFIX,jetbrains.net
+
+  # Rust / Cargo
+  - DOMAIN-SUFFIX,rust-lang.org
+  - DOMAIN-SUFFIX,rustup.rs
+  - DOMAIN-SUFFIX,crates.io
+  - DOMAIN-SUFFIX,docs.rs
+  - DOMAIN-SUFFIX,lib.rs
+
+  # GitLab / Bitbucket / SourceForge
+  - DOMAIN-SUFFIX,gitlab.com
+  - DOMAIN-SUFFIX,gitlab.io
+  - DOMAIN-SUFFIX,bitbucket.org
+  - DOMAIN-SUFFIX,sourceforge.net
+  - DOMAIN-SUFFIX,sourceforge.io

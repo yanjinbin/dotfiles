@@ -58,14 +58,33 @@ jobs:
             exit 0
           fi
           fail=0
+          cache_file=$(mktemp)
+          trap 'rm -f "$cache_file"' EXIT
           while IFS= read -r f; do
             [ -z "$f" ] && continue
-            url="https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@latest/${f}"
-            echo "==> $url"
-            if ! curl -fsS --retry 3 --retry-delay 2 "$url"; then
-              echo "  !! purge failed: $f"
+            for ref in HEAD master latest; do
+              url="https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@${ref}/${f}"
+              echo "Purge $ref: $f"
+              if ! curl -fsS --retry 3 --retry-delay 2 "$url" |
+                jq -e '.status == "finished" and ([.paths[]?.providers[]?] | length > 0 and all(. == true))' >/dev/null; then
+                echo "Purge failed: $ref/$f"
+                fail=1
+              fi
+            done
+            verified=0
+            for attempt in 1 2 3 4 5 6; do
+              if curl -fsS --retry 2 "https://cdn.jsdelivr.net/gh/${GITHUB_REPOSITORY}@latest/${f}" -o "$cache_file" &&
+                cmp -s "$f" "$cache_file"; then
+                verified=1
+                break
+              fi
+              [ "$attempt" = 6 ] || sleep 10
+            done
+            if [ "$verified" = 1 ]; then
+              echo "Verified CDN content: $f"
+            else
+              echo "CDN content does not match the committed file: $f"
               fail=1
             fi
-            echo
           done <<< "$FILES"
           exit $fail
