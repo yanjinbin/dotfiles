@@ -1,7 +1,10 @@
 payload:
+
+  - DOMAIN-SUFFIX,deepseek.com
+
   # 开发环境 杭州树诚  杭州7院
-  - DOMAIN-SUFFIX,hzshucheng.com,DIRECT
-  - DOMAIN-SUFFIX,hz7hospital.com,DIRECT
+  - DOMAIN-SUFFIX,hzshucheng.com
+  - DOMAIN-SUFFIX,hz7hospital.com
 
   # 新华三
   - DOMAIN-SUFFIX,h3c.com
