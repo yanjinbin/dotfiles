@@ -91,7 +91,7 @@ agy=la
 
 `sg` 对应 `Asia/Singapore` 和 `zh_CN.UTF-8`；`la` 对应 `America/Los_Angeles` 和 `en_US.UTF-8`。插件统一将 locale 应用于 `LANG` 和 `LC_ALL`，只影响 CLI 及其子进程。
 
-为避免插件副本与仓库不同步，本机 `~/.oh-my-zsh/custom/plugins/perfect-little-angle/perfect-little-angle.plugin.zsh` 也通过软链接指向仓库中的同名文件。更新插件后，重新加载此文件或打开新终端即可使用新入口。
+本机 `~/.oh-my-zsh/custom/plugins/perfect-little-angle/perfect-little-angle.plugin.zsh` 与仓库中的同名文件保留独立副本。更新前分别备份，修改后用复制同步；重新加载此文件或打开新终端即可生效。`.zshrc` 和自定义插件的代码注释统一使用英文。
 
 > 注：上述版本为 2026-08-20 实测（codex-cli 0.148.0、agy 1.1.15、opencode 1.18.18、herdr 0.8.2、otty 1.4.1）。版本以各自 `--version` 为准，可用 `ai upgrade` 单独或整套刷新。
 

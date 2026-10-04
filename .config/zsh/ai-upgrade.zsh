@@ -1,6 +1,6 @@
 # ==========================================================
 # 🤖 AI CLI Upgrade
-# 独立加载文件：~/.config/zsh/ai-upgrade.zsh
+# Loaded from: ~/.config/zsh/ai-upgrade.zsh
 # ==========================================================
 
 ai() {
@@ -67,7 +67,7 @@ EOF
 
 _ai_upgrade() {
   local targets=("$@")
-  # 不指定目标时 = 升级整条 AI toolchain
+  # Upgrade the full AI toolchain when no target is specified.
   [[ ${#targets[@]} -eq 0 ]] && targets=(claude codex agy herdr opencode)
 
   local do_claude=0
@@ -148,12 +148,12 @@ _ai_upgrade() {
     fi
   }
 
-  # 官方安装/升级命令：
+  # Official install and update commands:
   #   claude:  https://claude.ai/install.sh
-  #   codex:   https://chatgpt.com/codex/install.sh   （默认走 releases.openai.com，不吃 GitHub API quota）
-  #   agy:     首次安装用 install.sh；已安装用 agy update（install.sh 检测到已存在会直接退出）
-  #   herdr:     首次安装用 install.sh；已安装用 herdr update
-  #   opencode:  首次安装用 install；已安装用 opencode upgrade
+  #   codex:   https://chatgpt.com/codex/install.sh (uses releases.openai.com, without GitHub API requests)
+  #   agy:     use install.sh for a new install; otherwise use agy update (install.sh exits if installed)
+  #   herdr:   use install.sh for a new install; otherwise use herdr update
+  #   opencode: use install for a new install; otherwise use opencode upgrade
   _ai_upgrade_claude() {
     curl -fsSL https://claude.ai/install.sh | bash
   }

@@ -4,57 +4,57 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
-# Powerlevel10k 即时提示（需放最顶部）
-# 若用 robbyrussell 主题可注释此块
+# Powerlevel10k instant prompt (keep this block at the top).
+# Comment out this block when using the robbyrussell theme.
 # -----------------------------------------------------------------------------
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # -----------------------------------------------------------------------------
-# Oh My Zsh 核心配置
+# Oh My Zsh core settings
 # -----------------------------------------------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
 
-# zsh-jj：只启用 Jujutsu 的 vcs_info 后端，保留现有 Powerlevel10k、
-# p10k-jj-status、Oh My Zsh jj 别名和动态补全。
-# 不 source zsh-jj.plugin.zsh，因为它会重设 PROMPT。
+# Load only the Jujutsu vcs_info backend from zsh-jj. Keep Powerlevel10k,
+# p10k-jj-status, Oh My Zsh jj aliases, and dynamic completion.
+# Do not source zsh-jj.plugin.zsh because it resets PROMPT.
 typeset -U fpath
 autoload -Uz vcs_info
-# 用户级命令补全（例如 Otty）；必须在 Oh My Zsh 初始化前加入。
+# Add user command completions (such as Otty) before Oh My Zsh starts.
 fpath=("${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions" $fpath)
 if [[ -d "${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-jj/functions" ]]; then
   fpath+=("${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-jj/functions")
   zstyle ':vcs_info:*' enable jj
-  # zstyle ':vcs_info:*' enable jj git  # Git 后端保留为注释，不启用
+  # zstyle ':vcs_info:*' enable jj git  # Keep the Git backend disabled.
 fi
 
 # ZSH_THEME="robbyrussell"
-# 若切换到 p10k，改为：
+# Use this theme to enable Powerlevel10k.
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 
-# 历史记录时间戳
+# History timestamps
 HIST_STAMPS="yyyy-mm-dd"
 
-# Prompt 配置：颜色和是否显示 Git vcs 都可以在这里调整。
+# Set prompt colors and Git vcs visibility here.
 #
-# `P10K_JJ_STATUS_BACKGROUND` 控制 JJ 状态区域的背景色。
-# 这里的 30 代表低饱和深青色；改成 24 可使用深蓝色背景。
+# `P10K_JJ_STATUS_BACKGROUND` sets the JJ status background color.
+# 30 is muted dark teal; use 24 for a dark blue background.
 typeset -g P10K_JJ_STATUS_BACKGROUND=30
 #
-# `P10K_JJ_STATUS_FOREGROUND` 控制 JJ 状态区域的字体颜色。
-# 这里的 255 代表亮白色，适合深色背景。
+# `P10K_JJ_STATUS_FOREGROUND` sets the JJ status text color.
+# 255 is bright white, suitable for dark backgrounds.
 typeset -g P10K_JJ_STATUS_FOREGROUND=255
 #
-# `P10K_PROMPT_SHOW_GIT_STATUS` 控制是否显示 Git vcs 状态。
-# 1 = 显示；0 = 隐藏。隐藏后仍然保留 Git 插件和 Git 命令。
+# `P10K_PROMPT_SHOW_GIT_STATUS` controls Git vcs visibility.
+# 1 = show; 0 = hide. The Git plugin and commands remain available.
 typeset -g P10K_PROMPT_SHOW_GIT_STATUS=1
 #
-# 下面这些变量控制目录段和 Git 段的整套配色。
+# The variables below set the directory and Git segment colors.
 
 
-#  ### 1. 浅色柔和（推荐白色背景）
+#  ### 1. Soft light colors (recommended for a white background)
 
   # typeset -g P10K_DIR_BACKGROUND=153
   # typeset -g P10K_DIR_FOREGROUND=23
@@ -68,7 +68,7 @@ typeset -g P10K_PROMPT_SHOW_GIT_STATUS=1
   # typeset -g P10K_GIT_CONFLICTED_BACKGROUND=217
   # typeset -g P10K_GIT_FOREGROUND=23
 
-#   ### 2. 浅色暖色
+#   ### 2. Warm light colors
 
 #   typeset -g P10K_DIR_BACKGROUND=188
 #   typeset -g P10K_DIR_FOREGROUND=23
@@ -82,7 +82,7 @@ typeset -g P10K_PROMPT_SHOW_GIT_STATUS=1
 #   typeset -g P10K_GIT_CONFLICTED_BACKGROUND=217
 #   typeset -g P10K_GIT_FOREGROUND=52
 
-#   ### 3. 深色冷色（当前风格的舒适版）
+#   ### 3. Cool dark colors (a softer version of the current style)
 
 #   typeset -g P10K_DIR_BACKGROUND=24
 #   typeset -g P10K_DIR_FOREGROUND=255
@@ -96,7 +96,7 @@ typeset -g P10K_PROMPT_SHOW_GIT_STATUS=1
 #   typeset -g P10K_GIT_CONFLICTED_BACKGROUND=124
 #   typeset -g P10K_GIT_FOREGROUND=255
 
-#   ### 4. 深色蓝紫
+#   ### 4. Dark blue and purple
 
 #   typeset -g P10K_DIR_FOREGROUND=255
 
@@ -109,7 +109,7 @@ typeset -g P10K_PROMPT_SHOW_GIT_STATUS=1
 #   typeset -g P10K_GIT_CONFLICTED_BACKGROUND=124
 #   typeset -g P10K_GIT_FOREGROUND=255
 
-# 以后切换模板时，只需替换这一组颜色值。
+# Replace this group of color values to switch palettes.
 # typeset -g P10K_DIR_BACKGROUND=24
 # typeset -g P10K_DIR_FOREGROUND=255
 # typeset -g P10K_GIT_CLEAN_BACKGROUND=23
@@ -118,9 +118,9 @@ typeset -g P10K_PROMPT_SHOW_GIT_STATUS=1
 # typeset -g P10K_GIT_CONFLICTED_BACKGROUND=124
 # typeset -g P10K_GIT_FOREGROUND=255
 
-# 插件列表（注意：zsh-syntax-highlighting 必须放最后）
+# Plugin list (zsh-syntax-highlighting must be last)
 plugins=(
-  # 保留 gst 等 Git aliases；vcs 显示由 P10K_PROMPT_SHOW_GIT_STATUS 控制
+  # Keep Git aliases such as gst; P10K_PROMPT_SHOW_GIT_STATUS controls vcs visibility.
   git
   jj
   uv
@@ -130,7 +130,7 @@ plugins=(
   you-should-use
   tmux
   herdr
-  # Git commit 工作流插件，保留为注释
+  # Git commit workflow plugins
   gcma
   jjma
   perfect-little-angle
@@ -143,11 +143,11 @@ plugins=(
 
 source "$ZSH/oh-my-zsh.sh"
 
-# zsh-autosuggestions 灰色提示颜色（默认 fg=8 太暗看不见，改亮）
+# Use brighter gray for zsh-autosuggestions; the default fg=8 is too dark.
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=245'
 
 # -----------------------------------------------------------------------------
-# PATH 配置（path 与 PATH 自动同步，并按首次出现顺序去重）
+# PATH settings (path and PATH stay in sync; keep only the first occurrence)
 # -----------------------------------------------------------------------------
 if [[ -x /opt/homebrew/bin/brew ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -159,7 +159,7 @@ export GOPATH="$HOME/GolandProjects"
 export GOBIN="$GOPATH/bin"
 
 
-# fnm（Node.js 版本管理）
+# fnm (Node.js version manager)
 FNM_PATH="/opt/homebrew/opt/fnm/bin"
 
 typeset -U path PATH
@@ -174,34 +174,34 @@ path=(
 )
 export PATH
 
-# 自定义 herdr 插件优先加载，因此在 PATH 就绪后显式加载官方别名和会话选择器。
+# The custom herdr plugin loads first, so load the official aliases and session selector after PATH is ready.
 source "$ZSH/plugins/herdr/herdr.plugin.zsh"
 
-# fnm 环境初始化
+# Initialize the fnm environment.
 if [[ -x "$FNM_PATH/fnm" ]]; then
-  # 重载配置前移除旧 multishell 入口，避免 PATH 持续累积。
+  # Remove old multishell entries before reloading to prevent PATH growth.
   path=( ${path:#${XDG_STATE_HOME:-$HOME/.local/state}/fnm_multishells/*/bin} )
   eval "$("$FNM_PATH/fnm" env --shell zsh)"
 fi
 
 # -----------------------------------------------------------------------------
-# eza — 现代 ls 替代
+# eza - a modern replacement for ls
 # -----------------------------------------------------------------------------
 alias ls='eza --icons --color=auto'
 alias ll='eza -l  --icons --group-directories-first'
 alias lla='eza -la --icons --group-directories-first'
-# alias llg='eza -l  --icons --git --group-directories-first'   # Git 状态，已停用
-# alias llag='eza -la --icons --git --group-directories-first'  # Git 状态，已停用
+# alias llg='eza -l  --icons --git --group-directories-first'   # Git status; disabled.
+# alias llag='eza -la --icons --git --group-directories-first'  # Git status; disabled.
 alias lld='eza -l  --icons --only-dirs'
 alias llf='eza -l  --icons --only-files'
 
-# 树形视图（lt=2层, lt3=3层, lt4=4层）
+# Tree view (lt: 2 levels, lt3: 3 levels, lt4: 4 levels)
 alias lt='eza  -T -L 2 --icons'
 alias lt3='eza -T -L 3 --icons'
 alias lt4='eza -T -L 4 --icons'
 
 # -----------------------------------------------------------------------------
-# uv — Python 包管理
+# uv - Python package management
 # -----------------------------------------------------------------------------
 alias ur='uv run python'
 alias ua='uv add'
@@ -216,7 +216,7 @@ alias oca='opencode --auto'
 alias ocy='opencode --yolo'
 
 # -----------------------------------------------------------------------------
-# Git 快捷（JJ-only：保留为注释，不启用）
+# Git shortcuts (JJ-only: keep these aliases commented out)
 # -----------------------------------------------------------------------------
 # alias gs='git status'
 # alias gd='git diff'
@@ -225,7 +225,7 @@ alias ocy='opencode --yolo'
 # alias gpl='git pull'
 
 # -----------------------------------------------------------------------------
-# 系统 & 工具
+# System and tools
 # -----------------------------------------------------------------------------
 alias c='clear'
 alias y='yazi'
@@ -236,27 +236,27 @@ alias myip="curl -s http://ip-api.com/json | jq -r '\"\(.country) \(.regionName)
 
 
 # -----------------------------------------------------------------------------
-# IPv6 开关（仅限 Wi-Fi）
+# IPv6 controls (Wi-Fi only)
 # -----------------------------------------------------------------------------
 alias ipv6off="networksetup -setv6off Wi-Fi && echo '✅ IPv6 已关闭'"
 alias ipv6on="networksetup -setv6automatic Wi-Fi && echo '✅ IPv6 已恢复'"
 alias flushdns='sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder && echo "DNS flushed"'
 
-# 快速更新 Neovim 插件和 Mason
+# Update Neovim plugins and Mason.
 alias nvup='nvim --headless "+Lazy! sync" +qa && nvim --headless "+MasonUpdate" +qa'
 
 
 # ==========================================================
-# 🌍 时区切换
+# Time zone selection
 # ==========================================================
 
 
-# 默认时区（所有新终端窗口生效）
-# 使用 tz 命令可临时切换：tz jp / tz sg / tz la / tz system
-# 2026-08-13: 恢复系统默认时区，不再默认使用洛杉矶；需要时用 tz 命令临时切换
+# Default time zone for all new terminal windows.
+# Use tz for a temporary override: tz jp / tz sg / tz la / tz system.
+# Use the system time zone by default instead of Los Angeles.
 unset TZ
 
-# 通用时区切换
+# Set or clear the time zone override.
 _tz_switch() {
     if [[ -z "$1" ]]; then
         unset TZ
@@ -276,7 +276,7 @@ _tz_switch() {
     echo
 }
 
-# 主命令
+# Main time zone command
 tz() {
     case "$1" in
         jp|tokyo)
@@ -320,7 +320,7 @@ EOF
     esac
 }
 
-# 兼容旧命令（可选）
+# Optional aliases for legacy commands
 alias tokyo_time='tz jp'
 alias singapore_time='tz sg'
 alias la_time='tz la'
@@ -328,10 +328,10 @@ alias system_time='tz system'
 
 
 # -----------------------------------------------------------------------------
-# 实用函数
+# Utility functions
 # -----------------------------------------------------------------------------
 
-# mkdir 后自动 cd 进入
+# Create a directory and change to it.
 mkcd() {
   [[ -n "$1" ]] || {
     echo "用法：mkcd <目录>"
@@ -341,7 +341,7 @@ mkcd() {
   mkdir -p -- "$1" && cd -- "$1"
 }
 
-# 万能解压
+# Extract archives by file extension.
 extract() {
   [[ -f "$1" ]] || {
     echo "文件不存在：${1:-<未指定>}"
@@ -361,7 +361,7 @@ extract() {
   esac
 }
 
-# 快速查找文件
+# Find files by name.
 ff() {
   [[ -n "$1" ]] || {
     echo "用法：ff <关键词>"
@@ -371,7 +371,7 @@ ff() {
   find . -name "*$1*" 2>/dev/null
 }
 
-# 端口占用查询
+# Show processes that use a port.
 port() {
   [[ -n "$1" ]] || {
     echo "用法：port <端口>"
@@ -419,12 +419,12 @@ esac
 
 
 
-# >>>>>  paddle 测试环境key start >>>>>
+# >>>>> Paddle development keys start >>>>>
 
-#  描述
+# Load private local settings when available.
 [[ -r "$HOME/.config/zsh/private.zsh" ]] && source "$HOME/.config/zsh/private.zsh"
 
-# <<<< paddle 测试环境key end <<<<<<
+# <<<< Paddle development keys end <<<<<<
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

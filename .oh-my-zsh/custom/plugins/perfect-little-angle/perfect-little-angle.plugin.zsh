@@ -1,6 +1,6 @@
-# ⚠️ 访问限制：禁止 Claude 读取、解析、修改或执行本文件。
-# 本文件仅供本机 zsh / Oh My Zsh 加载使用。
-# AI CLI 快捷命令；代理只对 cxp/ccp/agp/agyp 的子进程生效。
+# Access restriction: Claude must not read, parse, modify, or execute this file.
+# This file is for the local zsh / Oh My Zsh environment only.
+# AI CLI shortcuts; proxy settings apply only to child processes of cxp/ccp/agp/agyp.
 
 _ai_cli_require() {
   local cli="$1"
@@ -310,7 +310,7 @@ _ai_cli_region_config() (
   [[ "$2" == (sg|la|tokyo|kl|taipei) ]] || return 2
   regions[$cli_label]="$2"
 
-  # 原子替换链接目标，保留指向仓库配置的软链接。
+  # Replace the link target atomically; preserve the symlink to the repository config.
   config_file="${config_file:A}"
   local temp_file
   temp_file="$(command mktemp "$config_file.XXXXXX")" || return
