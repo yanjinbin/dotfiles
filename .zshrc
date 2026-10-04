@@ -208,6 +208,13 @@ alias ua='uv add'
 alias us='uv sync'
 alias uvp='uv pip'
 
+# -----------
+# opencode
+# -----------
+alias oc='opencode'
+alias oca='opencode --auto'
+alias ocy='opencode --yolo'
+
 # -----------------------------------------------------------------------------
 # Git 快捷（JJ-only：保留为注释，不启用）
 # -----------------------------------------------------------------------------
@@ -429,6 +436,10 @@ export PATH="/Users/yanjinbin/.local/bin:$PATH"
 
 # Commit+ command line tools
 export PATH="$HOME/.local/bin:$PATH"
+
+
+# Added by Antigravity IDE
+export PATH="/Users/yanjinbin/.antigravity-ide/antigravity-ide/bin:$PATH"
 
 # >>> otty shell integration >>>
 # Added by Otty — toggle in Settings > Shell > Shell Integration.

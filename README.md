@@ -14,9 +14,11 @@ macOS 开发环境配置仓库，集中管理终端、编辑器、包管理与�
 
 ## 快速恢复
 
+已有 `.zshrc` 时，先比较并备份两份文件，合并配置后再复制；`~/.zshrc` 与仓库文件保持独立，不使用软链接。
+
 ```bash
 brew bundle --file ./Brewfile
-ln -sf "$(pwd)/.zshrc" ~/.zshrc
+cp -p .zshrc ~/.zshrc
 ln -sf "$(pwd)/.p10k.zsh" ~/.p10k.zsh
 ln -sf "$(pwd)/.vimrc" ~/.vimrc
 ln -sf "$(pwd)/.tmux.conf" ~/.tmux.conf
@@ -35,7 +37,7 @@ iTerm2 偏好恢复（先退出 iTerm2）：
 
 ## Shell 配置（~/.zshrc）
 
-- 仓库中的 `.zshrc` 与本机 `~/.zshrc` 保持一致；当前使用独立文件，修改后需同步。
+- 仓库中的 `.zshrc` 与本机 `~/.zshrc` 使用独立副本；同步前分别备份，取两份配置的并集，再复制到两处。
 - 框架：Oh My Zsh + Powerlevel10k（含即时提示）
 - 插件：`git`、`jj`、`uv`、`pnpm`、`docker-compose`、`z`、`you-should-use`、`tmux`、`herdr`、`gcma`、`jjma`、`perfect-little-angle`、`codex-niubikelas`、`p10k-jj-status`、`zsh-autosuggestions`、`zsh-syntax-highlighting`
 - herdr：PATH 就绪后显式加载 `$ZSH/plugins/herdr/herdr.plugin.zsh`，提供官方别名和 `hrdrs` 会话选择器；恢复环境时需确保此文件存在。
@@ -45,6 +47,7 @@ iTerm2 偏好恢复（先退出 iTerm2）：
 - 别名 / 函数：
   - eza 列表：`ls`、`ll`、`lla`、`lld`、`llf`、`lt`、`lt3`、`lt4`
   - uv：`ur`、`ua`、`us`、`uvp`
+  - opencode：`oc`、`oca`、`ocy`
   - 工具：`c`（clear）、`y`（yazi）、`t`（history）、`wattage`、`myip`、`nvup`（Neovim 插件/Mason 更新）、`flushdns`、`ipv6on`、`ipv6off`、`mkcd`、`extract`、`ff`、`port`
   - 时区：`tz jp|sg|la|system`（默认系统时区，需要时用 `tz` 临时切换）
 - AI CLI（详见下节）：`perfect-little-angle` 提供快捷命令并加载 `ai upgrade`；`codex-niubikelas` 提供只读代理与端点检查。代理快捷命令使用 `127.0.0.1:7890`。
