@@ -1,10 +1,7 @@
 # NAME: privacy-reject
 # AUTHOR: ChatGPT
 # DESCRIPTION: Block telemetry / logging / tracking domains while keeping normal cloud input and voice services working
-# UPDATED: 2026-05-23
-# DOMAIN: 2
-# DOMAIN-SUFFIX: 4
-# TOTAL: 6
+# UPDATED: 2026-10-04
 
 payload:
   # ===== Google Telemetry / Logging =====
@@ -12,18 +9,15 @@ payload:
   - DOMAIN-SUFFIX,nel.goog
 
   # ===== Doubao / Bytedance telemetry =====
-  # TEA / AppLog 上报
-  - DOMAIN,log-link.zijieapi.com
   # ime-net-sdk 后台长连接 / 遥测
   - DOMAIN,ime-gw.oceancloudapi.com
   - DOMAIN,aweme.snssdk.com
-  # 字节系日志与埋点接口
+  # 字节系日志与埋点接口（含 log-link.zijieapi.com）
   - DOMAIN-SUFFIX,applogcdn.com
   - DOMAIN-SUFFIX,zijieapi.com
   # 字节网络探测 / 配置下发
   - DOMAIN-SUFFIX,dig.bdurl.net
-  
-  
+
   # ===== Others =====
   # keyboard holder
   - DOMAIN-SUFFIX,leavesc.com

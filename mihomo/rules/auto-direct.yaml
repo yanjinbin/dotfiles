@@ -19,15 +19,11 @@ payload:
 
   # 体育直播
   - DOMAIN-KEYWORD,sportsteam
-  - DOMAIN-SUFFIX,sportsteam368.com
-  - DOMAIN-SUFFIX,sportsteam356.com
-  - DOMAIN-SUFFIX,sportsteam25.com
   - DOMAIN-SUFFIX,yjjcfw.com
   - DOMAIN-SUFFIX,bbs456.com
   - DOMAIN-SUFFIX,ntcwix.com
   - DOMAIN-SUFFIX,qmuiw.com
   - DOMAIN-SUFFIX,gzxdby.com
-  - DOMAIN-SUFFIX,yjjcfw.com
   - DOMAIN-SUFFIX,yumixiu768.com
   - DOMAIN-SUFFIX,livehwc4.com
   - DOMAIN-SUFFIX,htfbudv.com
@@ -48,7 +44,6 @@ payload:
   # 常用镜像
   - DOMAIN-SUFFIX,hf-mirror.com
   - DOMAIN-SUFFIX,npmmirror.com
-
 
   # ===== ZJU 校内域名（含自定义追加）=====
   - DOMAIN-SUFFIX,zju.edu.cn
@@ -131,33 +126,6 @@ payload:
   - DOMAIN-SUFFIX,nejm.org
   - DOMAIN-SUFFIX,icevirtuallibrary.com
   - DOMAIN-SUFFIX,cdnsciencepub.com
-  - DOMAIN-SUFFIX,ime.doubao.com
-  - DOMAIN-SUFFIX,speech.bytedance.com
-  - DOMAIN-SUFFIX,frontier-audio-ime-quic.doubao.com
-  - DOMAIN-SUFFIX,frontier-audio-ime-ws.doubao.com
-  - DOMAIN-KEYWORD,sportsteam
-  - DOMAIN-SUFFIX,sportsteam368.com
-  - DOMAIN-SUFFIX,sportsteam356.com
-  - DOMAIN-SUFFIX,sportsteam25.com
-  - DOMAIN-SUFFIX,yjjcfw.com
-  - DOMAIN-SUFFIX,bbs456.com
-  - DOMAIN-SUFFIX,ntcwix.com
-  - DOMAIN-SUFFIX,qmuiw.com
-  - DOMAIN-SUFFIX,gzxdby.com
-  - DOMAIN-SUFFIX,yumixiu768.com
-  - DOMAIN-SUFFIX,livehwc4.com
-  - DOMAIN-SUFFIX,htfbudv.com
-  - DOMAIN-SUFFIX,u5rq.com
-  - DOMAIN-SUFFIX,sports.qq.com
-  - DOMAIN-SUFFIX,88zhibo.cc
-  - DOMAIN-SUFFIX,88zhibo.tv
-  - DOMAIN-KEYWORD,88kanqiu
-  - DOMAIN-SUFFIX,kkgithub.com
-  - DOMAIN-SUFFIX,gitclone.com
-  - DOMAIN-SUFFIX,gh-proxy.com
-  - DOMAIN-SUFFIX,ghproxy.net
-  - DOMAIN-SUFFIX,hf-mirror.com
-  - DOMAIN-SUFFIX,npmmirror.com
   # ===== ZJU 校内 IP 段 =====
   - IP-CIDR,10.0.0.0/8
   - IP-CIDR,58.196.192.0/19,no-resolve
@@ -172,15 +140,8 @@ payload:
   - IP-CIDR,210.32.176.0/20,no-resolve
   - IP-CIDR,222.205.0.0/17,no-resolve
   # ===== RVPN / WebVPN 域名及固定 IP =====
-  - DOMAIN-SUFFIX,rvpn.zju.edu.cn
-  - DOMAIN-SUFFIX,webvpn.zju.edu.cn
-  - DOMAIN-SUFFIX,vpn.zju.edu.cn
-  - IP-CIDR,210.32.174.2/32,no-resolve
   - IP-CIDR,61.175.193.50/32,no-resolve
   - IP-CIDR,124.160.105.200/32,no-resolve
   - IP-CIDR,218.108.88.254/32,no-resolve
-  - IP-CIDR,210.32.129.102/32,no-resolve
-  - IP-CIDR,210.32.174.64/32,no-resolve
-  - IP-CIDR,210.32.3.87/32,no-resolve
   - IP-CIDR,10.3.9.92/31,no-resolve
   - IP-CIDR,10.3.9.94/32,no-resolve

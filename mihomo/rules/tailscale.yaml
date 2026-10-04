@@ -1,17 +1,12 @@
 # NAME: Tailscale
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles
-# UPDATED: 2026-04-29
-# DOMAIN-SUFFIX: 2
-# IP-CIDR: 2
-# TOTAL: 4
+# UPDATED: 2026-10-04
 
 payload:
   # === 虚拟网段 ===
-  # Tailscale 100.x 虚拟 IP 段
+  # Tailscale 100.x 虚拟 IP 段（含 MagicDNS 100.100.100.100）
   - IP-CIDR,100.64.0.0/10,no-resolve
-  # Tailscale MagicDNS
-  - IP-CIDR,100.100.100.100/32,no-resolve
 
   # === 控制 / 认证 / DERP ===
   # 涵盖 controlplane / login / derp 全部子域名

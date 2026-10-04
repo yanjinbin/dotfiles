@@ -1,13 +1,6 @@
 # NAME: ClaudeSite
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles
-# DOMAIN-SUFFIX: 14
-# DOMAIN: 6
-# DOMAIN-KEYWORD: 3
-# IP-CIDR: 1
-# IP-CIDR6: 1
-# IP-ASN: 1
-# TOTAL: 26
 payload:
   # === 核心域名 ===
   # Anthropic 主站及所有子域名（含 api/cdn/console/mcp/workbench）
@@ -41,13 +34,9 @@ payload:
   - DOMAIN,anthropic-com.ghost.io
 
   # === 监控 & 遥测 ===
-  # 错误监控上报
-  - DOMAIN-SUFFIX,sentry.io
   # 功能开关 / AB 测试
   - DOMAIN-SUFFIX,statsigapi.net
-  # Datadog RUM（us5 端点）
-  - DOMAIN,browser-intake-us5-datadoghq.com
-  # Datadog 其他地区端点兜底（us3/eu1/ap1 等）
+  # Datadog 各地区端点（us5/us3/eu1/ap1 等）
   - DOMAIN-KEYWORD,datadog
   # Sentry 通配兜底
   - DOMAIN-KEYWORD,sentry
@@ -59,9 +48,7 @@ payload:
   - DOMAIN-SUFFIX,intercom.io
   # Intercom 静态资源 CDN
   - DOMAIN-SUFFIX,intercomcdn.com
-  # Fathom 访问统计
-  - DOMAIN,cdn.usefathom.com
-  # 隐私友好访问统计
+  # Fathom 访问统计（含 CDN）
   - DOMAIN-SUFFIX,usefathom.com
 
   # === IP 兜底 ===

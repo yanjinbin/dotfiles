@@ -1,11 +1,7 @@
 # NAME: antigravity+
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
-# UPDATED: 2026-07-16
-# DOMAIN: 3
-# DOMAIN-SUFFIX: 62
-# DOMAIN-KEYWORD: 7
-# TOTAL: 72
+# UPDATED: 2026-10-04
 
 payload:
   # =====================================================
@@ -14,20 +10,12 @@ payload:
 
   - DOMAIN-KEYWORD,gemini
   - DOMAIN-KEYWORD,antigravity
-  - DOMAIN-SUFFIX,clientservices.googleapis.com
   - DOMAIN-SUFFIX,play.google.com
-  - DOMAIN-SUFFIX,antigravity-unleash.goog
-  - DOMAIN-SUFFIX,antigravity.google
   - DOMAIN-SUFFIX,trygravity.ai
-
-  - DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com
 
   # =====================================================
   # Gemini 网页端 & AI Studio
   # =====================================================
-
-  - DOMAIN-SUFFIX,gemini.google.com
-  - DOMAIN-SUFFIX,gemini.google
 
   - DOMAIN-SUFFIX,bard.google.com
 
@@ -43,8 +31,6 @@ payload:
   - DOMAIN-SUFFIX,accounts.google.com
   - DOMAIN,myaccount.google.com
   - DOMAIN,account.google.com
-  - DOMAIN-SUFFIX,oauth2.googleapis.com
-  - DOMAIN-SUFFIX,oauthaccountmanager.googleapis.com
 
   # =====================================================
   # Google Client API
@@ -65,20 +51,10 @@ payload:
   # =====================================================
   # Vertex AI / Gemini API
   # =====================================================
-  - DOMAIN-SUFFIX,generativelanguage.googleapis.com
   - DOMAIN-SUFFIX,googleapis.com
   - DOMAIN-SUFFIX,apis.google.com
 
-  - DOMAIN-SUFFIX,aiplatform.googleapis.com
   - DOMAIN-SUFFIX,vertexai.google
-
-  # =====================================================
-  # Gemini / AI Studio 新后端 Alkali
-  # =====================================================
-
-  - DOMAIN-SUFFIX,alkali-pa.googleapis.com
-  - DOMAIN-SUFFIX,alkalimakersuite.googleapis.com
-  - DOMAIN-SUFFIX,alkalimakersuite-pa.clients6.google.com
 
   # =====================================================
   # Google AI / DeepMind
@@ -112,8 +88,6 @@ payload:
   - DOMAIN-SUFFIX,gvt1.com
   - DOMAIN-SUFFIX,gvt2.com
 
-  - DOMAIN-SUFFIX,gcp.gvt2.com
-
   # =====================================================
   # Google Video / Media
   # =====================================================
@@ -121,24 +95,9 @@ payload:
   - DOMAIN-SUFFIX,googlevideo.com
 
   # =====================================================
-  # Gemini / Cloud Code / AI Backend
-  # =====================================================
-
-  - DOMAIN-SUFFIX,agenticpermission.pa.googleapis.com
-
-  - DOMAIN-SUFFIX,optimizationguide-pa.googleapis.com
-
-  - DOMAIN-SUFFIX,daily-cloudcode-pa.googleapis.com
-
-  - DOMAIN-SUFFIX,content-autofill.googleapis.com
-
-  - DOMAIN-SUFFIX,play.googleapis.com
-
-  # =====================================================
   # Google Network / Telemetry
   # =====================================================
 
-  - DOMAIN-SUFFIX,nel.goog
   - DOMAIN-SUFFIX,nel.cloudflare.com
   - DOMAIN-SUFFIX,googletagmanager.com
 
@@ -151,11 +110,3 @@ payload:
   - DOMAIN-KEYWORD,colab
   - DOMAIN-KEYWORD,developerprofiles
   - DOMAIN-KEYWORD,generativelanguage
-
-  # lh3.googleusercontent.com  googletagmanager.com
-  - DOMAIN-SUFFIX,lh.googleusercontent.com
-  - DOMAIN-SUFFIX,lh0.googleusercontent.com
-  - DOMAIN-SUFFIX,lh1.googleusercontent.com
-  - DOMAIN-SUFFIX,lh2.googleusercontent.com
-  - DOMAIN-SUFFIX,lh3.googleusercontent.com
-  - DOMAIN-SUFFIX,googletagmanager.com
