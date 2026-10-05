@@ -1,7 +1,7 @@
 # NAME: auto-proxy
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
-# UPDATED: 2026-07-26
+# UPDATED: 2026-10-05
 # DOMAIN-SUFFIX: 10
 # TOTAL: 10
 
@@ -17,13 +17,8 @@ payload:
   - DOMAIN-SUFFIX,visualstudio.com
   - DOMAIN-SUFFIX,vsassets.io
   - DOMAIN-SUFFIX,vsmarketplacebadge.apphb.com
-  # h3c
-  - DOMAIN-SUFFIX,h3c.com
-  - DOMAIN-SUFFIX,h3c.com.cn
-
   # microsoft ecosystem
   - DOMAIN-SUFFIX,microsoft.com
-  - DOMAIN-SUFFIX,azureedge.net
 
   # other services
   - DOMAIN-SUFFIX,28.al
