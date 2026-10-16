@@ -3,3 +3,27 @@
 **/**/.DS_Store
 .claude
 .DS_Store
+
+# Machine state and credentials must stay local.
+/.local/
+/.codex/
+/.claude.json
+**/__pycache__/
+*.pyc
+
+# Generated Herdr defaults and runtime data.
+/.config/herdr/config-gpui.toml
+/.config/herdr/*.lock
+/.config/herdr/.*lock
+/.config/herdr/*.log
+/.config/herdr/*.sock*
+/.config/herdr/session.json
+/.config/herdr/sessions/
+/.config/herdr/session-snapshots/
+/.config/herdr/release-notes.json
+/.config/herdr/backups/
+/.config/herdr/**/*.backup*
+/.config/herdr/**/config.toml.before-*
+/.config/herdr/plugins/**/node_modules/
+/.config/herdr/plugins/**/__pycache__/
+/.config/otty/recipes/.migrated-from-statedb

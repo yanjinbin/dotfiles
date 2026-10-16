@@ -1,22 +1,5 @@
-theme = "Ayu Dark"
-theme-dark = "Ayu Dark"
-foreground = "#b3b1ad"
-background = "#0a0e14"
-palette-0 = "#01060e"
-palette-1 = "#ea6c73"
-palette-2 = "#91b362"
-palette-3 = "#f9af4f"
-palette-4 = "#53bdfa"
-palette-5 = "#fae994"
-palette-6 = "#90e1c6"
-palette-7 = "#c7c7c7"
-palette-8 = "#686868"
-palette-9 = "#f07178"
-palette-10 = "#c2d94c"
-palette-11 = "#ffb454"
-palette-12 = "#59c2ff"
-palette-13 = "#ffee99"
-palette-14 = "#95e6cb"
+theme = "Apple Graphite"
+theme-dark = "apple-graphite"
 language = "chinese"
 
 open-with-app = "VS Code|com.microsoft.VSCode"
@@ -33,14 +16,6 @@ dock-icon-animate-progress = true
 font-family = "MesloLGS NF Herdr"
 font-family-fallback = ["Herdr Agent Icons Max"]
 
-# palette-15 = "#f2f2f2" (reset to default)
-
-# selection-foreground = "#fafaff" (reset to default)
-# cursor-text = "#565656" (reset to default)
-
-# selection-background = "#264f78" (reset to default)
-# cursor-color = "#60cdff" (reset to default)
-
 copy-on-select = true
 
 text-blink = true
@@ -54,3 +29,34 @@ notification-sound = ["error", "finish", "app"]
 omit-otty-prefix = true
 
 cli-allow-overwrite = true
+
+tab-rule = 'path="~/WebstormProjects/7th-ALS" alias="ALS"'
+
+# window-hide-dirty-indicator = true (reset to default)
+
+# auto-hide-tabs-panel = "always" (reset to default)
+
+# window-layout = "tabs-top" (reset to default)
+
+foreground = "#e5e5ea"
+background = "#1c1c1e"
+palette-0 = "#2c2c2e"
+palette-1 = "#ff6961"
+palette-2 = "#70c88b"
+palette-3 = "#e9c46a"
+palette-4 = "#64a8ff"
+palette-5 = "#c49be8"
+palette-6 = "#70c7ce"
+palette-7 = "#d1d1d6"
+palette-8 = "#aaaab2"
+palette-9 = "#ff867f"
+palette-10 = "#91d9a6"
+palette-11 = "#f4d58a"
+palette-12 = "#8bbdff"
+palette-13 = "#d6b4f2"
+palette-14 = "#95dade"
+palette-15 = "#f5f5f7"
+selection-foreground = "#f5f5f7"
+selection-background = "#34465e"
+cursor-color = "#64a8ff"
+cursor-text = "#1c1c1e"

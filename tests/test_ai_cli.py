@@ -2,6 +2,7 @@
 
 import json
 import os
+import shlex
 from pathlib import Path
 import subprocess
 import sys
@@ -144,6 +145,93 @@ print("RUNNER:" + json.dumps({
         blocked.write_text("not a directory")
         self.env["XDG_CONFIG_HOME"] = str(blocked)
         self.shell("cc region set la", ok=False)
+
+    def test_city_and_country_regions(self):
+        cases = (
+            ("amsterdam", "NL", "Europe/Amsterdam", "nl_NL.UTF-8"),
+            ("dusseldorf", "Düsseldorf", "Europe/Berlin", "de_DE.UTF-8"),
+            ("frankfurt", "DE", "Europe/Berlin", "de_DE.UTF-8"),
+            ("tallinn", "EE", "Europe/Tallinn", "et_EE.UTF-8"),
+            ("london", "GB", "Europe/London", "en_GB.UTF-8"),
+            ("san-jose", "San Jose", "America/Los_Angeles", "en_US.UTF-8"),
+            ("new-york", "New York", "America/New_York", "en_US.UTF-8"),
+            ("seattle", "Seattle", "America/Los_Angeles", "en_US.UTF-8"),
+            ("hong-kong", "HK", "Asia/Hong_Kong", "zh_HK.UTF-8"),
+            ("osaka", "Osaka", "Asia/Tokyo", "ja_JP.UTF-8"),
+            ("tokyo", "JP", "Asia/Tokyo", "ja_JP.UTF-8"),
+            ("sydney", "AU", "Australia/Sydney", "en_AU.UTF-8"),
+            ("la", "US", "America/Los_Angeles", "en_US.UTF-8"),
+            ("sg", "SG", "Asia/Singapore", "zh_CN.UTF-8"),
+            ("kl", "MY", "Asia/Kuala_Lumpur", "en_US.UTF-8"),
+            ("taipei", "TW", "Asia/Taipei", "zh_TW.UTF-8"),
+        )
+        original = self.regions.read_text()
+        for city, alias, timezone, locale in cases:
+            with self.subTest(city=city):
+                for value in (city, alias, alias.lower()):
+                    env = self.call("cc " + shlex.quote(value))["env"]
+                    self.assertEqual((env["TZ"], env["LANG"], env["LC_ALL"]),
+                                     (timezone, locale, locale))
+                    self.assertEqual(self.regions.read_text(), original)
+                self.shell("cx region set " + shlex.quote(alias))
+                self.assertIn("cx 默认地区：" + city, self.shell("cx region current"))
+                self.assertEqual(self.call("cx")["env"]["TZ"], timezone)
+                self.regions.write_text(original)
+
+    def test_country_codes_in_config_and_explicit_overrides(self):
+        self.regions.write_text("cc=NL\ncx=DE\nagy=HK\n")
+        for cli, timezone in (("cc", "Europe/Amsterdam"),
+                              ("cx", "Europe/Berlin"), ("agy", "Asia/Hong_Kong")):
+            self.assertEqual(self.call(cli)["env"]["TZ"], timezone)
+        result = self.call("cxp --region=GB resume --last")
+        self.assertEqual(result["env"]["TZ"], "Europe/London")
+        self.assertEqual(result["args"][-2:], ["resume", "--last"])
+        self.assertEqual(result["env"]["https_proxy"], "http://127.0.0.1:7890")
+        env = self.call("cc --region AU --timezone UTC --locale en_US.UTF-8")["env"]
+        self.assertEqual((env["TZ"], env["LANG"]), ("UTC", "en_US.UTF-8"))
+        self.shell("cc --region ZZ", ok=False)
+        self.shell("cc region set ZZ", ok=False)
+        self.assertEqual(self.regions.read_text(), "cc=NL\ncx=DE\nagy=HK\n")
+        self.assertEqual(self.call("cc -- NL")["args"][-1], "NL")
+
+    def test_iata_codes_select_and_persist_cities(self):
+        cases = (
+            ("AMS", "amsterdam", "Europe/Amsterdam"),
+            ("DUS", "dusseldorf", "Europe/Berlin"),
+            ("FRA", "frankfurt", "Europe/Berlin"),
+            ("TLL", "tallinn", "Europe/Tallinn"),
+            ("LON LHR", "london", "Europe/London"),
+            ("SJC", "san-jose", "America/Los_Angeles"),
+            ("NYC JFK", "new-york", "America/New_York"),
+            ("SEA", "seattle", "America/Los_Angeles"),
+            ("HKG", "hong-kong", "Asia/Hong_Kong"),
+            ("OSA KIX", "osaka", "Asia/Tokyo"),
+            ("TYO HND NRT", "tokyo", "Asia/Tokyo"),
+            ("SYD", "sydney", "Australia/Sydney"),
+            ("LAX", "la", "America/Los_Angeles"),
+            ("SIN", "sg", "Asia/Singapore"),
+            ("KUL", "kl", "Asia/Kuala_Lumpur"),
+            ("TPE", "taipei", "Asia/Taipei"),
+        )
+        help_text = self.shell("cx help")
+        for codes, city, timezone in cases:
+            for code in codes.split():
+                with self.subTest(code=code):
+                    self.assertTrue(any(code in line and city in line
+                                        for line in help_text.splitlines()))
+                    self.assertEqual(self.call("cc " + code)["env"]["TZ"], timezone)
+                    self.assertEqual(self.call("cx --region=" + code.lower())["env"]["TZ"],
+                                     timezone)
+                    self.shell("agy region set " + code)
+                    self.assertIn("agy=" + city + "\n", self.regions.read_text())
+                    self.assertEqual(self.call("agy")["env"]["TZ"], timezone)
+        self.regions.write_text("cc=AMS\ncx=jfk\nagy=KIX\n")
+        self.assertEqual(self.call("cc")["env"]["TZ"], "Europe/Amsterdam")
+        self.assertEqual(self.call("cx")["env"]["TZ"], "America/New_York")
+        self.assertEqual(self.call("agy")["env"]["TZ"], "Asia/Tokyo")
+        self.assertEqual(self.call("cc -- JFK")["args"][-1], "JFK")
+        self.shell("cc region set XYZ", ok=False)
+        self.assertEqual(self.regions.read_text(), "cc=AMS\ncx=jfk\nagy=KIX\n")
 
     def test_codex_summary_modes_and_native_arguments(self):
         for cli, summary in (("cxa", "auto"), ("cxc", "concise"),

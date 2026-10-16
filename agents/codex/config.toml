@@ -1,0 +1,109 @@
+approvals_reviewer = "user"
+model = "gpt-6-astra"
+model_reasoning_effort = "xhigh"
+service_tier = "fast"
+model_provider = "openai"
+cli_auth_credentials_store = "file"
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+
+[tui]
+screen_reader_detection_done = true
+status_line = ["current-dir", "thread-name", "context-remaining", "model-with-reasoning"]
+status_line_use_colors = true
+
+[desktop]
+followUpQueueMode = "steer"
+selected-avatar-id = "null-signal"
+external-agent-import-sync-item-types = "all"
+external-agent-import-sync-enabled = true
+conversationDetailMode = "STEPS_COMMANDS"
+ambient-suggestions-enabled = true
+open-link-in-target-preference = "external-browser"
+open-local-url-in-target-preference = "external-browser"
+browser-show-full-url = true
+enabled-reasoning-efforts = ["low", "medium", "high", "xhigh", "persistent", "max", "ultra"]
+default-workspace-full-view = true
+defaultTerminalLocation = "bottom"
+preventSleepWhileRunning = true
+show-context-window-usage = true
+toys-audio-visualizer-enabled = true
+sansFontSize = 16
+codeFontSize = 14
+pagesFontSize = 16
+dock-icon-preference = "app-default"
+avatar-overlay-pet-visible = false
+useFontSmoothing = true
+notifications-questions-enabled = true
+notifications-dot-enabled = true
+notifications-permissions-enabled = true
+toys-confetti-enabled = true
+
+[marketplaces.claude-plugins-official]
+source_type = "git"
+source = "https://github.com/anthropics/claude-plugins-official.git"
+
+[marketplaces.diagram-design]
+source_type = "git"
+source = "https://github.com/cathrynlavery/diagram-design.git"
+
+[marketplaces.mattpocock]
+source_type = "git"
+source = "https://github.com/mattpocock/skills.git"
+
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
+enabled = true
+
+[plugins."render@claude-plugins-official"]
+enabled = true
+
+[plugins."diagram-design@diagram-design"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."unified-computer-use@openai-bundled"]
+enabled = true
+
+[plugins."chrome@openai-bundled"]
+enabled = true
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[plugins."linear@claude-plugins-official"]
+enabled = true
+
+[plugins."code-review@openai-bundled"]
+enabled = true
+
+[plugins."mattpocock-skills@mattpocock"]
+enabled = true
+
+[features]
+hooks = true
+local_thread_store_compression = false
+memories = true
+
+[memories]
+generate_memories = true
+use_memories = true

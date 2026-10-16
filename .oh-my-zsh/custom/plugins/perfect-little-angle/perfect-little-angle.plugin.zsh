@@ -269,6 +269,33 @@ _ai_ag_run() {
   esac
 }
 
+# Return the canonical region, timezone, locale, and label in the caller's reply array.
+_ai_cli_region_resolve() {
+  local region="${(L)1}"
+  region="${region// /-}"
+  region="${region//_/-}"
+  reply=()
+  case "$region" in
+    sg|singapore|sin) reply=(sg Asia/Singapore zh_CN.UTF-8 新加坡) ;;
+    la|los-angeles|losangeles|us|usa|lax) reply=(la America/Los_Angeles en_US.UTF-8 美国洛杉矶) ;;
+    tokyo|jp|japan|tyo|hnd|nrt) reply=(tokyo Asia/Tokyo ja_JP.UTF-8 日本东京) ;;
+    kl|kuala-lumpur|kualalumpur|my|malaysia|kul) reply=(kl Asia/Kuala_Lumpur en_US.UTF-8 马来西亚吉隆坡) ;;
+    taipei|tw|taiwan|tpe) reply=(taipei Asia/Taipei zh_TW.UTF-8 台湾台北) ;;
+    amsterdam|nl|netherlands|ams) reply=(amsterdam Europe/Amsterdam nl_NL.UTF-8 荷兰阿姆斯特丹) ;;
+    dusseldorf|duesseldorf|düsseldorf|dus) reply=(dusseldorf Europe/Berlin de_DE.UTF-8 德国杜塞尔多夫) ;;
+    frankfurt|de|germany|fra) reply=(frankfurt Europe/Berlin de_DE.UTF-8 德国法兰克福) ;;
+    tallinn|ee|estonia|tll) reply=(tallinn Europe/Tallinn et_EE.UTF-8 爱沙尼亚塔林) ;;
+    london|gb|uk|united-kingdom|lon|lhr) reply=(london Europe/London en_GB.UTF-8 英国伦敦) ;;
+    san-jose|sanjose|sjc) reply=(san-jose America/Los_Angeles en_US.UTF-8 美国圣何塞) ;;
+    new-york|newyork|nyc|jfk) reply=(new-york America/New_York en_US.UTF-8 美国纽约) ;;
+    seattle|sea) reply=(seattle America/Los_Angeles en_US.UTF-8 美国西雅图) ;;
+    hong-kong|hongkong|hk|hkg) reply=(hong-kong Asia/Hong_Kong zh_HK.UTF-8 香港) ;;
+    osaka|osa|kix) reply=(osaka Asia/Tokyo ja_JP.UTF-8 日本大阪) ;;
+    sydney|au|australia|syd) reply=(sydney Australia/Sydney en_AU.UTF-8 澳大利亚悉尼) ;;
+    *) return 2 ;;
+  esac
+}
+
 _ai_cli_region_config() (
   emulate -L zsh
   local cli_label="$1"
@@ -281,16 +308,17 @@ _ai_cli_region_config() (
 
   local -A regions
   local line key value
+  local -a reply
   while IFS= read -r line || [[ -n "$line" ]]; do
     [[ -z "$line" || "$line" == \#* ]] && continue
     key="${line%%=*}"
     value="${line#*=}"
     if [[ "$line" != *=* || "$key" != (cc|cx|agy) ||
-          "$value" != (sg|la|tokyo|kl|taipei) || -n "${regions[$key]-}" ]]; then
+          -n "${regions[$key]-}" ]] || ! _ai_cli_region_resolve "$value"; then
       print -u2 -- "地区配置格式无效或存在重复项：$config_file"
       return 2
     fi
-    regions[$key]="$value"
+    regions[$key]="$reply[1]"
   done < "$config_file"
   for key in cc cx agy; do
     if [[ -z "${regions[$key]-}" ]]; then
@@ -307,8 +335,8 @@ _ai_cli_region_config() (
     print -r -- "${regions[$cli_label]}"
     return
   fi
-  [[ "$2" == (sg|la|tokyo|kl|taipei) ]] || return 2
-  regions[$cli_label]="$2"
+  _ai_cli_region_resolve "$2" || return 2
+  regions[$cli_label]="$reply[1]"
 
   # Replace the link target atomically; preserve the symlink to the repository config.
   config_file="${config_file:A}"
@@ -333,6 +361,7 @@ _ai_cli_region_command() {
   esac
   local action="${1:-current}"
   local region
+  local -a reply
 
   case "$action" in
     current)
@@ -343,14 +372,14 @@ _ai_cli_region_command() {
       return 0
       ;;
     set)
-      (( $# == 2 )) && [[ "$2" == (sg|la|tokyo|kl|taipei) ]] || {
-        print -u2 -- "用法：$cli_label region set <sg|la|tokyo|kl|taipei>"
+      (( $# == 2 )) && _ai_cli_region_resolve "$2" || {
+        print -u2 -- "用法：$cli_label region set <城市、IATA 三字码或国家代码>"
         return 2
       }
-      region="$2"
+      region="$reply[1]"
       ;;
     reset)
-      print -u2 -- "地区配置没有内置默认值；请使用 $cli_label region set <sg|la|tokyo|kl|taipei>"
+      print -u2 -- "地区配置没有内置默认值；请使用 $cli_label region set <城市、IATA 三字码或国家代码>"
       return 2 ;;
     *)
       print -u2 -- "用法：$cli_label region [current|set <地区>]"
@@ -429,12 +458,39 @@ $cli_name（执行程序：$executable）
   恢复 CLI 默认：ai help $cli_label model default
   查看原生命令帮助：$model_help
 
-地区（可选，同时设置 timezone 和 locale）：
-  sg       新加坡          Asia/Singapore + zh_CN.UTF-8
-  la       美国洛杉矶      America/Los_Angeles + en_US.UTF-8
-  tokyo    日本东京        Asia/Tokyo + ja_JP.UTF-8
-  kl       马来西亚吉隆坡  Asia/Kuala_Lumpur + en_US.UTF-8
-  taipei   台湾台北        Asia/Taipei + zh_TW.UTF-8
+地区（城市名或 IATA 三字码，同时设置 timezone 和 locale）：
+  sg           SIN          新加坡          Asia/Singapore + zh_CN.UTF-8
+  la           LAX          美国洛杉矶      America/Los_Angeles + en_US.UTF-8
+  tokyo        TYO/HND/NRT  日本东京        Asia/Tokyo + ja_JP.UTF-8
+  kl           KUL          马来西亚吉隆坡  Asia/Kuala_Lumpur + en_US.UTF-8
+  taipei       TPE          台湾台北        Asia/Taipei + zh_TW.UTF-8
+  amsterdam    AMS          荷兰阿姆斯特丹  Europe/Amsterdam + nl_NL.UTF-8
+  dusseldorf   DUS          德国杜塞尔多夫  Europe/Berlin + de_DE.UTF-8
+  frankfurt    FRA          德国法兰克福    Europe/Berlin + de_DE.UTF-8
+  tallinn      TLL          爱沙尼亚塔林    Europe/Tallinn + et_EE.UTF-8
+  london       LON/LHR      英国伦敦        Europe/London + en_GB.UTF-8
+  san-jose     SJC          美国圣何塞      America/Los_Angeles + en_US.UTF-8
+  new-york     NYC/JFK      美国纽约        America/New_York + en_US.UTF-8
+  seattle      SEA          美国西雅图      America/Los_Angeles + en_US.UTF-8
+  hong-kong    HKG          香港            Asia/Hong_Kong + zh_HK.UTF-8
+  osaka        OSA/KIX      日本大阪        Asia/Tokyo + ja_JP.UTF-8
+  sydney       SYD          澳大利亚悉尼    Australia/Sydney + en_AU.UTF-8
+
+三字码含义：
+  LON、NYC、TYO、OSA 是城市代码，分别指伦敦、纽约、东京、大阪。
+  其他三字码是机场代码，在此选择对应城市：
+  AMS 史基浦；DUS 杜塞尔多夫；FRA 法兰克福；TLL 塔林；LHR 希思罗；
+  SJC 圣何塞；JFK 肯尼迪；SEA 西雅图-塔科马；HKG 香港；KIX 关西；
+  HND 羽田；NRT 成田；SYD 悉尼；LAX 洛杉矶；SIN 樟宜；KUL 吉隆坡；TPE 桃园。
+
+国家/地区代码 → 默认城市：
+  NL 荷兰 → amsterdam       DE 德国 → frankfurt       EE 爱沙尼亚 → tallinn
+  GB/UK 英国 → london       US 美国 → la              HK 香港 → hong-kong
+  JP 日本 → tokyo           AU 澳大利亚 → sydney      SG 新加坡 → sg
+  MY 马来西亚 → kl          TW 台湾 → taipei
+所有代码不区分大小写，临时参数和持久配置均支持；保存时转换为规范城市名。
+同一国家的其他城市请使用城市名或三字码，例如 US → 洛杉矶，JFK/NYC → 纽约。
+支持 Düsseldorf、"San Jose"、"New York"、"Hong Kong"。
 
 也可分别指定：
   --timezone <IANA timezone>
@@ -443,6 +499,9 @@ $cli_name（执行程序：$executable）
 默认地区（持久保存，同时设置 timezone 和 locale）：
   $normal_command region current       查看默认地区
   $normal_command region set la        默认使用美国洛杉矶
+  $normal_command region set NL        默认使用荷兰阿姆斯特丹
+  $normal_command region set JFK       默认使用美国纽约
+  $normal_command AMS                  本次使用荷兰阿姆斯特丹
 
 唯一配置文件：${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions.conf
 每次调用均读取此文件；没有内置默认值，也不读取旧 regions/ 目录。
@@ -506,6 +565,7 @@ _ai_cli_env() (
   local cli_locale=""
   local region_label=""
   local customized=0
+  local -a reply
 
   while (( $# )); do
     case "$1" in
@@ -548,48 +608,22 @@ _ai_cli_env() (
         shift
         break
         ;;
-      sg|singapore|la|los-angeles|losangeles|us|usa|tokyo|jp|japan|kl|kuala-lumpur|kualalumpur|my|malaysia|taipei|tw|taiwan)
-        region="$1"
-        shift
-        ;;
       *)
-        break
+        _ai_cli_region_resolve "$1" || break
+        region="$reply[1]"
+        shift
         ;;
     esac
   done
 
   [[ -n "$region" ]] || region="$(_ai_cli_region_config "$cli_label")" || return
-  case "$region" in
-    sg|singapore)
-      region_label="新加坡"
-      [[ -n "$timezone" ]] || timezone="Asia/Singapore"
-      [[ -n "$cli_locale" ]] || cli_locale="zh_CN.UTF-8"
-      ;;
-    la|los-angeles|losangeles|us|usa)
-      region_label="美国洛杉矶"
-      [[ -n "$timezone" ]] || timezone="America/Los_Angeles"
-      [[ -n "$cli_locale" ]] || cli_locale="en_US.UTF-8"
-      ;;
-    tokyo|jp|japan)
-      region_label="日本东京"
-      [[ -n "$timezone" ]] || timezone="Asia/Tokyo"
-      [[ -n "$cli_locale" ]] || cli_locale="ja_JP.UTF-8"
-      ;;
-    kl|kuala-lumpur|kualalumpur|my|malaysia)
-      region_label="马来西亚吉隆坡"
-      [[ -n "$timezone" ]] || timezone="Asia/Kuala_Lumpur"
-      [[ -n "$cli_locale" ]] || cli_locale="en_US.UTF-8"
-      ;;
-    taipei|tw|taiwan)
-      region_label="台湾台北"
-      [[ -n "$timezone" ]] || timezone="Asia/Taipei"
-      [[ -n "$cli_locale" ]] || cli_locale="zh_TW.UTF-8"
-      ;;
-    *)
-      print -u2 -- "不支持的地区：$region（可选：sg、la、tokyo、kl、taipei）"
-      return 2
-      ;;
-  esac
+  _ai_cli_region_resolve "$region" || {
+    print -u2 -- "不支持的地区：$region（运行 $cli_label help 查看城市和国家代码）"
+    return 2
+  }
+  region_label="$reply[4]"
+  [[ -n "$timezone" ]] || timezone="$reply[2]"
+  [[ -n "$cli_locale" ]] || cli_locale="$reply[3]"
 
   (( customized )) && region_label="自定义"
 

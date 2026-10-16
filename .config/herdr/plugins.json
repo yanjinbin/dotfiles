@@ -236,6 +236,92 @@
     }
   },
   {
+    "plugin_id": "herdr-linear",
+    "name": "Linear",
+    "version": "0.6.2",
+    "min_herdr_version": "0.9.0",
+    "description": "Your Linear issues and projects in a herdr popup: status icons, rendered descriptions, status changes, and one key to a worktree for any issue, or to start it with /ticket in a new agent. Signs in with OAuth.",
+    "manifest_path": "/Users/yanjinbin/.config/herdr/plugins/github/herdr-linear-18458579e2b1/herdr-plugin.toml",
+    "plugin_root": "/Users/yanjinbin/.config/herdr/plugins/github/herdr-linear-18458579e2b1",
+    "enabled": true,
+    "platforms": [
+      "macos",
+      "linux"
+    ],
+    "build": [
+      {
+        "command": [
+          "sh",
+          "scripts/build.sh"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "demo",
+        "title": "Linear: demo (fictional workspace)",
+        "description": "The picker on made-up data: try it without an account, or take screenshots without showing real work.",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "./bin/herdr-linear",
+          "action",
+          "demo"
+        ]
+      },
+      {
+        "id": "logout",
+        "title": "Linear: sign out",
+        "description": "Revoke this plugin's access to Linear and forget the tokens.",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "./bin/herdr-linear",
+          "action",
+          "logout"
+        ]
+      },
+      {
+        "id": "open",
+        "title": "Linear: issues and projects",
+        "description": "Pick an issue or project and jump to its worktree, creating it if needed.",
+        "contexts": [
+          "global",
+          "workspace",
+          "pane"
+        ],
+        "command": [
+          "./bin/herdr-linear",
+          "action",
+          "open"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "picker",
+        "title": "Linear",
+        "placement": "popup",
+        "width": "80%",
+        "height": "70%",
+        "command": [
+          "./bin/herdr-linear",
+          "picker"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "mrolafsson",
+      "repo": "herdr-linear",
+      "resolved_commit": "b6da0a22c832769af58810f7748fa6973f9a6704",
+      "managed_path": "/Users/yanjinbin/.config/herdr/plugins/github/herdr-linear-18458579e2b1",
+      "installed_unix_ms": 1790864773696
+    }
+  },
+  {
     "plugin_id": "hhdebb.herdr-radar",
     "name": "Herdr Radar",
     "version": "1.3.20",
@@ -417,6 +503,87 @@
       "resolved_commit": "2425fa080b7b72f30c1299481282b23003a2ee61",
       "managed_path": "/Users/yanjinbin/.config/herdr/plugins/github/hhdebb.herdr-radar-afabda667cbe",
       "installed_unix_ms": 1790853186584
+    }
+  },
+  {
+    "plugin_id": "nathanflurry.jj-workspace",
+    "name": "jj workspaces",
+    "version": "0.4.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Create jj workspaces with Codex on the left and a terminal on the right.",
+    "manifest_path": "/Users/yanjinbin/.config/herdr/plugins/github/nathanflurry.jj-workspace-19f0b858b2b4/herdr-plugin.toml",
+    "plugin_root": "/Users/yanjinbin/.config/herdr/plugins/github/nathanflurry.jj-workspace-19f0b858b2b4",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "cargo",
+          "build",
+          "--release"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "new",
+        "title": "New jj workspace",
+        "contexts": [
+          "workspace",
+          "global"
+        ],
+        "command": [
+          "./target/release/jj-workspace",
+          "open",
+          "tab"
+        ]
+      },
+      {
+        "id": "new-tab",
+        "title": "New jj workspace",
+        "contexts": [
+          "workspace",
+          "global"
+        ],
+        "command": [
+          "./target/release/jj-workspace",
+          "open",
+          "tab"
+        ]
+      },
+      {
+        "id": "remove",
+        "title": "Remove jj workspace",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "./target/release/jj-workspace",
+          "remove"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "wizard",
+        "title": "New jj workspace",
+        "placement": "overlay",
+        "command": [
+          "./target/release/jj-workspace",
+          "wizard"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "NathanFlurry",
+      "repo": "herdr-plugin-jj-workspace",
+      "resolved_commit": "ee71c3ce112ce97b494f4f77a92ac8589df12274",
+      "managed_path": "/Users/yanjinbin/.config/herdr/plugins/github/nathanflurry.jj-workspace-19f0b858b2b4",
+      "installed_unix_ms": 1790866683494
     }
   }
 ]

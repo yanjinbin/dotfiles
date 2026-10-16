@@ -406,6 +406,16 @@ fi
 # >>>> p10k configure start >>>>
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Apply local prompt settings after the theme configuration.
+typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon dir jj_status)
+if (( P10K_PROMPT_SHOW_GIT_STATUS )); then
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS+=(vcs)
+fi
+typeset -g POWERLEVEL9K_JJ_STATUS_BACKGROUND=${P10K_JJ_STATUS_BACKGROUND:-30}
+typeset -g POWERLEVEL9K_JJ_STATUS_FOREGROUND=${P10K_JJ_STATUS_FOREGROUND:-255}
+typeset -g POWERLEVEL9K_JJ_STATUS_VISUAL_IDENTIFIER_EXPANSION='jj'
+(( ! $+functions[p10k] )) || p10k reload
 # <<<< p10k configure end <<<<
 
 

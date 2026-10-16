@@ -10,22 +10,25 @@ macOS 开发环境配置仓库，集中管理终端、编辑器、包管理与�
 - Network: `mihomo/rules/*.yaml`
 - Script: `brew_backup_restore.sh`
 - Terminal: [iTerm2 可迁移配置](iterm2/README.md)（偏好导出与恢复脚本）
+- Terminal / Workspace: [Otty、Herdr 与 Herdr.app 配置](terminal-configs.md)（主题、GUI 设置、插件清单与恢复步骤）
+- Agent: [Codex / Claude 配置](agents/README.md)（共享指令、设置、hooks 与本机私有状态）
+- Sync: `symlinks.json`、`scripts/sync.py`（按文件建立软链接、自动备份与校验）
+- Recovery: [Herdr 插件恢复 prompt](docs/herdr-restore-prompt.md)
 - Tool Chain: [Mac / Linux Tool Chain](toolchain.md)
 
 ## 快速恢复
 
-已有 `.zshrc` 时，先比较并备份两份文件，合并配置后再复制；`~/.zshrc` 与仓库文件保持独立，不使用软链接。
+先取回远端并核对本机差异，合并后再建立软链接。仓库是配置源；脚本默认只预览，`--apply` 会备份被替换文件。存在内容差异时会拒绝覆盖，审阅合并后才能使用 `--replace`。
 
 ```bash
 brew bundle --file ./Brewfile
-cp -p .zshrc ~/.zshrc
-ln -sf "$(pwd)/.p10k.zsh" ~/.p10k.zsh
-ln -sf "$(pwd)/.vimrc" ~/.vimrc
-ln -sf "$(pwd)/.tmux.conf" ~/.tmux.conf
-mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli"
-ln -sf "$(pwd)/.config/ai-cli/regions.conf" "${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions.conf"
+python3 scripts/sync.py
+python3 scripts/sync.py --apply
+python3 scripts/sync.py --check
 source ~/.zshrc
 ```
+
+需要 Python 3.11+。已审阅的差异用 `python3 scripts/sync.py --apply --replace` 同步。备份保存在 `${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-backups/`，每次运行的 `links.json` 记录原文件位置。只替换清单中的文件，保留本机目录及其他内容。应用升级若用原子写入替换了软链接，`--check` 会检出，先合并新内容再重新链接。
 
 `Brewfile` 同时安装 iTerm2 与 MesloLGS Nerd Font；完成安装后再导入偏好。
 
@@ -37,10 +40,10 @@ iTerm2 偏好恢复（先退出 iTerm2）：
 
 ## Shell 配置（~/.zshrc）
 
-- 仓库中的 `.zshrc` 与本机 `~/.zshrc` 使用独立副本；同步前分别备份，取两份配置的并集，再复制到两处。
+- 本机 `~/.zshrc`、`~/.p10k.zsh` 和已纳管插件通过软链接引用仓库；首次切换前先合并两份配置，脚本保存原文件备份。
 - 框架：Oh My Zsh + Powerlevel10k（含即时提示）
 - 插件：`git`、`jj`、`uv`、`pnpm`、`docker-compose`、`z`、`you-should-use`、`tmux`、`herdr`、`gcma`、`jjma`、`perfect-little-angle`、`codex-niubikelas`、`p10k-jj-status`、`zsh-autosuggestions`、`zsh-syntax-highlighting`
-- herdr：PATH 就绪后显式加载 `$ZSH/plugins/herdr/herdr.plugin.zsh`，提供官方别名和 `hrdrs` 会话选择器；恢复环境时需确保此文件存在。
+- herdr：PATH 就绪后显式加载 `$ZSH/plugins/herdr/herdr.plugin.zsh`，提供官方别名和 `hrdrs` 会话选择器；仓库已保存此文件，恢复步骤见 [终端配置](terminal-configs.md)。
 - JJ 提示：`zsh-jj` 提供 `vcs_info` 的 JJ 后端（仅加载其 `functions/`，不 source 会重设 `PROMPT` 的完整插件）；`p10k-jj-status` 提供异步 JJ working-copy 段，需在 `.p10k.zsh` 的 `POWERLEVEL9K_LEFT_PROMPT_ELEMENTS` 或 `RIGHT_PROMPT_ELEMENTS` 中加入 `jj_status`
 - PATH：先加载 `/opt/homebrew/bin/brew shellenv`，再配置 `~/.local/bin`、`~/.opencode/bin`、pnpm、Maven、Go、fnm（Node）；不再设置 Go 或 Rust 镜像。
 - Shell 集成：按文件或环境变量加载 fzf、iTerm2 和 Otty；本机私有配置从 `~/.config/zsh/private.zsh` 加载。
@@ -75,9 +78,34 @@ iTerm2 偏好恢复（先退出 iTerm2）：
 - agy：`ag` / `agp` / `agy` / `agyp`（默认 YOLO；`p` 后缀启用一次性代理）
 - 模型：默认不传 `--model`，由各 CLI 选择当前默认模型；需要固定时使用 `cx|cc|agy --model <model>`
 - 模型选择：`ai help cx model list`（`cc` / `agy` 同理）；选中后作为当前 shell 默认，`model default` 恢复 CLI 默认
-- 默认地区：`cc region set la` / `cx region set sg`；`region current` 查看地区及配置路径。可选 `sg`、`la`、`tokyo`、`kl`、`taipei`，同时设置 timezone 和 locale。各 CLI 独立配置，显示、速度和代理快捷命令共用所属 CLI 的设置。
+- 默认地区：`cc region set la` / `cx region set NL`；`region current` 查看地区及配置路径。支持下表城市、IATA 三字码及国家/地区代码，同时设置 timezone 和 locale。各 CLI 独立配置，显示、速度和代理快捷命令共用所属 CLI 的设置。
 - 唯一配置入口为 `${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions.conf`，通过软链接指向仓库文件。`region set` 修改链接目标，每次调用读取最新配置；旧 `regions/` 目录不再读取。单次地区参数和 `--timezone` / `--locale` 仍可临时覆盖。
 - 不再提供内置默认值；配置缺失或无效时明确报错。原 `region reset` 改为提示使用 `region set` 显式选择地区。
+
+城市名、IATA 三字码和国家/地区代码不区分大小写，临时参数、`--region` 和持久配置使用相同规则。`region set` 保存规范城市名；同一国家的其他城市需直接指定，例如 `cx NYC`、`cc KIX`（也可用 `new-york`、`osaka`）。带空格的城市名需加引号，例如 `cx "San Jose"`；也支持 `Düsseldorf` 和 `duesseldorf`。
+
+| 城市参数 | IATA 三字码 | 国家/地区代码 | 时区 |
+| --- | --- | --- | --- |
+| `amsterdam` | `AMS` | `NL` | `Europe/Amsterdam` |
+| `dusseldorf` | `DUS` | — | `Europe/Berlin` |
+| `frankfurt` | `FRA` | `DE` | `Europe/Berlin` |
+| `tallinn` | `TLL` | `EE` | `Europe/Tallinn` |
+| `london` | `LON` / `LHR` | `GB` / `UK` | `Europe/London` |
+| `san-jose` | `SJC` | — | `America/Los_Angeles` |
+| `new-york` | `NYC` / `JFK` | — | `America/New_York` |
+| `seattle` | `SEA` | — | `America/Los_Angeles` |
+| `hong-kong` | `HKG` | `HK` | `Asia/Hong_Kong` |
+| `osaka` | `OSA` / `KIX` | — | `Asia/Tokyo` |
+| `tokyo` | `TYO` / `HND` / `NRT` | `JP` | `Asia/Tokyo` |
+| `sydney` | `SYD` | `AU` | `Australia/Sydney` |
+| `la` | `LAX` | `US` | `America/Los_Angeles` |
+| `sg` | `SIN` | `SG` | `Asia/Singapore` |
+| `kl` | `KUL` | `MY` | `Asia/Kuala_Lumpur` |
+| `taipei` | `TPE` | `TW` | `Asia/Taipei` |
+
+`LON`、`NYC`、`TYO`、`OSA` 是城市代码；表中其他三字码是机场代码，在 CLI 中映射到对应城市。例如 `JFK` 指纽约肯尼迪机场，`HND` / `NRT` 指羽田 / 成田机场，`KIX` 指关西机场。完整机场名称见 `cx help`。代码可通过 [IATA 官方查询](https://www.iata.org/codes/index) 核对。
+
+使用 IANA 时区处理夏令时。各地区的 locale 可通过 `cx help` 查看，使用 `--locale` 单次覆盖。
 - 帮助：`cc help` / `cx help` / `cxd help` / `agy help`；保留 `ai help` / `ai help cx|cc|agy` 和 `--env-help`。`--help` 继续转发给原生 CLI。
 - 升级：`ai upgrade`（无参数时升级整套 AI toolchain：codex / agy / herdr / opencode；也可单升如 `ai upgrade codex`；实现在 `~/.config/zsh/ai-upgrade.zsh`）
 
@@ -91,7 +119,7 @@ agy=la
 
 `sg` 对应 `Asia/Singapore` 和 `zh_CN.UTF-8`；`la` 对应 `America/Los_Angeles` 和 `en_US.UTF-8`。插件统一将 locale 应用于 `LANG` 和 `LC_ALL`，只影响 CLI 及其子进程。
 
-本机 `~/.oh-my-zsh/custom/plugins/perfect-little-angle/perfect-little-angle.plugin.zsh` 与仓库中的同名文件保留独立副本。更新前分别备份，修改后用复制同步；重新加载此文件或打开新终端即可生效。`.zshrc` 和自定义插件的代码注释统一使用英文。
+本机 `~/.oh-my-zsh/custom/plugins/perfect-little-angle/perfect-little-angle.plugin.zsh` 通过软链接引用仓库同名文件；重新加载此文件或打开新终端即可生效。`.zshrc` 和自定义插件的代码注释统一使用英文。
 
 > 注：上述版本为 2026-08-20 实测（codex-cli 0.148.0、agy 1.1.15、opencode 1.18.18、herdr 0.8.2、otty 1.4.1）。版本以各自 `--version` 为准，可用 `ai upgrade` 单独或整套刷新。
 

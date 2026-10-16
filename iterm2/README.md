@@ -29,11 +29,11 @@ brew bundle --file ./Brewfile
 脚本会在导入前备份现有偏好到
 `~/Library/Preferences/com.googlecode.iterm2.plist.bak-时间戳`。
 
-然后恢复 shell；已有 `.zshrc` 时，先备份并合并两份配置，再复制，保持独立文件：
+然后恢复 shell；已有配置时先比较合并，再通过统一脚本备份并创建软链接：
 
 ```bash
-cp -p .zshrc ~/.zshrc
-ln -sf "$(pwd)/.p10k.zsh" ~/.p10k.zsh
+python3 scripts/sync.py
+python3 scripts/sync.py --apply
 source ~/.zshrc
 ```
 

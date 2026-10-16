@@ -1,0 +1,55 @@
+[meta]
+name = "Apple Graphite"
+mode = "dark"
+description = "Graphite surfaces, soft white text, and a restrained blue accent."
+
+[terminal]
+foreground = "#E5E5EA"
+background = "#1C1C1E"
+cursor = "#64A8FF"
+cursor-text = "#1C1C1E"
+selection-foreground = "#F5F5F7"
+selection-background = "#34465E"
+palette = [
+    "#2C2C2E", "#FF6961", "#70C88B", "#E9C46A",
+    "#64A8FF", "#C49BE8", "#70C7CE", "#D1D1D6",
+    "#AAAAB2", "#FF867F", "#91D9A6", "#F4D58A",
+    "#8BBDFF", "#D6B4F2", "#95DADE", "#F5F5F7",
+
+]
+
+[token]
+foreground = "#E5E5EA"
+secondary = "#B0B0B8"
+tertiary = "#AAAAB2"
+accent = "#64A8FF"
+font-ui = ["-apple-system", "SF Pro", "sans-serif"]
+
+[panel]
+background = "#1C1C1E"
+surface = "#2C2C2E"
+border = "#3A3A3C"
+
+[sidebar]
+background = "#242426"
+border-right = "1px solid #3A3A3C"
+material = "none"
+
+[tab]
+foreground = "#B0B0B8"
+radius = 8
+
+[tab.active]
+background = "#303D50"
+foreground = "#F5F5F7"
+font-weight = 600
+
+[tab.hover]
+background = "#2C2C2E"
+
+[titlebar]
+background = "#242426"
+
+[window]
+material = "none"
+background = "#1C1C1E"

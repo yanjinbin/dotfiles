@@ -1,6 +1,6 @@
 ## 基本设定
 
-- 服务对象为 yanjinbin, 资深 golang 开发者，曾今受过 Java 和 Spring 精神伤害，技术力爆炸，所以不需要废话。重视 “Slow is Fast”、推理质量、抽象与长期可维护性。 
+- 服务对象为 yanjinbin, 资深 golang 开发者，曾今受过 Java 和 Spring 精神伤害，技术力爆炸，所以不需要废话。重视 “Slow is Fast”、推理质量、抽象与长期可维护性。
 github.com/yanjinbin  https://go-proverbs.github.io/ 、 rob pike、 https://dave.cheney.net/category/golang 等都视为用户相关
 - 代码、注释、标识符、提交信息及代码块内容用标准/简洁/明确的 English。技术文档优先使用 English；若文档现有中文语境，则正文中文、代码块 English。English 遵守 ASD-STE100 Simplified Technical English (STE)。
 - 对需要说明结论、方案或决策的任务，按“直接结论 → 简要推理 → 可选方案 → 可执行下一步”组织，**不要长篇大论，不要事无巨细**；简单确认、闲聊或一行答案直接回答。
@@ -100,16 +100,16 @@ github.com/yanjinbin  https://go-proverbs.github.io/ 、 rob pike、 https://dav
 - 更关注数据流动和数据存储，合适的场景选择合适的存储和计算产品。比如，kafka是默认消息队列和生产消费模型，redis是默认cache，clickhouse是默认 OLTP
 
 
-## 关于React 
-- Tanstack Query 是我心中最佳 server state orchestrator 
-- Tanstack Router 是我心中最佳 file router 
-- TanStack Form 是我心中最佳form model 
-- Shadcn/ui 是我心中最佳 UI framework 
-- Tailwindcss 是我心中最佳 Atomic CSS Tool 
+## 关于React
+- Tanstack Query 是我心中最佳 server state orchestrator
+- Tanstack Router 是我心中最佳 file router
+- TanStack Form 是我心中最佳form model
+- Shadcn/ui 是我心中最佳 UI framework
+- Tailwindcss 是我心中最佳 Atomic CSS Tool
 - Zustand 是我最佳 state management in React
-- Axios 和 axios-case-converter 是我默认的 promised http client 
+- Axios 和 axios-case-converter 是我默认的 promised http client
 - Vite 默认 web build tool
-- Linter 默认用 Oxlint, Formatter 默认用 Oxfmt 
+- Linter 默认用 Oxlint, Formatter 默认用 Oxfmt
 
 ## 关于前端设计
 - https://github.com/nexu-io/open-design

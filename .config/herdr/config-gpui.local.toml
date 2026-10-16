@@ -1,0 +1,39 @@
+# Herdr GPUI overrides. Saved changes reload automatically.
+# Unset keys inherit config-gpui.toml; tables merge key by key.
+
+# New installs start with the roomy rounded sidebar. Remove this line for
+# the managed default, or pick another layout listed in config-gpui.toml.
+layout = "comfortable"
+theme = "Default"
+show_system_load = false
+agent_checkpoints = true
+show_listening_ports = true
+confirm_close_tab = true
+status_icons = "rail"
+
+[terminal]
+family = "MesloLGS NF Herdr Fit"
+size = 18.0
+
+[ui]
+size = 12.0
+family = "JetBrains Mono Herdr"
+
+[sidebar]
+size = 14.0
+family = "MesloLGL Nerd Font"
+
+[tabs]
+size = 14.0
+family = "JetBrains Mono"
+
+[usage]
+show = true
+
+[notifications]
+
+[backdrop]
+opacity = 1.0
+
+[code]
+license_accepted = true
