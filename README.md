@@ -83,6 +83,7 @@ iTerm2 偏好单独导入，执行前先退出 iTerm2，详见 [iTerm2 恢复说
 ├── .config/             # Terminal and CLI settings
 ├── agents/              # Codex and Claude settings and hooks
 ├── docs/                # Usage guides and recovery prompt
+├── fonts/               # Herdr font snapshots and licenses
 ├── iterm2/              # Preferences and import script
 ├── mihomo/rules/        # Network rules
 ├── tests/               # CLI and sync checks
@@ -103,6 +104,7 @@ iTerm2 偏好单独导入，执行前先退出 iTerm2，详见 [iTerm2 恢复说
 | [Codex / Claude 配置](agents/README.md) | 共享指令、hooks、私有状态及配置导入 |
 | [Otty、Herdr 与 Herdr.app](terminal-configs.md) | 配置位置、主题、字体与插件恢复 |
 | [Herdr 恢复 prompt](docs/herdr-restore-prompt.md) | 固定插件版本、源码依赖、认证与验证步骤 |
+| [Herdr 字体](fonts/README.md) | Meslo、JetBrains 定制字体、图标字体、校验值与安装步骤 |
 | [iTerm2 配置](iterm2/README.md) | 偏好导入和字体依赖 |
 | [Mac / Linux 工具链](toolchain.md) | 工具分类与使用场景 |
 | [网络规则审计](mihomo/network-audit.md) | Mihomo 规则检查记录 |

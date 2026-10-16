@@ -39,7 +39,7 @@ python3 scripts/sync.py --check
 
 Otty 的 Shell Integration 由应用提供，仓库 `.zshrc` 按 `OTTY_SHELL_INTEGRATION` 加载。不要复制临时目录中的 Otty CLI 或 integration 文件。
 
-当前字体依赖包括 `MesloLGS NF Herdr`、`MesloLGS NF Herdr Fit`、`JetBrains Mono Herdr`、`MesloLGL Nerd Font` 和 `JetBrains Mono`。仓库只包含上表中的图标字体；这些文本字体需另行安装到 `~/Library/Fonts/`，或在应用中选择已安装字体。Otty 的应用内字体目录不会替 Herdr.app 安装字体。
+当前字体依赖包括 `MesloLGS NF Herdr`、`MesloLGS NF Herdr Fit`、`JetBrains Mono Herdr`、`MesloLGL Nerd Font` 和 `JetBrains Mono`。这些字体的本机 Regular 文件已收录到 [`fonts/`](fonts/README.md)，并附校验值和许可证；按其中的恢复步骤安装到 `~/Library/Fonts/`。两个 Herdr 图标字体版本均保留，Otty 原有版本不重复存储。Otty 的应用内字体目录不会替 Herdr.app 安装字体。
 
 ## 恢复 Herdr 插件
 

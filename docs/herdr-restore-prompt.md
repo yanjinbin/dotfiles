@@ -87,12 +87,15 @@ Do not print credentials or copy auth databases into the public repository.
    Otty needs MesloLGS NF Herdr and Herdr Agent Icons Max.
    Herdr.app uses MesloLGS NF Herdr Fit, JetBrains Mono Herdr,
    MesloLGL Nerd Font, and JetBrains Mono.
-   Dotfiles includes the icon font in .config/otty/fonts/, but does not include
-   every patched text font. Otty's app font folder does not install fonts for Herdr.
-   Inspect Radar's font tools and their licenses. Use existing source fonts/build
-   recipes when available; do not claim an exact patched face was reconstructed
-   without verifying its family name and glyph coverage. If unavailable, report
-   the missing font and ask before substituting a different face.
+   Read fonts/README.md and verify fonts/SHA256SUMS from the repository root.
+   The exact installed Regular files are archived under fonts/herdr/ and fonts/base/.
+   Install those six files into ~/Library/Fonts/ without replacing differing
+   existing files until they have been reviewed. The older 29-icon font remains
+   in .config/otty/fonts/; the system restore uses the newer 30-icon font.
+   Otty's app font folder does not install fonts for Herdr. Inspect duplicate
+   family registrations and verify the selected names and glyph coverage in the UI.
+   Preserve the bundled licenses and notices. The Meslo patched build recipes
+   were not recovered; use the archived binaries rather than claiming a source rebuild.
 
 6. Validate the result.
    Run the dotfiles tests and shell syntax checks.

@@ -1,0 +1,159 @@
+{
+  "captured_on": "2026-10-16",
+  "fonts": [
+    {
+      "file": "fonts/base/JetBrainsMono-Regular.ttf",
+      "source": "Library/Fonts/JetBrainsMono-Regular.ttf",
+      "sha256": "a0bf60ef0f83c5ed4d7a75d45838548b1f6873372dfac88f71804491898d138f",
+      "bytes": 273900,
+      "family": [
+        "JetBrains Mono"
+      ],
+      "style": [
+        "Regular"
+      ],
+      "version": [
+        "Version 2.304; ttfautohint (v1.8.4.7-5d5b)"
+      ],
+      "postscript_name": [
+        "JetBrainsMono-Regular"
+      ],
+      "copyright": [
+        "Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)"
+      ],
+      "unicode_codepoints": 1363
+    },
+    {
+      "file": "fonts/base/MesloLGLNerdFont-Regular.ttf",
+      "source": "Library/Fonts/MesloLGLNerdFont-Regular.ttf",
+      "sha256": "6c680892d577e70aa3f2c9a0aa230a0c9990ca08eed3e9c7fe8b3c07ac4f509f",
+      "bytes": 2965848,
+      "family": [
+        "MesloLGL Nerd Font"
+      ],
+      "style": [
+        "Regular"
+      ],
+      "version": [
+        "Version 1.210;Nerd Fonts 3.5.1"
+      ],
+      "postscript_name": [
+        "MesloLGLNF-Regular"
+      ],
+      "copyright": [
+        "Copyright © 2009 Apple Inc. Copyright ©  2006 by Tavmjong Bah. Copyright © 2003 by Bitstream, Inc. All Rights Reserved."
+      ],
+      "unicode_codepoints": 13554
+    },
+    {
+      "file": "fonts/herdr/HerdrAgentIconsMax-7526f2a2.ttf",
+      "source": "Library/Fonts/HerdrAgentIconsMax-7526f2a2.ttf",
+      "sha256": "7526f2a2bfd2ed3d2bd182eb9205729aaa74c0c9190b6cebfdf565b15ed021a6",
+      "bytes": 17320,
+      "family": [
+        "Herdr Agent Icons Max"
+      ],
+      "style": [
+        "Regular"
+      ],
+      "version": [
+        "Version 1.8.0"
+      ],
+      "postscript_name": [
+        "Herdr-Agent-Icons-Max-Regular"
+      ],
+      "copyright": [
+        "See THIRD_PARTY_NOTICES.md; marks belong to their respective owners."
+      ],
+      "unicode_codepoints": 30
+    },
+    {
+      "file": "fonts/herdr/JetBrainsMonoHerdr-Regular.ttf",
+      "source": "Library/Fonts/JetBrainsMonoHerdr-Regular.ttf",
+      "sha256": "1418d82606fdaa91e4920c08321aa2f843b3862106a2d60a71ab1b9487f4af87",
+      "bytes": 288052,
+      "family": [
+        "JetBrains Mono Herdr"
+      ],
+      "style": [
+        "Regular"
+      ],
+      "version": [
+        "Version 2.34204; herdr icons 30 (7526f2a2)"
+      ],
+      "postscript_name": [
+        "JetBrainsMonoHerdr-Regular"
+      ],
+      "copyright": [
+        "Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)"
+      ],
+      "unicode_codepoints": 1393
+    },
+    {
+      "file": "fonts/herdr/MesloLGSNFHerdr-Regular.ttf",
+      "source": "Library/Fonts/MesloLGSNFHerdr-Regular.ttf",
+      "sha256": "b52a50e9f8fff591bafcb47364bdd3930ed2af0cfe9adb00cee58b0885697ed0",
+      "bytes": 2617448,
+      "family": [
+        "MesloLGS NF Herdr"
+      ],
+      "style": [
+        "Regular"
+      ],
+      "version": [
+        "Version 1.23999; Herdr icons 30 (7526f2a2)"
+      ],
+      "postscript_name": [
+        "MesloLGSNFHerdr-Regular"
+      ],
+      "copyright": [
+        "Copyright © 2009 Apple Inc. Copyright ©  2006 by Tavmjong Bah. Copyright © 2003 by Bitstream, Inc. All Rights Reserved."
+      ],
+      "unicode_codepoints": 13821
+    },
+    {
+      "file": "fonts/herdr/MesloLGSNFHerdrFit-Regular.ttf",
+      "source": "Library/Fonts/MesloLGSNFHerdrFit-Regular.ttf",
+      "sha256": "bc4ee82ce5abf6a2cbc9c2d0c67577291f7a370dfb056024b2aa11e0fee16a9f",
+      "bytes": 2589712,
+      "family": [
+        "MesloLGS NF Herdr Fit"
+      ],
+      "style": [
+        "Regular"
+      ],
+      "version": [
+        "Version 1.23999; Herdr icons 30 (7526f2a2)"
+      ],
+      "postscript_name": [
+        "MesloLGSNFHerdrFit-Regular"
+      ],
+      "copyright": [
+        "Copyright © 2009 Apple Inc. Copyright ©  2006 by Tavmjong Bah. Copyright © 2003 by Bitstream, Inc. All Rights Reserved."
+      ],
+      "unicode_codepoints": 13821
+    },
+    {
+      "file": ".config/otty/fonts/HerdrAgentIconsMax-d77910ea.ttf",
+      "source": "Library/Fonts/HerdrAgentIconsMax-d77910ea.ttf",
+      "sha256": "d77910ea4e70a86e4618ba5329f51830f39b830477c1fb809dea704ecc199f66",
+      "bytes": 17248,
+      "family": [
+        "Herdr Agent Icons Max"
+      ],
+      "style": [
+        "Regular"
+      ],
+      "version": [
+        "Version 1.8.0"
+      ],
+      "postscript_name": [
+        "Herdr-Agent-Icons-Max-Regular"
+      ],
+      "copyright": [
+        "See THIRD_PARTY_NOTICES.md; marks belong to their respective owners."
+      ],
+      "unicode_codepoints": 29
+    }
+  ]
+}
