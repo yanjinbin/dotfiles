@@ -1,157 +1,115 @@
 # dotfiles
 
-macOS 开发环境配置仓库，集中管理终端、编辑器、包管理与网络规则。
+个人 macOS 开发环境配置：zsh、终端、AI CLI、编辑器与网络规则。以仓库作为配置源，通过文件级软链接同步到本机；管理范围见 [`symlinks.json`](symlinks.json)。
 
-## 仓库内容
+## 目录
 
-- Shell: `.zshrc`、`.p10k.zsh`、`.oh-my-zsh/`（插件与命令）、`.config/ai-cli/regions.conf`（AI 地区配置）、`.config/zsh/ai-upgrade.zsh`（AI 工具升级）
-- Editor: `.vimrc`、`.spacemacs`、`settings.json`、`launch.json`
-- Package: `Brewfile`
-- Network: `mihomo/rules/*.yaml`
-- Script: `brew_backup_restore.sh`
-- Terminal: [iTerm2 可迁移配置](iterm2/README.md)（偏好导出与恢复脚本）
-- Terminal / Workspace: [Otty、Herdr 与 Herdr.app 配置](terminal-configs.md)（主题、GUI 设置、插件清单与恢复步骤）
-- Agent: [Codex / Claude 配置](agents/README.md)（共享指令、设置、hooks 与本机私有状态）
-- Sync: `symlinks.json`、`scripts/sync.py`（按文件建立软链接、自动备份与校验）
-- Recovery: [Herdr 插件恢复 prompt](docs/herdr-restore-prompt.md)
-- Tool Chain: [Mac / Linux Tool Chain](toolchain.md)
+- [快速开始](#快速开始)
+- [日常维护](#日常维护)
+- [仓库结构](#仓库结构)
+- [文档导航](#文档导航)
+- [管理边界](#管理边界)
 
-## 快速恢复
+## 快速开始
 
-先取回远端并核对本机差异，合并后再建立软链接。仓库是配置源；脚本默认只预览，`--apply` 会备份被替换文件。存在内容差异时会拒绝覆盖，审阅合并后才能使用 `--replace`。
+适用环境：macOS、zsh、Homebrew、Python 3.11+。以下命令均在仓库根目录执行。
+
+### 1. 准备环境
+
+先核对本机与仓库的配置差异，保留需要的设置。根据需要安装 [`Brewfile`](Brewfile) 中的软件：
 
 ```bash
 brew bundle --file ./Brewfile
+```
+
+首次恢复还需准备 Oh My Zsh、Powerlevel10k 和外部插件，见 [Shell 与插件](docs/shell.md)。Otty、Herdr.app、字体和 Herdr 插件按 [终端配置](terminal-configs.md) 与 [恢复 prompt](docs/herdr-restore-prompt.md) 准备。
+
+### 2. 预览并建立软链接
+
+```bash
 python3 scripts/sync.py
 python3 scripts/sync.py --apply
 python3 scripts/sync.py --check
+```
+
+默认只预览；`--apply` 遇到内容差异会拒绝覆盖。先审阅并合并差异，再使用：
+
+```bash
+python3 scripts/sync.py --apply --replace
+```
+
+脚本只替换清单中的文件，保留所在目录及其他内容。当前实现会将被替换文件保存到 `${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-backups/`；`links.json` 记录对应关系。
+
+### 3. 加载配置
+
+打开新终端，或重新加载 Shell：
+
+```zsh
 source ~/.zshrc
 ```
 
-需要 Python 3.11+。已审阅的差异用 `python3 scripts/sync.py --apply --replace` 同步。备份保存在 `${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles-backups/`，每次运行的 `links.json` 记录原文件位置。只替换清单中的文件，保留本机目录及其他内容。应用升级若用原子写入替换了软链接，`--check` 会检出，先合并新内容再重新链接。
-
-`Brewfile` 同时安装 iTerm2 与 MesloLGS Nerd Font；完成安装后再导入偏好。
-
-iTerm2 偏好恢复（先退出 iTerm2）：
+iTerm2 偏好单独导入，执行前先退出 iTerm2，详见 [iTerm2 恢复说明](iterm2/README.md)：
 
 ```bash
 ./iterm2/install.sh
 ```
 
-## Shell 配置（~/.zshrc）
+## 日常维护
 
-- 本机 `~/.zshrc`、`~/.p10k.zsh` 和已纳管插件通过软链接引用仓库；首次切换前先合并两份配置，脚本保存原文件备份。
-- 框架：Oh My Zsh + Powerlevel10k（含即时提示）
-- 插件：`git`、`jj`、`uv`、`pnpm`、`docker-compose`、`z`、`you-should-use`、`tmux`、`herdr`、`gcma`、`jjma`、`perfect-little-angle`、`codex-niubikelas`、`p10k-jj-status`、`zsh-autosuggestions`、`zsh-syntax-highlighting`
-- herdr：PATH 就绪后显式加载 `$ZSH/plugins/herdr/herdr.plugin.zsh`，提供官方别名和 `hrdrs` 会话选择器；仓库已保存此文件，恢复步骤见 [终端配置](terminal-configs.md)。
-- JJ 提示：`zsh-jj` 提供 `vcs_info` 的 JJ 后端（仅加载其 `functions/`，不 source 会重设 `PROMPT` 的完整插件）；`p10k-jj-status` 提供异步 JJ working-copy 段，需在 `.p10k.zsh` 的 `POWERLEVEL9K_LEFT_PROMPT_ELEMENTS` 或 `RIGHT_PROMPT_ELEMENTS` 中加入 `jj_status`
-- PATH：先加载 `/opt/homebrew/bin/brew shellenv`，再配置 `~/.local/bin`、`~/.opencode/bin`、pnpm、Maven、Go、fnm（Node）；不再设置 Go 或 Rust 镜像。
-- Shell 集成：按文件或环境变量加载 fzf、iTerm2 和 Otty；本机私有配置从 `~/.config/zsh/private.zsh` 加载。
-- 别名 / 函数：
-  - eza 列表：`ls`、`ll`、`lla`、`lld`、`llf`、`lt`、`lt3`、`lt4`
-  - uv：`ur`、`ua`、`us`、`uvp`
-  - opencode：`oc`、`oca`、`ocy`
-  - 工具：`c`（clear）、`y`（yazi）、`t`（history）、`wattage`、`myip`、`nvup`（Neovim 插件/Mason 更新）、`flushdns`、`ipv6on`、`ipv6off`、`mkcd`、`extract`、`ff`、`port`
-  - 时区：`tz jp|sg|la|system`（默认系统时区，需要时用 `tz` 临时切换）
-- AI CLI（详见下节）：`perfect-little-angle` 提供快捷命令并加载 `ai upgrade`；`codex-niubikelas` 提供只读代理与端点检查。代理快捷命令使用 `127.0.0.1:7890`。
+| 任务 | 入口 |
+| --- | --- |
+| 修改 Shell、提示符或插件 | 编辑 [`.zshrc`](.zshrc)、[`.p10k.zsh`](.p10k.zsh) 或 [自定义插件](.oh-my-zsh/custom/plugins/)；重新加载 Shell |
+| 检查软链接 | `python3 scripts/sync.py --check` |
+| 预览同步差异 | `python3 scripts/sync.py` |
+| 调整 AI CLI 的模型、地区、显示和代理 | [AI CLI 使用指南](docs/ai-cli.md)；`ai help` / `cx help` / `cc help` |
+| 升级 AI CLI | `ai upgrade`，或指定工具，如 `ai upgrade codex` |
+| 修改 Codex / Claude 的共享指令 | [`AGENTS.md`](AGENTS.md)，两者的全局指令文件共用此源 |
+| 修改或导入 Codex 偏好 | [配置合成与导入流程](agents/README.md#codex-settings-and-private-state) |
+| 恢复 Herdr 插件 | [可复制的恢复 prompt](docs/herdr-restore-prompt.md) |
 
-## AI Agent Coding 工具
+应用升级若用原子写入替换了软链接，`--check` 会检出；先把新设置合并回仓库，再重新建立链接。配置通过链接修改后，可用 `git diff` 检查待提交内容。
 
-版本以各工具 `--version` 实测为准（下表为 2026-08-20 数据）。
+## 仓库结构
 
-| 工具 | 定位 | 安装 | 维护 / 升级 |
-|------|------|------|-------------|
-| OpenAI Codex | 本地代码 agent | `curl -fsSL https://chatgpt.com/codex/install.sh | sh`（非交互：`CODEX_NON_INTERACTIVE=1 sh`；装在 `~/.codex/packages/standalone`，入口 `~/.local/bin/codex`） | `ai upgrade codex`（同上） |
-| Antigravity agy | agent CLI / workflow | `curl -fsSL https://antigravity.google/cli/install.sh | bash`（`~/.local/bin/agy`） | `ai upgrade agy` / `agy update` |
-| herdr | 多 agent 编排 CLI / runtime | `curl -fsSL https://herdr.dev/install.sh | sh`（或 `brew install herdr`） | `ai upgrade herdr` / `herdr update` |
-| Otty | 终端 / agent 辅助入口 | Otty 应用内 Shell Integration 安装（`~/.local/bin/otty`） | 应用内更新 |
-| opencode | 本地 agent | `curl -fsSL https://opencode.ai/install | bash`（`~/.opencode/bin/opencode`） | `opencode upgrade` |
-
-常用入口（来自 `~/.zshrc`）：
-
-- Codex：`cx` / `cxp`（默认 YOLO；`p` 后缀启用一次性代理）
-- Codex 速度：`cx` / `cxp` 默认普通模式；`cxf` / `cxpf` 显式启用 fast，其他参数用法不变。
-- Codex 推理摘要：默认隐藏；`cxa` 自动、`cxc` 简短、`cxd` 详细、`cxn` 关闭；`cx -r` 打开选择菜单，快捷命令支持追加参数，例如 `cxd resume --last`
-- Claude：`cc` / `ccp`（默认 YOLO；`p` 后缀启用一次性代理）
-- Claude 交互显示：`ccn` 简洁（关闭 verbose）、`ccd` 详细（开启 verbose）；代理入口为 `ccpn` / `ccpd`。`cc` / `ccp` 沿用原生显示设置。支持原有参数，例如 `ccd --continue`、`ccn sg plan`。
-- 显示开关保留交互会话，不改变思考强度。Codex 控制模型提供的推理摘要；Claude 的 verbose 展开工具输出和执行细节，会话中可按 `Ctrl+O` 查看详细记录。
-- agy：`ag` / `agp` / `agy` / `agyp`（默认 YOLO；`p` 后缀启用一次性代理）
-- 模型：默认不传 `--model`，由各 CLI 选择当前默认模型；需要固定时使用 `cx|cc|agy --model <model>`
-- 模型选择：`ai help cx model list`（`cc` / `agy` 同理）；选中后作为当前 shell 默认，`model default` 恢复 CLI 默认
-- 默认地区：`cc region set la` / `cx region set NL`；`region current` 查看地区及配置路径。支持下表城市、IATA 三字码及国家/地区代码，同时设置 timezone 和 locale。各 CLI 独立配置，显示、速度和代理快捷命令共用所属 CLI 的设置。
-- 唯一配置入口为 `${XDG_CONFIG_HOME:-$HOME/.config}/ai-cli/regions.conf`，通过软链接指向仓库文件。`region set` 修改链接目标，每次调用读取最新配置；旧 `regions/` 目录不再读取。单次地区参数和 `--timezone` / `--locale` 仍可临时覆盖。
-- 不再提供内置默认值；配置缺失或无效时明确报错。原 `region reset` 改为提示使用 `region set` 显式选择地区。
-
-城市名、IATA 三字码和国家/地区代码不区分大小写，临时参数、`--region` 和持久配置使用相同规则。`region set` 保存规范城市名；同一国家的其他城市需直接指定，例如 `cx NYC`、`cc KIX`（也可用 `new-york`、`osaka`）。带空格的城市名需加引号，例如 `cx "San Jose"`；也支持 `Düsseldorf` 和 `duesseldorf`。
-
-| 城市参数 | IATA 三字码 | 国家/地区代码 | 时区 |
-| --- | --- | --- | --- |
-| `amsterdam` | `AMS` | `NL` | `Europe/Amsterdam` |
-| `dusseldorf` | `DUS` | — | `Europe/Berlin` |
-| `frankfurt` | `FRA` | `DE` | `Europe/Berlin` |
-| `tallinn` | `TLL` | `EE` | `Europe/Tallinn` |
-| `london` | `LON` / `LHR` | `GB` / `UK` | `Europe/London` |
-| `san-jose` | `SJC` | — | `America/Los_Angeles` |
-| `new-york` | `NYC` / `JFK` | — | `America/New_York` |
-| `seattle` | `SEA` | — | `America/Los_Angeles` |
-| `hong-kong` | `HKG` | `HK` | `Asia/Hong_Kong` |
-| `osaka` | `OSA` / `KIX` | — | `Asia/Tokyo` |
-| `tokyo` | `TYO` / `HND` / `NRT` | `JP` | `Asia/Tokyo` |
-| `sydney` | `SYD` | `AU` | `Australia/Sydney` |
-| `la` | `LAX` | `US` | `America/Los_Angeles` |
-| `sg` | `SIN` | `SG` | `Asia/Singapore` |
-| `kl` | `KUL` | `MY` | `Asia/Kuala_Lumpur` |
-| `taipei` | `TPE` | `TW` | `Asia/Taipei` |
-
-`LON`、`NYC`、`TYO`、`OSA` 是城市代码；表中其他三字码是机场代码，在 CLI 中映射到对应城市。例如 `JFK` 指纽约肯尼迪机场，`HND` / `NRT` 指羽田 / 成田机场，`KIX` 指关西机场。完整机场名称见 `cx help`。代码可通过 [IATA 官方查询](https://www.iata.org/codes/index) 核对。
-
-使用 IANA 时区处理夏令时。各地区的 locale 可通过 `cx help` 查看，使用 `--locale` 单次覆盖。
-- 帮助：`cc help` / `cx help` / `cxd help` / `agy help`；保留 `ai help` / `ai help cx|cc|agy` 和 `--env-help`。`--help` 继续转发给原生 CLI。
-- 升级：`ai upgrade`（无参数时升级整套 AI toolchain：codex / agy / herdr / opencode；也可单升如 `ai upgrade codex`；实现在 `~/.config/zsh/ai-upgrade.zsh`）
-
-地区配置文件内容：
-
-```ini
-cc=la
-cx=la
-agy=la
+```text
+.
+├── README.md
+├── AGENTS.md
+├── symlinks.json
+├── scripts/sync.py
+├── .zshrc
+├── .p10k.zsh
+├── .oh-my-zsh/           # Shell plugins
+├── .config/             # Terminal and CLI settings
+├── agents/              # Codex and Claude settings and hooks
+├── docs/                # Usage guides and recovery prompt
+├── iterm2/              # Preferences and import script
+├── mihomo/rules/        # Network rules
+├── tests/               # CLI and sync checks
+├── Brewfile
+├── brew_backup_restore.sh
+├── terminal-configs.md
+└── toolchain.md
 ```
 
-`sg` 对应 `Asia/Singapore` 和 `zh_CN.UTF-8`；`la` 对应 `America/Los_Angeles` 和 `en_US.UTF-8`。插件统一将 locale 应用于 `LANG` 和 `LC_ALL`，只影响 CLI 及其子进程。
+编辑器配置另存于 [`.vimrc`](.vimrc)、[`.spacemacs`](.spacemacs)、[`settings.json`](settings.json) 和 [`launch.json`](launch.json)。仓库中存在某个文件，不代表同步脚本会安装它；以链接清单为准。
 
-本机 `~/.oh-my-zsh/custom/plugins/perfect-little-angle/perfect-little-angle.plugin.zsh` 通过软链接引用仓库同名文件；重新加载此文件或打开新终端即可生效。`.zshrc` 和自定义插件的代码注释统一使用英文。
+## 文档导航
 
-> 注：上述版本为 2026-08-20 实测（codex-cli 0.148.0、agy 1.1.15、opencode 1.18.18、herdr 0.8.2、otty 1.4.1）。版本以各自 `--version` 为准，可用 `ai upgrade` 单独或整套刷新。
+| 文档 | 内容 |
+| --- | --- |
+| [Shell 与插件](docs/shell.md) | 加载顺序、PATH、常用别名、JJ 提示与插件配置 |
+| [AI CLI 使用指南](docs/ai-cli.md) | Codex / Claude / agy 快捷命令、模型、地区代码、帮助与升级 |
+| [Codex / Claude 配置](agents/README.md) | 共享指令、hooks、私有状态及配置导入 |
+| [Otty、Herdr 与 Herdr.app](terminal-configs.md) | 配置位置、主题、字体与插件恢复 |
+| [Herdr 恢复 prompt](docs/herdr-restore-prompt.md) | 固定插件版本、源码依赖、认证与验证步骤 |
+| [iTerm2 配置](iterm2/README.md) | 偏好导入和字体依赖 |
+| [Mac / Linux 工具链](toolchain.md) | 工具分类与使用场景 |
+| [网络规则审计](mihomo/network-audit.md) | Mihomo 规则检查记录 |
 
-## 插件文档
+## 管理边界
 
-- `gcma` — AI 生成 Conventional Commits 提交信息，支持 Gemini / Claude / Codex / Copilot
-  - 详细说明：[`.oh-my-zsh/custom/plugins/gcma/README.md`](.oh-my-zsh/custom/plugins/gcma/README.md)
-  - 可选配置：
-
-    ```zsh
-    export GCMA_DEFAULT_AGENT=agy
-    # Set GCMA_DEFAULT_MODEL only when you want to pin a model.
-    ```
-
-- `jjma` — 为当前 jj change 生成 Conventional Commit 描述，支持大 diff 分块总结
-  - 详细说明：[`.oh-my-zsh/custom/plugins/jjma/README.md`](.oh-my-zsh/custom/plugins/jjma/README.md)
-  - 默认配置：
-
-    ```zsh
-    export JJMA_DEFAULT_AGENT=agy
-    ```
-
-- `zsh-jj` / `p10k-jj-status` — JJ 状态提示组件
-  - 详细说明：[`.oh-my-zsh/custom/plugins/zsh-jj/README.md`](.oh-my-zsh/custom/plugins/zsh-jj/README.md)、[`.oh-my-zsh/custom/plugins/p10k-jj-status/README.md`](.oh-my-zsh/custom/plugins/p10k-jj-status/README.md)
-  - 安装到 Oh My Zsh：
-
-    ```bash
-    cp -R .oh-my-zsh/custom/plugins/zsh-jj ~/.oh-my-zsh/custom/plugins/
-    cp -R .oh-my-zsh/custom/plugins/p10k-jj-status ~/.oh-my-zsh/custom/plugins/
-    ```
-
-## 说明
-
-- 默认面向 `macOS + zsh + Homebrew`。
-- 配置包含个人化 alias、代理和路径设置，使用前建议先审阅并按需裁剪。
+- **直接链接**：Shell、已纳管插件、终端配置、Claude 设置及两套工具的全局指令文件。
+- **合成后链接**：Codex 主配置由公开偏好和本机私有状态合成到忽略目录 `.local/codex/`；修改通用设置后需重新运行同步脚本。
+- **单独恢复**：应用、外部插件、字体和 iTerm2 偏好。Herdr 的 `plugins.json` 是参考快照，不能直接替代插件安装。
+- **留在本机**：凭据、会话、缓存、授权记录及 Shell 私有配置 `~/.config/zsh/private.zsh`。提交前检查新增配置和环境变量，避免把私密信息带入公开仓库。
