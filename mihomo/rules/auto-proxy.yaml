@@ -2,8 +2,8 @@
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
 # UPDATED: 2026-10-25
-# DOMAIN-SUFFIX: 17
-# TOTAL: 17
+# DOMAIN-SUFFIX: 20
+# TOTAL: 20
 
 payload:
   # figma 服务
@@ -31,3 +31,8 @@ payload:
   - DOMAIN-SUFFIX,v.ps
   - DOMAIN-SUFFIX,vmiss.com
   - DOMAIN-SUFFIX,dmit.com
+
+  # Hospital services
+  - DOMAIN-SUFFIX,xingk.com
+  - DOMAIN-SUFFIX,xingk.com.cn
+  - DOMAIN-SUFFIX,zs-hospital.sh.cn
