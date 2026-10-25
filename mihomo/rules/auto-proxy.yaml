@@ -1,9 +1,9 @@
 # NAME: auto-proxy
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
-# UPDATED: 2026-10-05
-# DOMAIN-SUFFIX: 10
-# TOTAL: 10
+# UPDATED: 2026-10-25
+# DOMAIN-SUFFIX: 17
+# TOTAL: 17
 
 payload:
   # figma 服务
@@ -22,3 +22,12 @@ payload:
 
   # other services
   - DOMAIN-SUFFIX,28.al
+
+  # Community and VPS services
+  - DOMAIN-SUFFIX,sb.sb
+  - DOMAIN-SUFFIX,linux.do
+  - DOMAIN-SUFFIX,nodeseek.com
+  - DOMAIN-SUFFIX,naixi.net
+  - DOMAIN-SUFFIX,v.ps
+  - DOMAIN-SUFFIX,vmiss.com
+  - DOMAIN-SUFFIX,dmit.com
