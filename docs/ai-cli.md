@@ -66,7 +66,7 @@ agy=la
 ## 帮助与升级
 
 - 帮助：`cc help` / `cx help` / `cxd help` / `agy help`；保留 `ai help` / `ai help cx|cc|agy` 和 `--env-help`。`--help` 继续转发给原生 CLI。
-- 升级：`ai upgrade`（无参数时升级整套 AI toolchain：claude / codex / agy / herdr / opencode；也可单升如 `ai upgrade codex`；实现在 `~/.config/zsh/ai-upgrade.zsh`）
+- 升级：`ai upgrade` 或 `ai upgrade all`（升级整套 AI toolchain：claude / codex / agy / herdr / opencode / pi；也可单升如 `ai upgrade pi`；实现在 `~/.config/zsh/ai-upgrade.zsh`）
 
 ```zsh
 ai help
@@ -74,6 +74,9 @@ cx help
 ai upgrade
 ai upgrade claude
 ai upgrade codex
+ai upgrade pi
 ```
+
+Pi 已安装时运行 `pi update`；未安装时运行 `curl -fsSL https://pi.dev/install.sh | sh`，安装确认在终端中显示。
 
 Otty 通过应用内更新维护；Herdr 插件恢复见 [执行 prompt](herdr-restore-prompt.md)。
