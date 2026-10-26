@@ -9,6 +9,7 @@
 - 本机 `~/.zshrc`、`~/.p10k.zsh` 和已纳管插件通过软链接引用仓库；首次切换前先合并两份配置，脚本保存原文件备份。
 - 框架：Oh My Zsh + Powerlevel10k（含即时提示）
 - 插件：`git`、`jj`、`uv`、`pnpm`、`docker-compose`、`z`、`you-should-use`、`tmux`、`herdr`、`gcma`、`jjma`、`perfect-little-angle`、`codex-niubikelas`、`p10k-jj-status`、`zsh-autosuggestions`、`zsh-syntax-highlighting`
+- pnpm：仓库保存 [插件文件](../.oh-my-zsh/custom/plugins/pnpm/pnpm.plugin.zsh)及其 MIT 许可证，来源为 [ntnyq/omz-plugin-pnpm](https://github.com/ntnyq/omz-plugin-pnpm) 的 `7f6797e`。已注释 `pi='pnpm init'` 别名，将 `pi` 留给 Pi CLI；其余别名保留。
 - herdr：PATH 就绪后显式加载 `$ZSH/plugins/herdr/herdr.plugin.zsh`，提供官方别名和 `hrdrs` 会话选择器；仓库已保存此文件，恢复步骤见 [终端配置](../terminal-configs.md)。
 - JJ 提示：`zsh-jj` 提供 `vcs_info` 的 JJ 后端（仅加载其 `functions/`，不 source 会重设 `PROMPT` 的完整插件）；`p10k-jj-status` 提供异步 JJ working-copy 段，当前由 `.zshrc` 在加载 `.p10k.zsh` 后加入 `jj_status`，并用 `P10K_PROMPT_SHOW_GIT_STATUS` 控制 Git 状态显示
 - PATH：先加载 `/opt/homebrew/bin/brew shellenv`，再配置 `~/.local/bin`、`~/.opencode/bin`、pnpm、Maven、Go、fnm（Node）；不再设置 Go 或 Rust 镜像。
