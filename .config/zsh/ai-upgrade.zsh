@@ -226,8 +226,15 @@ _ai_upgrade() {
   if (( do_agy )); then _run "Antigravity agy  " _ai_upgrade_agy; a_rc=$?; fi
   if (( do_herdr )); then _run "herdr            " _ai_upgrade_herdr; h_rc=$?; fi
   if (( do_opencode )); then _run "opencode         " _ai_upgrade_opencode; o_rc=$?; fi
-  # Pi's installer reads /dev/tty, so keep it in the foreground.
-  if (( do_pi )); then _ai_upgrade_pi; p_rc=$?; fi
+  if (( do_pi )); then
+    if (( $+commands[pi] )); then
+      _run "Pi               " _ai_upgrade_pi
+    else
+      # Pi's installer reads /dev/tty, so keep it in the foreground.
+      _ai_upgrade_pi
+    fi
+    p_rc=$?
+  fi
   printf "  ${DIM}%s${RESET}\n" "·················································"
 
   echo ""
