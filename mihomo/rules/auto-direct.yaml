@@ -3,6 +3,10 @@ payload:
   - DOMAIN-SUFFIX,xingkeele.com
   - DOMAIN-SUFFIX,deepseek.com
 
+  # 予舍（yushe）国内站点，源站 WAF 拒绝机房 IP
+  - DOMAIN-SUFFIX,yushe.org
+  - DOMAIN-SUFFIX,yushe-cdn.top
+
   # 开发环境 杭州树诚  杭州7院
   - DOMAIN-SUFFIX,hzshucheng.com
   - DOMAIN-SUFFIX,hz7hospital.com
