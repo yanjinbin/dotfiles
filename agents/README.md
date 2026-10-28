@@ -35,7 +35,7 @@ Review new MCP entries and environment variables before committing; the script s
 
 ## Claude settings and integrations
 
-The settings retain the current model, Otty hooks, Herdr session reporting, Agent Usage status line, and plugin preferences. The two Herdr hook scripts differ by agent protocol and must remain separate. Otty hook implementations stay inside `Otty.app`.
+The settings retain the current model, Herdr session reporting, Agent Usage status line, and plugin preferences. The two Herdr hook scripts differ by agent protocol and must remain separate. Otty and Rex hooks are not configured.
 
 Hooks and the status line currently use `/Users/yanjinbin` and the local `herdr-agent-usage` checkout. On another account, review and update these paths before linking. Install the corresponding applications and plugin binaries before using these integrations.
 

@@ -1,53 +1,11 @@
 {
   "hooks" : {
-    "PermissionRequest" : [
-      {
-        "_otty" : true,
-        "hooks" : [
-          {
-            "command" : "OTTY_CLI='/Applications/Otty.app/Contents/MacOS/otty-cli' OTTY_SOCKET='/Users/yanjinbin/Library/Application Support/io.appmakes.otty/otty.sock' '/Applications/Otty.app/Contents/Resources/agent-integration/codex/otty-hook.sh' awaiting \"$PPID\" ctx",
-            "type" : "command"
-          }
-        ]
-      }
-    ],
     "SessionStart" : [
       {
         "hooks" : [
           {
             "command" : "bash '/Users/yanjinbin/.codex/herdr-agent-state.sh' session",
             "timeout" : 10,
-            "type" : "command"
-          }
-        ]
-      },
-      {
-        "_otty" : true,
-        "hooks" : [
-          {
-            "command" : "OTTY_CLI='/Applications/Otty.app/Contents/MacOS/otty-cli' OTTY_SOCKET='/Users/yanjinbin/Library/Application Support/io.appmakes.otty/otty.sock' '/Applications/Otty.app/Contents/Resources/agent-integration/codex/otty-hook.sh' idle \"$PPID\"",
-            "type" : "command"
-          }
-        ]
-      }
-    ],
-    "Stop" : [
-      {
-        "_otty" : true,
-        "hooks" : [
-          {
-            "command" : "OTTY_CLI='/Applications/Otty.app/Contents/MacOS/otty-cli' OTTY_SOCKET='/Users/yanjinbin/Library/Application Support/io.appmakes.otty/otty.sock' '/Applications/Otty.app/Contents/Resources/agent-integration/codex/otty-hook.sh' idle \"$PPID\"",
-            "type" : "command"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit" : [
-      {
-        "_otty" : true,
-        "hooks" : [
-          {
-            "command" : "OTTY_CLI='/Applications/Otty.app/Contents/MacOS/otty-cli' OTTY_SOCKET='/Users/yanjinbin/Library/Application Support/io.appmakes.otty/otty.sock' '/Applications/Otty.app/Contents/Resources/agent-integration/codex/otty-hook.sh' processing \"$PPID\"",
             "type" : "command"
           }
         ]
