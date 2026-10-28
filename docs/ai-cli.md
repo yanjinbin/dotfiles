@@ -74,8 +74,11 @@ cx help
 ai upgrade
 ai upgrade claude
 ai upgrade codex
+ai upgrade opencode
 ai upgrade pi
 ```
+
+OpenCode 已安装时运行 `opencode upgrade`；未安装时运行 `curl -fsSL https://opencode.ai/v2/install | bash`，安装 OpenCode V2。
 
 Pi 已安装时运行 `pi update`；未安装时运行 `curl -fsSL https://pi.dev/install.sh | sh`，安装确认在终端中显示。
 
