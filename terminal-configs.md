@@ -1,11 +1,12 @@
-# Otty、Herdr 与 Herdr.app 配置
+# Tern、Otty、Herdr 与 Herdr.app 配置
 
-配置快照来自本机 2026-10-16 的文件。通过 `symlinks.json` 按文件建立软链接，仓库作为配置源。
+Otty 与 Herdr 配置快照来自本机 2026-10-16 的文件；Tern 配置于 2026-10-31 纳入。通过 `symlinks.json` 按文件建立软链接，仓库作为配置源。
 
 ## 配置位置
 
 | 组件 | 仓库路径 / 本机相对 `$HOME` 路径 | 内容 |
 | --- | --- | --- |
+| Tern | 仓库 `.config/tern/settings.json` → 本机 `Library/Application Support/Tern/settings.json` | 外观、字体、Agent、编辑器换行及自动保存偏好 |
 | Otty | `.config/otty/config.toml` | Apple Graphite 主题、字体、复制行为、Shell Integration 和项目标签 |
 | Otty 主题 | `.config/otty/themes/` | 包含 Apple Graphite、One Dark Unified 等主题 |
 | Otty 字体 | `.config/otty/fonts/` | Herdr Agent Icons Max 图标字体 |
@@ -27,7 +28,7 @@ defaults write so.pen.herdr-gpui NSAutoFillHeuristicControllerEnabled -bool fals
 
 ## 恢复配置
 
-先安装 Otty、Herdr CLI、Herdr.app 和所需字体。在仓库根目录预览差异，合并后创建软链接：
+先安装所需的 Tern、Otty、Herdr CLI、Herdr.app 和字体。在仓库根目录预览差异，合并后创建软链接：
 
 ```bash
 python3 scripts/sync.py
@@ -40,6 +41,16 @@ python3 scripts/sync.py --check
 Otty 的 Shell Integration 由应用提供，仓库 `.zshrc` 按 `OTTY_SHELL_INTEGRATION` 加载。不要复制临时目录中的 Otty CLI 或 integration 文件。
 
 当前字体依赖包括 `MesloLGS NF Herdr`、`MesloLGS NF Herdr Fit`、`JetBrains Mono Herdr`、`MesloLGL Nerd Font` 和 `JetBrains Mono`。这些字体的本机 Regular 文件已收录到 [`fonts/`](fonts/README.md)，并附校验值和许可证；按其中的恢复步骤安装到 `~/Library/Fonts/`。两个 Herdr 图标字体版本均保留，Otty 原有版本不重复存储。Otty 的应用内字体目录不会替 Herdr.app 安装字体。
+
+## Tern 配置
+
+只链接 `settings.json`，不链接整个 `Library/Application Support/Tern` 目录。认证、会话、缓冲区、socket、日志和 `files.json` 保留在本机。
+
+`files.wrap_code` 与 `files.wrap_prose` 均为 `true`，代码和普通文本默认换行；`files.auto_save` 为 `on_focus_change`。这些字段只控制编辑器，终端程序仍可自行控制输出排版。
+
+仓库只收录应用偏好，不提交 `sqlite.recent` 中的私人文件路径。Tern 保存设置可能再次写入最近打开记录，提交前需检查此字段。替换前的本机配置及仓库配置已备份到本机 `dotfiles-backups`。跨机器恢复时也需核对 `start_folder` 和自定义 Agent 命令是否可用。
+
+手工编辑后可在 Settings → Advanced 点击 Reload。若 Tern 保存配置时替换了软链接，`python3 scripts/sync.py --check` 会报告；先合并应用写入的新偏好，再重新建立链接。
 
 ## 恢复 Herdr 插件
 

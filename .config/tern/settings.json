@@ -1,0 +1,62 @@
+{
+  "theme_light": "light-cirrus",
+  "copy_on_select": true,
+  "link_target": "Browser",
+  "font_size": 16,
+  "ui_font_size": 13,
+  "padding_x": 0,
+  "padding_y": 0,
+  "agent_command": "tern acp codex",
+  "status_bar": true,
+  "tmux_status": false,
+  "material": "Solid",
+  "opacity": 25,
+  "start_folder": "~/WebstormProjects/codebase/",
+  "agent_placement": "new_tab",
+  "files": {
+    "wrap_code": true,
+    "auto_save": "on_focus_change",
+    "wrap_prose": true
+  },
+  "file_tree": {
+    "open": true,
+    "width": 342,
+    "ignored": false,
+    "compact": false,
+    "preview_click": true
+  },
+  "git": {
+    "pull_mode": "Rebase",
+    "initial_commits": 300,
+    "show_commit_author": true,
+    "gitflow": {
+      "develop": "dev"
+    },
+    "diff_split": true
+  },
+  "notebook": {
+    "line_numbers": true,
+    "wrap_code": true,
+    "complete_while_typing": true
+  },
+  "agents": {
+    "keep_tui": [
+      "copilot"
+    ],
+    "custom": [
+      {
+        "id": "agent-1",
+        "name": "antigravity",
+        "command": "agy",
+        "args": [],
+        "env": {}
+      }
+    ],
+    "own_tools": [
+      "claude",
+      "codex",
+      "agent-1"
+    ],
+    "notify_turn_finished": true
+  }
+}
