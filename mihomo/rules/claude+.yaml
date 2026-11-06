@@ -54,5 +54,8 @@ payload:
   # === IP 兜底 ===
   # Anthropic 自有 IPv4 段，域名规则漏配时的最后防线
   - IP-CIDR,160.79.104.0/21,no-resolve
+  # 2026-11 新增：出站 153.61.208.0/20、入站 153.61.224.0/22
+  - IP-CIDR,153.61.208.0/20,no-resolve
+  - IP-CIDR,153.61.224.0/22,no-resolve
   - IP-CIDR6,2607:6bc0::/32,no-resolve
   - IP-ASN,399358,no-resolve
