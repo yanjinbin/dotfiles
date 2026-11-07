@@ -93,8 +93,8 @@
 dotfiles 仓库（`/Users/yanjinbin/WebstormProjects/dotfiles`）仅保留 `master` 分支，本地与远端保持同步；除非用户另行明确要求，不创建其他分支。以下默认流程不适用于该仓库。
 
 默认只维护2套环境，生产环境和开发环境
-默认生产环境分支是 master，不可更改。 测试环境默认 dev 分支，如需更改，需要批准。
-默认从master分支 checkout 一支分支 feature/ hotfix/ ，本地测试通过下，合并到 dev 分支，进行开发环境自测和验收
+默认生产环境分支是 main，不可更改。 测试环境默认 dev 分支，如需更改，需要批准。
+默认从 main 分支 checkout 一支分支 feature/ hotfix/ ，本地测试通过下，合并到 dev 分支，进行开发环境自测和验收
 
 ## 关于golang
 
