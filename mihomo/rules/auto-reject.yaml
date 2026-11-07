@@ -1,0 +1,33 @@
+# NAME: auto-reject
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
+# DESCRIPTION: Auto-reject rules (PCDN / Ads / Privacy)
+# UPDATED: 2026-11-07
+
+payload:
+  # ===== Bilibili PCDN / Edge CDN =====
+  # 拦截 B站 PCDN 节点，触发播放器 fallback 降级到官方 IDC 骨干网 CDN
+  - DOMAIN-KEYWORD,pcdn
+  - DOMAIN-SUFFIX,mcdn.bilivideo.cn
+  - DOMAIN-SUFFIX,mcdn.bilivideo.com
+  - DOMAIN-SUFFIX,szbdyd.com
+  - DOMAIN-SUFFIX,mountaintoys.cn
+
+  # ===== Google Telemetry / Logging =====
+  # 阻止 Google 网络错误日志 (NEL) 遥测与诊断数据上报
+  - DOMAIN-SUFFIX,nel.goog
+
+  # ===== Doubao / Bytedance telemetry =====
+  # ime-net-sdk 后台长连接 / 遥测
+  - DOMAIN,ime-gw.oceancloudapi.com
+  - DOMAIN,aweme.snssdk.com
+  # 字节系日志与埋点接口（含 log-link.zijieapi.com）
+  - DOMAIN-SUFFIX,applogcdn.com
+  - DOMAIN-SUFFIX,zijieapi.com
+  # 字节网络探测 / 配置下发
+  - DOMAIN-SUFFIX,dig.bdurl.net
+
+  # ===== Others =====
+  # keyboard holder
+  - DOMAIN-SUFFIX,leavesc.com
+  - DOMAIN,lbsapi.m.jd.com
