@@ -57,7 +57,7 @@ tab_bar_position = "top"
 hide_tab_bar_when_single_tab = false
 
 [theme]
-name = "one-dark"
+name = "one-light"
 auto_switch = false
 dark_name = "one-dark"
 light_name = "one-light"
