@@ -3,3 +3,14 @@
 [user]
 name = "Yem JinBen"
 email = "yanjinbin.dev@gmail.com"
+
+[aliases]
+# jj sync: run after each release (PR merged into main).
+# 1. `jj git fetch` gets the latest remote bookmarks.
+# 2. `jj rebase -b @ -d 'trunk()'` moves the working copy and its
+#    unmerged ancestors onto trunk (main@origin). Then `jj status`
+#    shows only the changes that are not in main yet.
+# If @ is already on trunk, the rebase does nothing.
+# Conflicts are recorded in the commit, not lost. Use `jj undo` to revert.
+# jj has no post-fetch or post-merge hook, so run this by hand.
+sync = ["util", "exec", "--", "sh", "-c", "jj git fetch && jj rebase -b @ -d 'trunk()'", ""]
