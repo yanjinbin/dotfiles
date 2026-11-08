@@ -41,7 +41,7 @@ _ai_help() {
 Usage:
   ai help [cx|cc|agy]
   ai help <cx|cc|agy> model <list|current|default>
-  ai upgrade [claude|codex|agy|herdr|opencode|pi] [all]
+  ai upgrade [claude|codex|agy|herdr|opencode|pi|omp] [all]
 
 Codex 速度：
   cx / cxp      普通模式（默认）
@@ -68,7 +68,7 @@ EOF
 _ai_upgrade() {
   local targets=("$@")
   # Upgrade the full AI toolchain when no target is specified.
-  [[ ${#targets[@]} -eq 0 ]] && targets=(claude codex agy herdr opencode pi)
+  [[ ${#targets[@]} -eq 0 ]] && targets=(claude codex agy herdr opencode pi omp)
 
   local do_claude=0
   local do_codex=0
@@ -76,19 +76,21 @@ _ai_upgrade() {
   local do_herdr=0
   local do_opencode=0
   local do_pi=0
+  local do_omp=0
   local target
 
   for target in "${targets[@]}"; do
     case "$target" in
-      all) do_claude=1; do_codex=1; do_agy=1; do_herdr=1; do_opencode=1; do_pi=1 ;;
+      all) do_claude=1; do_codex=1; do_agy=1; do_herdr=1; do_opencode=1; do_pi=1; do_omp=1 ;;
       claude|c) do_claude=1 ;;
       codex|x) do_codex=1 ;;
       agy|antigravity|a) do_agy=1 ;;
       herdr|h) do_herdr=1 ;;
       opencode|op) do_opencode=1 ;;
       pi) do_pi=1 ;;
+      omp|oh-my-pi) do_omp=1 ;;
       *)
-        echo "Usage: ai upgrade [claude|codex|agy|herdr|opencode|pi] [all]"
+        echo "Usage: ai upgrade [claude|codex|agy|herdr|opencode|pi|omp] [all]"
         return 2
         ;;
     esac
@@ -157,6 +159,7 @@ _ai_upgrade() {
   #   herdr:   use install.sh for a new install; otherwise use herdr update
   #   opencode: use install for a new install; otherwise use opencode upgrade
   #   pi:      use install.sh for a new install; otherwise use pi update
+  #   omp:     use install for a new install; otherwise use omp update
   _ai_upgrade_claude() {
     curl -fsSL https://claude.ai/install.sh | bash
   }
@@ -197,16 +200,25 @@ _ai_upgrade() {
     fi
   }
 
+  _ai_upgrade_omp() {
+    if (( $+commands[omp] )); then
+      command omp update
+    else
+      curl -fsSL https://omp.sh/install | sh
+    fi
+  }
+
   setopt LOCAL_OPTIONS PIPE_FAIL NO_NOTIFY NO_MONITOR 2>/dev/null
   set +m 2>/dev/null
 
-  local c_before x_before a_before h_before o_before p_before
+  local c_before x_before a_before h_before o_before p_before m_before
   (( do_claude )) && c_before=$(command claude --version 2>/dev/null || echo "—")
   (( do_codex )) && x_before=$(command codex --version 2>/dev/null || echo "—")
   (( do_agy )) && a_before=$(command agy --version 2>/dev/null || echo "—")
   (( do_herdr )) && h_before=$(command herdr --version 2>/dev/null || echo "—")
   (( do_opencode )) && o_before=$(command opencode --version 2>/dev/null || echo "—")
   (( do_pi )) && p_before=$(command pi --version 2>/dev/null || echo "—")
+  (( do_omp )) && m_before=$(command omp --version 2>/dev/null || echo "—")
 
   _banner
 
@@ -217,9 +229,10 @@ _ai_upgrade() {
   (( do_herdr )) && enabled+=("herdr")
   (( do_opencode )) && enabled+=("opencode")
   (( do_pi )) && enabled+=("Pi")
+  (( do_omp )) && enabled+=("OMP")
   printf "  ${BOLD}本次安装/更新：${RESET}%s\n\n" "${(j: · :)enabled}"
 
-  local c_rc=0 x_rc=0 a_rc=0 h_rc=0 o_rc=0 p_rc=0
+  local c_rc=0 x_rc=0 a_rc=0 h_rc=0 o_rc=0 p_rc=0 m_rc=0
   printf "  ${DIM}%s${RESET}\n" "·················································"
   if (( do_claude )); then _run "Anthropic Claude  " _ai_upgrade_claude; c_rc=$?; fi
   if (( do_codex )); then _run "OpenAI codex     " _ai_upgrade_codex; x_rc=$?; fi
@@ -235,19 +248,21 @@ _ai_upgrade() {
     fi
     p_rc=$?
   fi
+  if (( do_omp )); then _run "oh-my-pi omp     " _ai_upgrade_omp; m_rc=$?; fi
   printf "  ${DIM}%s${RESET}\n" "·················································"
 
   echo ""
 
   rehash
 
-  local c_after x_after a_after h_after o_after p_after
+  local c_after x_after a_after h_after o_after p_after m_after
   (( do_claude )) && c_after=$(command claude --version 2>/dev/null || echo "—")
   (( do_codex )) && x_after=$(command codex --version 2>/dev/null || echo "—")
   (( do_agy )) && a_after=$(command agy --version 2>/dev/null || echo "—")
   (( do_herdr )) && h_after=$(command herdr --version 2>/dev/null || echo "—")
   (( do_opencode )) && o_after=$(command opencode --version 2>/dev/null || echo "—")
   (( do_pi )) && p_after=$(command pi --version 2>/dev/null || echo "—")
+  (( do_omp )) && m_after=$(command omp --version 2>/dev/null || echo "—")
 
   (( do_claude )) && _row "🦀" "Anthropic Claude"  "$c_before" "$c_after" "$c_rc"
   (( do_codex )) && _row "🐙" "OpenAI codex"     "$x_before" "$x_after" "$x_rc"
@@ -255,9 +270,10 @@ _ai_upgrade() {
   (( do_herdr )) && _row "🐑" "herdr"            "$h_before" "$h_after" "$h_rc"
   (( do_opencode )) && _row "🧰" "opencode"         "$o_before" "$o_after" "$o_rc"
   (( do_pi )) && _row "🥧" "Pi"               "$p_before" "$p_after" "$p_rc"
+  (( do_omp )) && _row "🍩" "oh-my-pi omp"     "$m_before" "$m_after" "$m_rc"
 
   echo ""
   printf "  \033[38;5;213m✨\033[38;5;183m✨\033[38;5;153m✨\033[0m  ${DIM}all done!${RESET}\n"
   echo ""
-  (( c_rc == 0 && x_rc == 0 && a_rc == 0 && h_rc == 0 && o_rc == 0 && p_rc == 0 ))
+  (( c_rc == 0 && x_rc == 0 && a_rc == 0 && h_rc == 0 && o_rc == 0 && p_rc == 0 && m_rc == 0 ))
 }

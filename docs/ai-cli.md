@@ -66,7 +66,7 @@ agy=la
 ## 帮助与升级
 
 - 帮助：`cc help` / `cx help` / `cxd help` / `agy help`；保留 `ai help` / `ai help cx|cc|agy` 和 `--env-help`。`--help` 继续转发给原生 CLI。
-- 升级：`ai upgrade` 或 `ai upgrade all`（升级整套 AI toolchain：claude / codex / agy / herdr / opencode / pi；也可单升如 `ai upgrade pi`；实现在 `~/.config/zsh/ai-upgrade.zsh`）
+- 升级：`ai upgrade` 或 `ai upgrade all`（升级整套 AI toolchain：claude / codex / agy / herdr / opencode / pi / omp；也可单升如 `ai upgrade pi`、`ai upgrade omp`；实现在 `~/.config/zsh/ai-upgrade.zsh`）
 
 ```zsh
 ai help
@@ -76,10 +76,13 @@ ai upgrade claude
 ai upgrade codex
 ai upgrade opencode
 ai upgrade pi
+ai upgrade omp
 ```
 
 OpenCode 已安装时运行 `opencode upgrade`；未安装时运行 `curl -fsSL https://opencode.ai/v2/install | bash`，安装 OpenCode V2。
 
 Pi 已安装时运行 `pi update`；未安装时运行 `curl -fsSL https://pi.dev/install.sh | sh`，安装确认在终端中显示。
+
+OMP 已安装时运行 `omp update`；未安装时运行 `curl -fsSL https://omp.sh/install | sh`，安装 oh-my-pi coding agent。
 
 Otty 通过应用内更新维护；Herdr 插件恢复见 [执行 prompt](herdr-restore-prompt.md)。
