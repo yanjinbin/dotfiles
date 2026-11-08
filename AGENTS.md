@@ -81,6 +81,10 @@
 - 使用 `gh pr create` 时避免在 `--body` 里直接写 `\n`；优先用 `--body-file -` 配合 here-doc，或使用 `$'...'` 让换行正确展开。
 - 发送 PR 时，除非特别指明，否则不要 Draft；PR title 和 body 中不要含有 `codex`，`claude` 和其他任意 agent 信息。
 - 执行 git merge 和 git rebase 有git 文件冲突，需要批准 如何解决冲突。
+- 本机 shell 按 zsh 编写，不套用 bash 习惯：字符串不会按空格拆分，循环用数组（`ids=(1 2); for id in $ids`）；路径拼接写 `"${VAR}:path"`，避免 `$VAR:r` 被当作修饰符。
+- 等待 GitHub Actions 用 `gh run watch <id> --exit-status`，不手写轮询。必须写等待循环时要设超时，不用 `2>/dev/null` 吞错误，放后台前先在前台跑一轮。
+- 判断命令是否成功时，看目标状态（如 HEAD 是否变化），不只看退出码；管道和 `;` 会掩盖前面命令的失败。
+- 发布或长任务每过一个阶段主动汇报“完成了什么、在跑什么、还剩什么”，不等用户询问。
 
 ## 关于术语词汇
 
