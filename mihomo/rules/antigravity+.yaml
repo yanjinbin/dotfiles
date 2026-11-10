@@ -29,6 +29,7 @@ payload:
   # =====================================================
 
   - DOMAIN-SUFFIX,accounts.google.com
+  - DOMAIN,oauth2.googleapis.com
   - DOMAIN,myaccount.google.com
   - DOMAIN,account.google.com
 
