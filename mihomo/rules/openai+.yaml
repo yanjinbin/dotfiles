@@ -1,11 +1,12 @@
 # NAME: OpenAI+
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
-# UPDATED: 2026-08-03
+# UPDATED: 2026-11-10
 # DOMAIN: 1
-# DOMAIN-SUFFIX: 19
+# DOMAIN-SUFFIX: 20
 # DOMAIN-KEYWORD: 0
-# TOTAL: 20
+# IP-ASN: 2
+# TOTAL: 23
 
 payload:
   # 核心域名
@@ -37,4 +38,9 @@ payload:
 
   # 遥测
   - DOMAIN-SUFFIX,o33249.ingest.sentry.io
-  - DOMAIN-SUFFIX,browser-intak
+  - DOMAIN-SUFFIX,browser-intake-datadoghq.com
+
+  # === IP 兜底 ===
+  # OpenAI ASNs
+  - IP-ASN,401518,no-resolve
+  - IP-ASN,401864,no-resolve
