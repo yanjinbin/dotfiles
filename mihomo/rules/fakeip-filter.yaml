@@ -1,172 +1,38 @@
 payload:
-    # LAN
-    - '*'
+    # 微信/腾讯（图床、长连接必须真实 IP，否则发图/收消息会间歇失败）
+    - '+.qq.com'
+    - '+.tencent.com'
+    - '+.myqcloud.com'
+    - '+.weixin.com'
+    - '+.qpic.cn'
+    - '+.qlogo.cn'
+    - '+.gtimg.cn'
+    - '+.weixinbridge.com'
+    - '+.servicewechat.com'
+    # 局域网
     - '*.lan'
-    - '*.localdomain'
-    - '*.example'
-    - '*.invalid'
-    - '*.localhost'
-    - '*.test'
     - '*.local'
+    - '*.localdomain'
     - '*.home.arpa'
-    - '*.direct'
-    # NTP
+    - '+.miwifi.com'
+    - '+.miwifi.cn'
+    # 时间同步（NTP 走裸 IP，假 IP 会直接失败）
     - 'time.*.com'
     - 'time.*.gov'
     - 'time.*.edu.cn'
     - 'time.*.apple.com'
-    - 'time-ios.apple.com'
-    - 'time1.*.com'
-    - 'time2.*.com'
-    - 'time3.*.com'
-    - 'time4.*.com'
-    - 'time5.*.com'
-    - 'time6.*.com'
-    - 'time7.*.com'
-    - 'ntp.*.com'
-    - 'ntp1.*.com'
-    - 'ntp2.*.com'
-    - 'ntp3.*.com'
-    - 'ntp4.*.com'
-    - 'ntp5.*.com'
-    - 'ntp6.*.com'
-    - 'ntp7.*.com'
-    - '*.time.edu.cn'
     - '*.ntp.org.cn'
     - '+.pool.ntp.org'
     - 'time1.cloud.tencent.com'
-    # 网易云音乐
-    - 'music.163.com'
-    - '*.music.163.com'
-    - '*.126.net'
-    # 百度音乐
-    - 'musicapi.taihe.com'
-    - 'music.taihe.com'
-    # 酷狗音乐
-    - 'songsearch.kugou.com'
-    - 'trackercdn.kugou.com'
-    # 酷我音乐
-    - '*.kuwo.cn'
-    # JOOX
-    - 'api-jooxtt.sanook.com'
-    - 'api.joox.com'
-    - 'joox.com'
-    # QQ音乐
-    - 'y.qq.com'
-    - '*.y.qq.com'
-    - 'streamoc.music.tc.qq.com'
-    - 'mobileoc.music.tc.qq.com'
-    - 'isure.stream.qqmusic.qq.com'
-    - 'dl.stream.qqmusic.qq.com'
-    - 'aqqmusic.tc.qq.com'
-    - 'amobile.music.tc.qq.com'
-    # 虾米音乐
-    - '*.xiami.com'
-    # 咪咕音乐
-    - '*.music.migu.cn'
-    - 'music.migu.cn'
-    # Win10 连接检测
-    - '+.msftconnecttest.com'
-    - '+.msftncsi.com'
-    # QQ登录
-    - 'localhost.ptlogin2.qq.com'
-    - 'localhost.sec.qq.com'
-    # 微信登录
-    - 'localhost.*.weixin.qq.com'
-    # 微信媒体/图床
-    - '+.qpic.cn'
-    - '+.qlogo.cn'
-    - '+.gtimg.cn'
-    - '+.weixin.qq.com'
-    - '+.wx.qq.com'
-    - '+.wechat.com'
-    - '+.weixinbridge.com'
-    - '+.servicewechat.com'
-    # 腾讯系整体绕开 fake-ip（微信图床/媒体走真实 IP 直连）
-    - '+.qq.com'
-    - '+.tencent.com'
-    - '+.myqcloud.com'
-    - '+.tencent-cloud.net'
-    - '+.weixin.com'
-    - '+.kk-rays.com'
-    # Steam
-    - '+.steamcontent.com'
-    # Nintendo Switch
-    - '+.srv.nintendo.net'
-    - '*.n.n.srv.nintendo.net'
-    - '+.cdn.nintendo.net'
-    # Xbox
-    - 'xbox.*.*.microsoft.com'
-    - '*.*.xboxlive.com'
-    - 'xbox.*.microsoft.com'
-    - 'xnotify.xboxlive.com'
-    # Wargaming
-    - '+.battle.net'
-    - '+.battlenet.com.cn'
-    - '+.wotgame.cn'
-    - '+.wggames.cn'
-    - '+.wowsgame.cn'
-    - '+.wargaming.net'
-    # Golang
-    - 'proxy.golang.org'
-    # STUN
-    - '+.stun.*.*'
-    - '+.stun.*.*.*'
-    - '+.stun.*.*.*.*'
-    - '+.stun.*.*.*.*.*'
-    # Linksys
-    - 'heartbeat.belkin.com'
-    - '*.linksys.com'
-    - '*.linksyssmartwifi.com'
-    # ASUS Router
-    - '*.router.asus.com'
-    # Apple 软件更新
-    - 'mesu.apple.com'
+    # 音视频通话（STUN/TURN 裸 UDP）
+    - 'stun.*.*'
+    - 'stun.*.*.*'
+    - 'turn.*.*'
+    - 'turn.*.*.*'
+    # 苹果推送与更新
+    - '+.push.apple.com'
     - 'swscan.apple.com'
-    - 'swquery.apple.com'
-    - 'swdownload.apple.com'
-    - 'swcdn.apple.com'
-    - 'swdist.apple.com'
-    # Google
-    - 'lens.l.google.com'
-    - 'na.b.g-tun.com'
-    # Final Fantasy XIV
-    - '*.square-enix.com'
-    - '*.finalfantasyxiv.com'
-    - '*.ffxiv.com'
-    - '*.ff14.sdo.com'
-    - 'ff.dorado.sdo.com'
-    # Bilibili
-    - '*.mcdn.bilivideo.cn'
-    # Disney+
-    - '+.media.dssott.com'
-    # shark007
-    - 'shark007.net'
-    # Xiaomi
-    - '+.market.xiaomi.com'
-    # 招商银行
-    - '+.cmbchina.com'
-    - '+.cmbimg.com'
-    # AdGuard
-    - 'adguardteam.github.io'
-    - 'adrules.top'
-    - 'anti-ad.net'
-    - 'local.adguard.org'
-    - 'static.adtidy.org'
-    # 迅雷
-    - '+.sandai.net'
-    - '+.n0808.com'
-    # T-Mobile Wifi Calling
-    - '+.3gppnetwork.org'
-    - '+.pub.3gppnetwork.org'
-    # UU加速器
-    - '+.uu.163.com'
-    - 'ps.res.netease.com'
-    # 向日葵
-    - '+.oray.com'
-    - '+.orayimg.com'
-    # LOL语音
-    - '+.gcloudcs.com'
-    - '+.gcloudsdk.com'
-    # DDNS
-    - '+.dynv6.net'
+    - 'mesu.apple.com'
+    # Windows 联网检测
+    - '*.msftconnecttest.com'
+    - '*.msftncsi.com'
