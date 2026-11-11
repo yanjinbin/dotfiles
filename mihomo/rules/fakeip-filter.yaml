@@ -82,6 +82,12 @@ payload:
     - '+.wechat.com'
     - '+.weixinbridge.com'
     - '+.servicewechat.com'
+    # 腾讯系整体绕开 fake-ip（微信图床/媒体走真实 IP 直连）
+    - '+.qq.com'
+    - '+.tencent.com'
+    - '+.myqcloud.com'
+    - '+.tencent-cloud.net'
+    - '+.weixin.com'
     - '+.kk-rays.com'
     # Steam
     - '+.steamcontent.com'
