@@ -34,6 +34,14 @@ payload:
   - DOMAIN-SUFFIX,htfbudv.com
   - DOMAIN-SUFFIX,u5rq.com
   - DOMAIN-SUFFIX,sports.qq.com
+  - DOMAIN-SUFFIX,qpic.cn
+  - DOMAIN-SUFFIX,qlogo.cn
+  - DOMAIN-SUFFIX,gtimg.cn
+  - DOMAIN-SUFFIX,weixin.qq.com
+  - DOMAIN-SUFFIX,wx.qq.com
+  - DOMAIN-SUFFIX,wechat.com
+  - DOMAIN-SUFFIX,weixinbridge.com
+  - DOMAIN-SUFFIX,servicewechat.com
 
   # 88直播系
   - DOMAIN-SUFFIX,88zhibo.cc

@@ -73,6 +73,15 @@ payload:
     - 'localhost.sec.qq.com'
     # 微信登录
     - 'localhost.*.weixin.qq.com'
+    # 微信媒体/图床
+    - '+.qpic.cn'
+    - '+.qlogo.cn'
+    - '+.gtimg.cn'
+    - '+.weixin.qq.com'
+    - '+.wx.qq.com'
+    - '+.wechat.com'
+    - '+.weixinbridge.com'
+    - '+.servicewechat.com'
     - '+.kk-rays.com'
     # Steam
     - '+.steamcontent.com'
