@@ -34,6 +34,17 @@
 | 怀疑境外解析被污染 | A |
 | 排查“某站打不开” | 先切 B 再 dig 对比 |
 
+## iOS / sing-box 的 DNS
+
+iOS 走 `format=singbox`，DNS 由服务端单独渲染：
+
+| 版本 | local-dns | remote-dns | final |
+|---|---|---|---|
+| `dns=split` | `https://223.5.5.5/dns-query`（SNI `dns.alidns.com`，direct） | `https://1.1.1.1/dns-query`（SNI `cloudflare-dns.com`，走代理组） | `remote-dns` |
+| `dns=unified` | `udp://223.5.5.5` | `udp://119.29.29.29` | `local-dns` |
+
+split 版规则：`geosite-cn` → local-dns，其余 → remote-dns，即「国内直查、国外经代理 DoH」，与服务端 mihomo 的思路一致。
+
 ## 链接模板
 
 ```
