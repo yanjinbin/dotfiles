@@ -33,19 +33,12 @@ payload:
   - DOMAIN-SUFFIX,livehwc4.com
   - DOMAIN-SUFFIX,htfbudv.com
   - DOMAIN-SUFFIX,u5rq.com
-  - DOMAIN-SUFFIX,sports.qq.com
-  - DOMAIN-SUFFIX,qpic.cn
-  - DOMAIN-SUFFIX,qlogo.cn
-  - DOMAIN-SUFFIX,gtimg.cn
-  - DOMAIN-SUFFIX,weixin.qq.com
-  - DOMAIN-SUFFIX,wx.qq.com
-  - DOMAIN-SUFFIX,wechat.com
-  - DOMAIN-SUFFIX,weixinbridge.com
-  - DOMAIN-SUFFIX,servicewechat.com
+  # 微信/腾讯域名不再单列：订阅里 RULE-SET,tencent 已覆盖
+  # （DOMAIN-SUFFIX,qq.com 含 weixin.qq.com/wx.qq.com，另含 qpic/qlogo/gtimg/
+  #  wechat.com/servicewechat.com/weixinbridge.com）。88zhibo.tv 由模板 REJECT。
 
   # 88直播系
   - DOMAIN-SUFFIX,88zhibo.cc
-  - DOMAIN-SUFFIX,88zhibo.tv
   - DOMAIN-KEYWORD,88kanqiu
 
   # GitHub加速
