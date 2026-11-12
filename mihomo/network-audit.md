@@ -183,3 +183,27 @@ uci commit firewall && uci commit dhcp && uci commit nikki && fw4 reload
 - LuCI 的 Nikki 页面保存时会按页面勾选状态写回 `nikki.procd.*`，改完别在网页上点保存。
 - 试过用 nft 集合 + DSCP=4 让微信流量完全绕过 tproxy（nikki 内置 `bypass_dscp`），机制可行且已实测生效，但 IP 需脚本维护、微信 HTTPDNS 覆盖不全，最终放弃，保持规则层 DIRECT。
 - `dns.fallback` 已在 `/etc/nikki/mixin.yaml` 清空，并置 `nikki.mixin.mixin_file_content=1`。改动前用 yq 模拟过一次合并：`dns.fallback` 变空、其余 dns 键与规则数不变。**需要重启 nikki 才生效**（重启会中断当前连接 2～5 秒）。
+
+### mihomo DNS 剖析（mixin.yaml）
+
+原则：**不用 fallback**。fallback 的语义是"两套解析并发 + 按 geoip 结果择一"，在"国内 + 代理"的组合下，未命中就要等超时，解析时快时慢（实测 26 分钟 564 次 DoT 失败）。分流交给 `nameserver-policy` 更直接。
+
+```yaml
+dns:
+  fallback: []
+  default-nameserver:              # 引导解析 DoH 域名，单点 223.5.5.5 太薄
+    - 223.5.5.5
+    - 119.29.29.29
+  proxy-server-nameserver:         # 解析代理节点域名，必须不依赖代理
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  nameserver:                      # 国内域名
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  nameserver-policy:               # 国外域名走代理上的 DoH
+    geosite:geolocation-!cn:
+      - https://1.1.1.1/dns-query
+      - https://8.8.8.8/dns-query
+```
+
+实测的 DoH 延迟（路由器直连）：`doh.pub` 147ms、`dns.alidns.com` 137ms、`sh.dns44.cn:44443` 800ms。第三方那个慢 5 倍，已从 `proxy-server-nameserver` 移除。
