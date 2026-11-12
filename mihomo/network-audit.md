@@ -207,3 +207,41 @@ dns:
 ```
 
 实测的 DoH 延迟（路由器直连）：`doh.pub` 147ms、`dns.alidns.com` 137ms、`sh.dns44.cn:44443` 800ms。第三方那个慢 5 倍，已从 `proxy-server-nameserver` 移除。
+
+### 订阅服务侧（aliyun-yanjinbin）
+
+`fallback` 的源头不在路由器，而在订阅服务下发的 profile。服务端配置（不在 git 仓库里，实例级文件）：
+
+| 文件 | 作用 |
+|---|---|
+| `/var/lib/oralcure-subscription/dns-split.yaml` | `dns=split` 时合并的 DNS 段 |
+| `/var/lib/oralcure-subscription/template.yaml` | 兜底模板（`dns=unified`），含 `default-nameserver`、`proxy-server-nameserver` |
+
+改动：
+
+```diff
+# dns-split.yaml
+-  fallback:
+-  - tls://8.8.4.4
+-  - tls://1.1.1.1
+-  fallback-filter:
+-    geoip: true
+-    geoip-code: CN
+-    ipcidr:
+-    - 240.0.0.0/4
+
+# template.yaml
+   default-nameserver:
+   - 223.5.5.5
++  - 119.29.29.29
+   proxy-server-nameserver:
+   - 223.5.5.5
+-  - https://sh.dns44.cn:44443/dns-query
++  - https://doh.pub/dns-query
+```
+
+生效方式：服务按请求读取这两个文件，**无需重启**（`systemctl is-active oralcure-subscription` 保持 active）。改完从路由器重新拉一次订阅确认即可。
+
+改动前已按服务端惯例留时间戳备份：`dns-split.yaml.bak.nofallback.<ts>`、`template.yaml.bak.dns.<ts>`。
+
+> 注意：这两份配置是实例级文件，仓库里没有副本，重装服务会丢。建议择机纳入版本管理。
