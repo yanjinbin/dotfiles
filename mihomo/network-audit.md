@@ -137,6 +137,7 @@ uci show nikki.mixin.log_level nikki.log.scheduled_clear_cron \
 | 🟡 | 双 DNS 劫持：fw4 `DNSMASQ HIJACK` 与 nikki `redirect to :1053` 叠加 | `dns_redirect=1` | 设 `0`，DNS 只由 nikki 劫持 |
 | 🟡 | dnsmasq 最短缓存过长，CDN 节点 IP 被锁死 | `min_cache_ttl=3600` | 改 `300` |
 | 🟡 | 快速重载保留旧连接，易产生僵尸连接 | `fast_reload=1` | 改 `0`；`clear_connections_on_reload` 保持 `1` |
+| 🟡 | mihomo DNS fallback 用 DoT 853，走代理节点失败后反复重试（实测 26 分钟失败 564 次） | `tls://8.8.4.4`、`tls://1.1.1.1` | 通过 `mixin.yaml` 清空 `fallback`，分流交给 `nameserver-policy` |
 
 ### 执行
 
@@ -181,4 +182,4 @@ uci commit firewall && uci commit dhcp && uci commit nikki && fw4 reload
 
 - LuCI 的 Nikki 页面保存时会按页面勾选状态写回 `nikki.procd.*`，改完别在网页上点保存。
 - 试过用 nft 集合 + DSCP=4 让微信流量完全绕过 tproxy（nikki 内置 `bypass_dscp`），机制可行且已实测生效，但 IP 需脚本维护、微信 HTTPDNS 覆盖不全，最终放弃，保持规则层 DIRECT。
-- 待做（需重启 nikki）：mihomo `dns.fallback` 用 `tls://8.8.4.4`、`tls://1.1.1.1`，DoT 853 经代理节点失败时反复重试刷日志，建议改 DoH over 443 或删除 fallback，由 `nameserver-policy` 承担分流。
+- `dns.fallback` 已在 `/etc/nikki/mixin.yaml` 清空，并置 `nikki.mixin.mixin_file_content=1`。改动前用 yq 模拟过一次合并：`dns.fallback` 变空、其余 dns 键与规则数不变。**需要重启 nikki 才生效**（重启会中断当前连接 2～5 秒）。
