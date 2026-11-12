@@ -122,3 +122,63 @@ uci commit nikki && service nikki restart
 uci show nikki.mixin.log_level nikki.log.scheduled_clear_cron \
          nikki.log.scheduled_clear_size_limit nikki.log.scheduled_clear_size_limit_unit
 ```
+
+---
+
+## 四、2026-11-12 追加：R5C 实测修正
+
+起因：Android 微信发送图片偶发失败（红色感叹号），失败瞬时；同一 Wi-Fi 下 macOS 微信正常，手机切移动数据正常。
+
+排查结论：微信域名在规则层已是 `GEOSITE,cn → DIRECT`，但 **DIRECT 只表示不走节点，流量仍需经 mihomo 转发**。真正的风险在 mihomo 之外：
+
+| 优先级 | 问题 | 实际值 | 修复 |
+|--------|------|--------|------|
+| 🔴 | 流量卸载未关（透明代理下必须为 0，见第一节） | `flow_offloading=1`、`flow_offloading_hw=1` | 均设 `0` 后 `fw4 reload` |
+| 🟡 | 双 DNS 劫持：fw4 `DNSMASQ HIJACK` 与 nikki `redirect to :1053` 叠加 | `dns_redirect=1` | 设 `0`，DNS 只由 nikki 劫持 |
+| 🟡 | dnsmasq 最短缓存过长，CDN 节点 IP 被锁死 | `min_cache_ttl=3600` | 改 `300` |
+| 🟡 | 快速重载保留旧连接，易产生僵尸连接 | `fast_reload=1` | 改 `0`；`clear_connections_on_reload` 保持 `1` |
+
+### 执行
+
+```bash
+uci set firewall.@defaults[0].flow_offloading='0'
+uci set firewall.@defaults[0].flow_offloading_hw='0'
+uci set dhcp.cfg01411c.dns_redirect='0'
+uci set dhcp.cfg01411c.min_cache_ttl='300'
+uci set nikki.procd.fast_reload='0'
+uci commit firewall && uci commit dhcp && uci commit nikki
+fw4 reload
+/etc/init.d/dnsmasq restart
+```
+
+`fast_reload` 与 `clear_connections_on_reload` 在下次重载时生效，无需重启 nikki。
+
+### 验证
+
+```bash
+# 流量卸载必须为空
+nft list table inet fw4 | grep -c flowtable          # 期望 0
+# 只剩 nikki 的 DNS 劫持
+nft list ruleset | grep -c "DNSMASQ HIJACK"          # 期望 0
+# 配置值
+uci get firewall.@defaults[0].flow_offloading
+uci get dhcp.cfg01411c.dns_redirect
+uci get nikki.procd.fast_reload
+```
+
+### 回滚
+
+```bash
+uci set firewall.@defaults[0].flow_offloading='1'
+uci set firewall.@defaults[0].flow_offloading_hw='1'
+uci set dhcp.cfg01411c.dns_redirect='1'
+uci set dhcp.cfg01411c.min_cache_ttl='3600'
+uci set nikki.procd.fast_reload='1'
+uci commit firewall && uci commit dhcp && uci commit nikki && fw4 reload
+```
+
+### 注意
+
+- LuCI 的 Nikki 页面保存时会按页面勾选状态写回 `nikki.procd.*`，改完别在网页上点保存。
+- 试过用 nft 集合 + DSCP=4 让微信流量完全绕过 tproxy（nikki 内置 `bypass_dscp`），机制可行且已实测生效，但 IP 需脚本维护、微信 HTTPDNS 覆盖不全，最终放弃，保持规则层 DIRECT。
+- 待做（需重启 nikki）：mihomo `dns.fallback` 用 `tls://8.8.4.4`、`tls://1.1.1.1`，DoT 853 经代理节点失败时反复重试刷日志，建议改 DoH over 443 或删除 fallback，由 `nameserver-policy` 承担分流。
