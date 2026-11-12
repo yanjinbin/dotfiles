@@ -1,8 +1,8 @@
 # NAME: auto-reject
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
-# DESCRIPTION: Auto-reject rules (PCDN / Ads / Privacy)
-# UPDATED: 2026-11-07
+# DESCRIPTION: Auto-reject rules (PCDN / Ads / Privacy / Telemetry)
+# UPDATED: 2026-11-13
 
 payload:
   # ===== Bilibili PCDN / Edge CDN =====
