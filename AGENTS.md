@@ -85,7 +85,7 @@
 - 默认只维护 2 套环境：生产环境和开发环境（命名见「术语」）。
 - 生产环境分支默认是 `main`，不可更改；开发环境分支默认是 `dev`，如需更改，需要批准。
 - 默认从 `main` checkout `feature/` 或 `hotfix/` 分支，本地测试通过后合并到 `dev`，在开发环境自测和验收。
-- 例外：dotfiles 仓库（`/Users/yanjinbin/WebstormProjects/dotfiles`）仅保留 `master` 分支，本地与远端保持同步；除非用户另行明确要求，不创建其他分支，上述流程不适用。
+- 例外：dotfiles 仓库（`/Users/yanjinbin/WebstormProjects/dotfiles`）仅保留 `main` 分支，本地与远端保持同步；除非用户另行明确要求，不创建其他分支，上述流程不适用。
 
 ### jj 仓库
 

@@ -39,7 +39,7 @@ Key 由 OpenCode 保存在本机 `~/.local/share/opencode/auth.json`，不要放
 请使用 https://github.com/yanjinbin/dotfiles 初始化这台 Mac 的开发环境，并实际执行到验证完成。
 
 1. 检查 macOS 架构、Xcode Command Line Tools、Git、Homebrew 和 Python 3.11+；缺失时按官方方式安装。系统密码、安装弹窗和登录交给我操作，不读取或记录凭据。
-2. 当前目录若已是该仓库就直接使用，否则将 master 克隆到 ~/WebstormProjects/dotfiles；目录已存在时先核对来源和 Git 状态，不覆盖、不重置、不新建分支，也不自动提交或推送。
+2. 当前目录若已是该仓库就直接使用，否则将 main 克隆到 ~/WebstormProjects/dotfiles；目录已存在时先核对来源和 Git 状态，不覆盖、不重置、不新建分支，也不自动提交或推送。
 3. 先阅读 AGENTS.md、README.md、Brewfile、symlinks.json、scripts/sync.py、docs/shell.md 和 terminal-configs.md。简要列出安装范围，然后继续执行；按当前机器适配路径，不照搬作者的用户名、代理或私有设置。
 4. 补齐 Shell 所需工具、Oh My Zsh、Powerlevel10k 和外部插件。Brewfile 是个人软件清单，先让我选择全量安装或仅安装 Shell 必需依赖；可选终端、字体、Herdr 插件和 iTerm2 偏好按对应文档及我的选择恢复。
 5. 用 Python 3.11+ 运行 scripts/sync.py 预览，再运行 --apply。遇到冲突，先展示差异并保留本机设置；经我确认合并方案后才使用 --apply --replace。保留备份目录和 links.json，不删除未纳管文件，不将 API Key 或本机私有配置写入仓库。
