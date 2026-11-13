@@ -71,6 +71,18 @@
 - Linear 不可用时报告具体限制，不擅自改用 GitHub Issues 或本地文件作为新的任务系统。
 - PR 与 Linear 的关联不代表已启用自动状态同步，也不额外授予合并或部署权限。
 
+### linear CLI
+
+操作 Linear 优先使用 [schpet/linear-cli](https://github.com/schpet/linear-cli)（命令 `linear`，已登录）；CLI 无法覆盖时用 `linear api` 发 GraphQL，再不行才用 Linear MCP。
+
+- 先 `linear <cmd> --help` 确认参数，不凭记忆拼 flag。非交互执行一律加 `--no-input`；列表和详情加 `--no-pager`，需要解析时加 `-j`。
+- 仓库没有 `.linear.toml` 时，issue 命令必须显式传 `--team <KEY>`（`linear team list` 查 key）；需要固定默认团队时，经用户同意后运行 `linear config --team <KEY>`。
+- 查找：`linear issue query --search <text> --all-teams`、`linear issue list -A --all-states --project <slug>`、`linear project list`。先查已有 issue，再决定是否 `linear issue create`。
+- 详情与写入：`linear issue view <ID>`、`linear issue create/update`（长描述用 `--description-file -` 配合 here-doc）、`linear issue comment add`、`linear issue link <ID> <PR URL> -t <title>`。
+- 分支与提交：`linear issue start <ID>` 切分支/jj change 并置为 started；`linear issue id`、`linear issue describe` 生成提交信息中的 issue trailer。
+- PR 仍用 `gh pr create` 创建（遵循下文 PR 规则），再用 `linear issue link` 回挂 PR 链接；不用 `linear issue pull-request` 的默认模板。
+- `delete`、`archive`、状态改为 Done/Canceled 属于不可逆或对外可见的变更，执行前确认。
+
 ## 命令与 Git 安全
 
 - 多个连锁 PR，使用 `gh stack`。
