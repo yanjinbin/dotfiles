@@ -161,5 +161,5 @@
 参考：
 
 - https://github.com/nexu-io/open-design
-- https://github.com/educlopez/design-bites/blob/main/design-mds/vercel.com/DESIGN.md
+- https://vercel.com/design.md
 - https://github.com/Leonxlnx/taste-skill
