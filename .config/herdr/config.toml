@@ -80,7 +80,7 @@ rows = [[{ token = "state_icon", bold = false, dim = false }, { token = "workspa
 [ui.sound]
 enabled = true
 
-# Match the Otty Apple Graphite theme.
+# Apple Graphite theme.
 
 [theme.custom]
 sidebar_bg = "#242426"

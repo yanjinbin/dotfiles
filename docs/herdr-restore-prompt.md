@@ -3,7 +3,7 @@
 Copy the following prompt into a new coding session on the destination machine. The inventory was checked against the local CLI and manifests on 2026-10-16. It is a recovery specification, not evidence of installation on another machine.
 
 ```text
-Restore my Otty, Herdr CLI, Herdr.app, and agent integrations from my dotfiles.
+Restore my Herdr CLI, Herdr.app, and agent integrations from my dotfiles.
 
 Repository: https://github.com/yanjinbin/dotfiles
 Usual checkout: ~/WebstormProjects/dotfiles
@@ -18,7 +18,7 @@ If a required restart would close active work, report it and ask before restarti
 Do not print credentials or copy auth databases into the public repository.
 
 1. Inspect versions and dependencies.
-   Check Otty, Herdr CLI, Herdr.app, Git, jj, Node, Python 3.11+, Cargo, and fonts.
+   Check Herdr CLI, Herdr.app, Git, jj, Node, Python 3.11+, Cargo, and fonts.
    Use current local CLI help and official installation instructions.
    All four GitHub plugins below are pinned to observed commits, not latest.
    Most require Herdr >= 0.9.0; jj-workspace declares >= 0.7.0.
@@ -65,13 +65,11 @@ Do not print credentials or copy auth databases into the public repository.
    Do not copy plugins.json as an active registry: it contains source-machine paths.
    Do not copy old plugins/github caches or session/runtime data.
    Herdr.app reads config-gpui.local.toml for personal overrides. Leave its generated
-   config-gpui.toml to the app. Otty uses Apple Graphite; preserve the current
-   sidebar, quota, keybinding, and theme choices from the tracked configuration.
+   config-gpui.toml to the app. Preserve the current sidebar, quota, keybinding,
+   and theme choices from the tracked configuration.
 
    Review absolute paths in agents/codex/hooks.json, agents/claude/settings.json,
    plugin manifests, and the Agent Usage status line if the account path differs.
-   Install Otty shell/agent integration through the application as needed.
-   Reconcile its generated hooks with the tracked hooks; do not add duplicates.
 
    From the repository root:
    python3 scripts/sync.py
@@ -84,28 +82,27 @@ Do not print credentials or copy auth databases into the public repository.
    Keep existing local approval rules and authentication files intact.
 
 5. Restore fonts explicitly.
-   Otty needs MesloLGS NF Herdr and Herdr Agent Icons Max.
+   The terminal that runs Herdr needs MesloLGS NF Herdr and Herdr Agent Icons Max.
    Herdr.app uses MesloLGS NF Herdr Fit, JetBrains Mono Herdr,
    MesloLGL Nerd Font, and JetBrains Mono.
    Read fonts/README.md and verify fonts/SHA256SUMS from the repository root.
    The exact installed Regular files are archived under fonts/herdr/ and fonts/base/.
    Install those six files into ~/Library/Fonts/ without replacing differing
    existing files until they have been reviewed. The older 29-icon font remains
-   in .config/otty/fonts/; the system restore uses the newer 30-icon font.
-   Otty's app font folder does not install fonts for Herdr. Inspect duplicate
-   family registrations and verify the selected names and glyph coverage in the UI.
+   in fonts/archive/; the system restore uses the newer 30-icon font.
+   Inspect duplicate family registrations and verify the selected names and
+   glyph coverage in the UI.
    Preserve the bundled licenses and notices. The Meslo patched build recipes
    were not recovered; use the archived binaries rather than claiming a source rebuild.
 
 6. Validate the result.
    Run the dotfiles tests and shell syntax checks.
-   Run Otty's config validator with the linked config path.
    Parse Herdr TOML and the agent JSON files.
    Verify all five plugin IDs, versions, sources, and enabled states with
    herdr plugin list. Verify binaries, hook paths, and status-line commands exist.
    Check that each bound plugin action exists in its installed manifest.
    Reload Herdr config only after the config and plugin checks pass.
-   Observe Otty and Herdr.app fonts, theme, sidebar rows, and shortcuts in the UI.
+   Observe Herdr.app fonts, theme, sidebar rows, and shortcuts in the UI.
    Check Claude and Codex session reporting in a real test pane, without sending
    messages to external services on my behalf. Verify quota display after login.
    Do not open/remove jj workspaces in existing projects merely to test shortcuts;
