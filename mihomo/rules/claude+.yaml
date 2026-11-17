@@ -2,24 +2,22 @@
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles
 payload:
-  # === 核心域名 ===
-  # Anthropic 主站及所有子域名（含 api/cdn/console/mcp/workbench）
+  # === Claude 域名族 ===
+  # 一条 keyword 覆盖所有含 claude 的域名：claude.ai / claude.com / claude.dev /
+  # claude.app / claude.new / claude.site / claudeacademy.com / claudepages.dev /
+  # claudestudio.com / chatbotclaude.com / claudemcpclient.com / claudemcpcontent.com /
+  # claudeusercontent.com 以及后续新增的 claude* 域名，无需逐条维护
+  # 注意：classical 规则集里不写策略，实际出口由模板的 RULE-SET,claude+,Claude专用 决定
+  - DOMAIN-KEYWORD,claude
+
+  # === Anthropic 官方域名（不含 claude 关键词，必须单列） ===
   - DOMAIN-SUFFIX,anthropic.com
-  - DOMAIN-SUFFIX,claude.dev
-  # Claude 网页版（含 downloads.claude.ai 等所有子域名）
-  - DOMAIN-SUFFIX,claude.ai
-  # Claude 备用域名
-  - DOMAIN-SUFFIX,claude.com
+  - DOMAIN-SUFFIX,anthropic.team
+  - DOMAIN-SUFFIX,anthropicusercontent.com
+  - DOMAIN-SUFFIX,ant.dev
+  - DOMAIN-SUFFIX,antspace.dev
   # Claude 短域名（重定向）
   - DOMAIN-SUFFIX,clau.de
-  # Claude MCP 客户端通信
-  - DOMAIN-SUFFIX,claudemcpclient.com
-  # 用户内容 / 附件
-  - DOMAIN-SUFFIX,claudeusercontent.com
-  # MCP 可视化内容
-  - DOMAIN-SUFFIX,claudemcpcontent.com
-  # 用户内容备用域名
-  - DOMAIN-SUFFIX,anthropicusercontent.com
 
   # === CDN & 静态资源 ===
   # BunnyCDN 静态资源
@@ -38,7 +36,7 @@ payload:
   - DOMAIN-SUFFIX,statsigapi.net
   # Claude iOS 时间同步 (解决 App 超时问题)
   - DOMAIN-SUFFIX,datadog.pool.ntp.org
-  # Datadog 各地区端点（us5/us3/eu1/ap1 等）
+  # Datadog 各地区端点（us5/us3/eu1/ap1，含 datadoghq.com/.eu）
   - DOMAIN-KEYWORD,datadog
   # Sentry 通配兜底
   - DOMAIN-KEYWORD,sentry
