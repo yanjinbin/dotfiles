@@ -36,6 +36,9 @@ payload:
   # 微信/腾讯域名不再单列：订阅里 RULE-SET,tencent 已覆盖
   # （DOMAIN-SUFFIX,qq.com 含 weixin.qq.com/wx.qq.com，另含 qpic/qlogo/gtimg/
   #  wechat.com/servicewechat.com/weixinbridge.com）。88zhibo.tv 由模板 REJECT。
+  # tencent 规则集未收录的微信直连域名（原模板内联规则收敛）
+  - DOMAIN,slife.xy-asia.com
+  - DOMAIN-SUFFIX,wechatos.net
 
   # 88直播系
   - DOMAIN-SUFFIX,88zhibo.cc
@@ -151,3 +154,5 @@ payload:
   - IP-CIDR,218.108.88.254/32,no-resolve
   - IP-CIDR,10.3.9.92/31,no-resolve
   - IP-CIDR,10.3.9.94/32,no-resolve
+  # ===== 腾讯 ASN 兜底（微信/QQ 裸 IP 连接） =====
+  - IP-ASN,132203,no-resolve
