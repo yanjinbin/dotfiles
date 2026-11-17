@@ -10,6 +10,8 @@
 - Codex 速度：`cx` / `cxp` 默认普通模式；`cxf` / `cxpf` 显式启用 fast，其他参数用法不变。
 - Codex 推理摘要：默认隐藏；`cxa` 自动、`cxc` 简短、`cxd` 详细、`cxn` 关闭；`cx -r` 打开选择菜单，快捷命令支持追加参数，例如 `cxd resume --last`
 - Claude：`cc` / `ccp`（默认 YOLO；`p` 后缀启用一次性代理）
+- Claude Code Mode：`cc` 直接进入，`cc` / `ccp` / `ccd` / 裸 `claude` 都生效（`agents/claude/settings.json` 的 `env` 默认开启 `CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1`）。
+- 首次启动在会话内确认一次，顶部出现 `Code Mode (experimental) is on` 即生效；恢复会话保持该设置即可。需要 claude ≥ 2.1.323 与受支持的模型，不支持 `-p`、IDE、桌面端、云端会话、Remote Control、Claude in Chrome 和 computer use。
 - Claude 交互显示：`ccn` 简洁（关闭 verbose）、`ccd` 详细（开启 verbose）；代理入口为 `ccpn` / `ccpd`。`cc` / `ccp` 沿用原生显示设置。支持原有参数，例如 `ccd --continue`、`ccn sg plan`。
 - 显示开关保留交互会话，不改变思考强度。Codex 控制模型提供的推理摘要；Claude 的 verbose 展开工具输出和执行细节，会话中可按 `Ctrl+O` 查看详细记录。
 - agy：`ag` / `agp` / `agy` / `agyp`（默认 YOLO；`p` 后缀启用一次性代理）
@@ -85,4 +87,4 @@ Pi 已安装时运行 `pi update`；未安装时运行 `curl -fsSL https://pi.de
 
 OMP 已安装时运行 `omp update`；未安装时运行 `curl -fsSL https://omp.sh/install | sh`，安装 oh-my-pi coding agent。
 
-Otty 通过应用内更新维护；Herdr 插件恢复见 [执行 prompt](herdr-restore-prompt.md)。
+Herdr 插件恢复见 [执行 prompt](herdr-restore-prompt.md)。
