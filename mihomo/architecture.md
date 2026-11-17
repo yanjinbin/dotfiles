@@ -57,14 +57,14 @@
 
 两套版本，切换只改一个参数：
 
-- `dns=split`：智能分流（国内 DoH → 境外 `geosite:geolocation-!cn` 走境外 DoH → 可疑结果 fallback DoT）；iOS 对应 local/remote 双 DoH
-- `dns=unified`：兜底（mihomo 全部国内 DoH；iOS 明文 UDP，最大兼容）
+- `dns=split`：智能分流（国内和未收录域名走国内明文 DNS，`geosite:geolocation-!cn` 经代理走境外 DoH，不用 fallback）；iOS 对应 local/remote 双 DoH
+- `dns=unified`：兜底（mihomo 全部国内明文 DNS；iOS 明文 UDP，最大兼容）
 
 细节见 [`dns-versions.md`](./dns-versions.md)。
 
 要点：
 
-- fake-ip 保留，但**微信/腾讯/音乐/苹果推送/本地域名**走真实 IP，避免「假 IP 映射失效」类故障
+- fake-ip 保留，但**微信/腾讯、苹果推送、NTP、STUN、本地域名**走真实 IP，避免「假 IP 映射失效」类故障
 - 机场节点域名单独用一条 DoH 解析（`proxy-server-nameserver`），防止节点域名被污染
 - `respect-rules` + `proxy-server-nameserver` 避免 DNS 走代理时的鸡蛋问题
 
@@ -86,7 +86,7 @@
 |---|---|
 | 订阅拉取失败 | 客户端保留上次配置，照常运行 |
 | 规则集拉取失败 | 本地已有缓存继续用 |
-| DNS 污染 | DoH/DoT + fallback-filter；关键域名走真实 IP |
+| DNS 污染 | 境外主流域名经代理 DoH；fake-ip 让代理流量在远端解析；关键域名走真实 IP |
 | 服务端升级 | `releases/` + `current` 软链，切链即回滚 |
 | 配置改动 | 全部 `*.bak.<时间戳>` 备份 |
 | iOS 兼容性 | sing-box JSON 自洽（rule_set），绕开 mihomo 语法 |

@@ -6,19 +6,23 @@
 
 | 域名类型 | 上游 | 查询次数 |
 |---|---|---|
-| 国内域名 | doh.pub / dns.alidns.com（国内 DoH） | 1 |
-| 境外主流域名（geosite:geolocation-!cn） | 1.1.1.1 / 8.8.8.8（境外 DoH） | 1 |
-| 境外未收录域名 | 国内 DoH → 结果非 CN → fallback（tls://8.8.4.4 / tls://1.1.1.1） | 2 |
-| 腾讯/微信/音乐/本地设备 | 真实 IP（不进 fake-ip） | 1 |
-| 机场节点域名 | 223.5.5.5 + https://sh.dns44.cn:44443/dns-query | 1 |
+| 国内域名（geosite:cn） | 223.5.5.5 / 119.29.29.29（明文 UDP，直连） | 1 |
+| 境外主流域名（geosite:geolocation-!cn） | https://1.1.1.1 / https://8.8.8.8（境外 DoH，走代理） | 1 |
+| 未收录域名 | `nameserver`：223.5.5.5 / 119.29.29.29（明文 UDP） | 1 |
+| 直连目标 | `direct-nameserver`：223.5.5.5 / 119.29.29.29 | 1 |
+| 机场节点域名 | `proxy-server-nameserver`：https://223.5.5.5/dns-query → 223.5.5.5 → 119.29.29.29 | 1 |
+| 腾讯/微信、本地域名、NTP、STUN、苹果推送 | 真实 IP（`fake-ip-filter`，不进 fake-ip） | 1 |
 
-- `respect-rules: true`（DNS 走代理时也能解析节点域名）
-- `fake-ip` + 白名单（微信/腾讯、音乐、苹果推送、本地域名走真实 IP）
+- `respect-rules: true`（境外 DoH 跟随规则走代理）
+- **没有 `fallback`**：DoT fallback 经代理反复失败、解析时快时慢，已移除，分流只靠 `nameserver-policy`（见 [`network-audit.md`](./network-audit.md)）
+- 未收录的境外域名可能拿到被污染的 IP：fake-ip 下客户端只拿到假 IP，走代理的连接由节点远端解析；被污染的 IP 不在 CN，`GEOIP,cn` 不会误判为直连，影响有限
+- `ipv6: false`：AAAA 返回空，配合规则 `IP-CIDR6,::/0,REJECT`
 - 适用：**日常使用**
 
-## B. 兜底版：全国内 DoH（`dns=unified`）
+## B. 兜底版：全国内 DNS（`dns=unified`）
 
-- 所有域名 → doh.pub / dns.alidns.com，**无 fallback、无境外 DNS、无策略表**
+- 所有域名 → 223.5.5.5 / 119.29.29.29（明文 UDP），**无 fallback、无境外 DNS、无策略表**
+- 机场节点域名同 A 版（`proxy-server-nameserver`）
 - `respect-rules: false`（不依赖代理）
 - `fake-ip` + 同一份白名单
 - 代价：境外域名解析质量可能下降（但走代理的流量由代理端解析域名，影响有限）
