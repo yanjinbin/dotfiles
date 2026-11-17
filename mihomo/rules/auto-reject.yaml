@@ -10,7 +10,6 @@ payload:
   - DOMAIN-KEYWORD,pcdn
   - DOMAIN-SUFFIX,mcdn.bilivideo.cn
   - DOMAIN-SUFFIX,mcdn.bilivideo.com
-  - DOMAIN-SUFFIX,szbdyd.com
   - DOMAIN-SUFFIX,mountaintoys.cn
 
   # ===== Google Telemetry / Logging =====
@@ -26,35 +25,11 @@ payload:
   - DOMAIN-SUFFIX,zijieapi.com
   # 字节网络探测 / 配置下发
   - DOMAIN-SUFFIX,dig.bdurl.net
-  # 巨量引擎事件上报 / 穿山甲广告包上报
-  - DOMAIN,lf-event-manager.oceanengine.com
+  # 穿山甲广告包上报
   - DOMAIN-KEYWORD,-be-pack-sign.pglstatp-toutiao.com
 
-  # ===== 手机厂商 / 系统遥测 =====
-  # 小米：追踪上报、MIUI 安全组件更新上报
-  - DOMAIN,a0.app.xiaomi.com
-  - DOMAIN,tracker.ai.xiaomi.com
-  - DOMAIN,update.avlyun.sec.miui.com
-  # Apple 指标上报
-  - DOMAIN,metrics.icloud.com
-
   # ===== 国内 App 广告 / 埋点 =====
-  # 小红书 CDN 广告资源
-  - DOMAIN,ads-img-bak.xhscdn.com
-  - DOMAIN,ads-vp5.xhscdn.com
-  # 腾讯：广告上报 / 风控指纹
-  - DOMAIN,c.gj.qq.com
-  - DOMAIN,snowflake.qq.com
-  # 京东：联盟广告 / 用户行为追踪
-  - DOMAIN,kepler.jd.com
-  - DOMAIN,orbit.jd.com
-  # 搜狗手机助手（合并 ws-keyboard.shouji.sogou.com）
-  - DOMAIN-SUFFIX,shouji.sogou.com
-  # 淘宝审计/埋点
-  - DOMAIN,audid-api.taobao.com
-  # 米哈游 / 酷狗 / 识货 日志上报（合并 shihuo-new.log.shihuocdn.cn）
-  - DOMAIN,log-upload.mihoyo.com
-  - DOMAIN,mobilelog.kugou.com
+  # 识货 日志上报
   - DOMAIN-SUFFIX,log.shihuocdn.cn
   # 快手信息流广告
   - DOMAIN-KEYWORD,-ad.video.yximgs.com
@@ -63,14 +38,8 @@ payload:
   - DOMAIN-KEYWORD,-ad.wtzw.com
 
   # ===== 广告 / 统计 SDK 域名 =====
-  # Statsig / Evidon 埋点
-  - DOMAIN,api.statsig.com
-  - DOMAIN,c.evidon.com
   # 指掌（zztfly）日志鉴权 + 用户画像上报
   - DOMAIN-SUFFIX,zztfly.com
-  # 推广落地页
-  - DOMAIN-SUFFIX,pkoplink.com
-  - DOMAIN-SUFFIX,tagtic.cn
 
   # ===== Ads / Tracking IP（无域名直连上报，原「秋风广告规则」收敛） =====
   - IP-CIDR,14.29.101.160/32,no-resolve
