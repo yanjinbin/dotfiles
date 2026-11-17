@@ -21,7 +21,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Do not source zsh-jj.plugin.zsh because it resets PROMPT.
 typeset -U fpath
 autoload -Uz vcs_info
-# Add user command completions (such as Otty) before Oh My Zsh starts.
+# Add user command completions before Oh My Zsh starts.
 fpath=("${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions" $fpath)
 if [[ -d "${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-jj/functions" ]]; then
   fpath+=("${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-jj/functions")
@@ -450,11 +450,3 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # Added by Antigravity IDE
 export PATH="/Users/yanjinbin/.antigravity-ide/antigravity-ide/bin:$PATH"
-
-# >>> otty shell integration >>>
-# Added by Otty — toggle in Settings > Shell > Shell Integration.
-# Inert unless launched by Otty (it sets $OTTY_SHELL_INTEGRATION).
-if [ -n "$ZSH_VERSION" ] && [ -n "$OTTY_SHELL_INTEGRATION" ] && [ -r "$OTTY_SHELL_INTEGRATION/otty-integration.zsh" ]; then
-  . "$OTTY_SHELL_INTEGRATION/otty-integration.zsh"
-fi
-# <<< otty shell integration <<<

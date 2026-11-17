@@ -13,7 +13,7 @@
 - herdr：PATH 就绪后显式加载 `$ZSH/plugins/herdr/herdr.plugin.zsh`，提供官方别名和 `hrdrs` 会话选择器；仓库已保存此文件，恢复步骤见 [终端配置](../terminal-configs.md)。
 - JJ 提示：`zsh-jj` 提供 `vcs_info` 的 JJ 后端（仅加载其 `functions/`，不 source 会重设 `PROMPT` 的完整插件）；`p10k-jj-status` 提供异步 JJ working-copy 段，当前由 `.zshrc` 在加载 `.p10k.zsh` 后加入 `jj_status`，并用 `P10K_PROMPT_SHOW_GIT_STATUS` 控制 Git 状态显示
 - PATH：先加载 `/opt/homebrew/bin/brew shellenv`，再配置 `~/.local/bin`、`~/.opencode/bin`、pnpm、Maven、Go、fnm（Node）；不再设置 Go 或 Rust 镜像。
-- Shell 集成：按文件或环境变量加载 fzf、iTerm2 和 Otty；本机私有配置从 `~/.config/zsh/private.zsh` 加载。
+- Shell 集成：按文件或环境变量加载 fzf 和 iTerm2；本机私有配置从 `~/.config/zsh/private.zsh` 加载。
 
 ## 常用命令
 

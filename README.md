@@ -79,7 +79,7 @@ opencode uninstall --keep-config --keep-data
 brew bundle --file ./Brewfile
 ```
 
-首次恢复还需准备 Oh My Zsh、Powerlevel10k 和外部插件，见 [Shell 与插件](docs/shell.md)。Otty、Herdr.app、字体和 Herdr 插件按 [终端配置](terminal-configs.md) 与 [恢复 prompt](docs/herdr-restore-prompt.md) 准备。
+首次恢复还需准备 Oh My Zsh、Powerlevel10k 和外部插件，见 [Shell 与插件](docs/shell.md)。Herdr.app、字体和 Herdr 插件按 [终端配置](terminal-configs.md) 与 [恢复 prompt](docs/herdr-restore-prompt.md) 准备。
 
 ### 2. 预览并建立软链接
 
@@ -159,7 +159,7 @@ iTerm2 偏好单独导入，执行前先退出 iTerm2，详见 [iTerm2 恢复说
 | [Shell 与插件](docs/shell.md) | 加载顺序、PATH、常用别名、JJ 提示与插件配置 |
 | [AI CLI 使用指南](docs/ai-cli.md) | Codex / Claude / agy 快捷命令、模型、地区代码、帮助与升级 |
 | [Codex / Claude 配置](agents/README.md) | 共享指令、hooks、私有状态及配置导入 |
-| [Tern、Otty、Herdr 与 Herdr.app](terminal-configs.md) | 配置位置、换行、主题、字体与插件恢复 |
+| [Tern、Herdr 与 Herdr.app](terminal-configs.md) | 配置位置、换行、主题、字体与插件恢复 |
 | [Herdr 恢复 prompt](docs/herdr-restore-prompt.md) | 固定插件版本、源码依赖、认证与验证步骤 |
 | [Herdr 字体](fonts/README.md) | Meslo、JetBrains 定制字体、图标字体、校验值与安装步骤 |
 | [iTerm2 配置](iterm2/README.md) | 偏好导入和字体依赖 |

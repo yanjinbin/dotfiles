@@ -1,6 +1,6 @@
 # Herdr fonts
 
-Binary snapshots of the fonts installed on the source Mac on 2026-10-16. These files preserve the exact patched faces used by Otty and Herdr.app. Family names, versions, original paths, sizes, and SHA-256 hashes are recorded in [manifest.json](manifest.json).
+Binary snapshots of the fonts installed on the source Mac on 2026-10-16. These files preserve the exact patched faces used by Herdr.app. Family names, versions, original paths, sizes, and SHA-256 hashes are recorded in [manifest.json](manifest.json).
 
 | Family | File | Purpose |
 | --- | --- | --- |
@@ -8,7 +8,7 @@ Binary snapshots of the fonts installed on the source Mac on 2026-10-16. These f
 | MesloLGS NF Herdr Fit | [MesloLGSNFHerdrFit-Regular.ttf](herdr/MesloLGSNFHerdrFit-Regular.ttf) | Installed Fit variant, selected in Herdr.app |
 | JetBrains Mono Herdr | [JetBrainsMonoHerdr-Regular.ttf](herdr/JetBrainsMonoHerdr-Regular.ttf) | Patched UI text face with 30 Herdr icons |
 | Herdr Agent Icons Max | [HerdrAgentIconsMax-7526f2a2.ttf](herdr/HerdrAgentIconsMax-7526f2a2.ttf) | 30-icon face matching the installed Radar distribution |
-| Herdr Agent Icons Max | [HerdrAgentIconsMax-d77910ea.ttf](../.config/otty/fonts/HerdrAgentIconsMax-d77910ea.ttf) | Earlier 29-icon face already stored for Otty; no duplicate copy |
+| Herdr Agent Icons Max | [HerdrAgentIconsMax-d77910ea.ttf](archive/HerdrAgentIconsMax-d77910ea.ttf) | Earlier 29-icon face kept for archive completeness |
 | JetBrains Mono | [JetBrainsMono-Regular.ttf](base/JetBrainsMono-Regular.ttf) | Unpatched face used by Herdr.app tabs |
 | MesloLGL Nerd Font | [MesloLGLNerdFont-Regular.ttf](base/MesloLGLNerdFont-Regular.ttf) | Unpatched face used by Herdr.app sidebar |
 
@@ -31,7 +31,7 @@ cp -n fonts/herdr/*.ttf fonts/base/*.ttf "$HOME/Library/Fonts/"
 
 Compare existing files if `cp -n` skips them; this command does not prove that an existing font matches the snapshot. Reopen the application or its font picker and select the exact family names above. Use Font Book to inspect duplicate registrations if a different binary with the same family name is already installed.
 
-The earlier icon file remains in Otty's managed font directory. The system-font restore command installs the 30-icon version only. This archive does not change current font registrations or add system fonts to the configuration symlink list.
+The earlier icon file is archived under `fonts/archive/` and is not installed by the restore command. The system-font restore command installs the 30-icon version only. This archive does not change current font registrations or add system fonts to the configuration symlink list.
 
 ## Provenance and notices
 

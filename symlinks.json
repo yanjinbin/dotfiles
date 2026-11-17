@@ -10,7 +10,6 @@
     ".config/jj/config.toml": ".config/jj/config.toml",
     ".config/zellij/config.kdl": ".config/zellij/config.kdl",
     ".config/gh/config.yml": ".config/gh/config.yml",
-    ".config/otty/config.toml": ".config/otty/config.toml",
     "Library/Application Support/Tern/settings.json": ".config/tern/settings.json",
     ".config/herdr/config.toml": ".config/herdr/config.toml",
     ".config/herdr/config-gpui.local.toml": ".config/herdr/config-gpui.local.toml",
@@ -25,8 +24,6 @@
   },
   "trees": {
     ".oh-my-zsh/custom/plugins": ".oh-my-zsh/custom/plugins",
-    ".config/otty/themes": ".config/otty/themes",
-    ".config/otty/fonts": ".config/otty/fonts",
     ".config/herdr/plugins/config": ".config/herdr/plugins/config"
   }
 }

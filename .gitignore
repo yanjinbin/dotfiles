@@ -26,4 +26,3 @@
 /.config/herdr/**/config.toml.before-*
 /.config/herdr/plugins/**/node_modules/
 /.config/herdr/plugins/**/__pycache__/
-/.config/otty/recipes/.migrated-from-statedb

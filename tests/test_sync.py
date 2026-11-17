@@ -82,8 +82,8 @@ trusted_hash = "sha256:test"
             self.assertEqual(second.readlink(), Path("missing-original"))
 
     def test_xdg_mapping_and_path_escape_rejection(self):
-        self.assertEqual(sync.destination(".config/otty/config.toml", Path("/home/user"),
-                                          Path("/xdg")), Path("/xdg/otty/config.toml"))
+        self.assertEqual(sync.destination(".config/jj/config.toml", Path("/home/user"),
+                                          Path("/xdg")), Path("/xdg/jj/config.toml"))
         for name in ("/etc/profile", "../outside"):
             with self.assertRaises(ValueError):
                 sync.destination(name, Path("/home/user"), Path("/xdg"))

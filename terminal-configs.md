@@ -1,15 +1,12 @@
-# Tern、Otty、Herdr 与 Herdr.app 配置
+# Tern、Herdr 与 Herdr.app 配置
 
-Otty 与 Herdr 配置快照来自本机 2026-10-16 的文件；Tern 配置于 2026-10-31 纳入。通过 `symlinks.json` 按文件建立软链接，仓库作为配置源。
+Herdr 配置快照来自本机 2026-10-16 的文件；Tern 配置于 2026-10-31 纳入。通过 `symlinks.json` 按文件建立软链接，仓库作为配置源。
 
 ## 配置位置
 
 | 组件 | 仓库路径 / 本机相对 `$HOME` 路径 | 内容 |
 | --- | --- | --- |
 | Tern | 仓库 `.config/tern/settings.json` → 本机 `Library/Application Support/Tern/settings.json` | 外观、字体、Agent、编辑器换行及自动保存偏好 |
-| Otty | `.config/otty/config.toml` | Apple Graphite 主题、字体、复制行为、Shell Integration 和项目标签 |
-| Otty 主题 | `.config/otty/themes/` | 包含 Apple Graphite、One Dark Unified 等主题 |
-| Otty 字体 | `.config/otty/fonts/` | Herdr Agent Icons Max 图标字体 |
 | Herdr CLI / daemon | `.config/herdr/config.toml` | 快捷键、侧栏、配额显示及配色 |
 | Herdr.app | `.config/herdr/config-gpui.local.toml` | GUI 布局、字体、字号、状态图标和交互偏好 |
 | Herdr 插件偏好 | `.config/herdr/plugins/config/` | Agent Usage 和 Radar 的个人设置 |
@@ -28,7 +25,7 @@ defaults write so.pen.herdr-gpui NSAutoFillHeuristicControllerEnabled -bool fals
 
 ## 恢复配置
 
-先安装所需的 Tern、Otty、Herdr CLI、Herdr.app 和字体。在仓库根目录预览差异，合并后创建软链接：
+先安装所需的 Tern、Herdr CLI、Herdr.app 和字体。在仓库根目录预览差异，合并后创建软链接：
 
 ```bash
 python3 scripts/sync.py
@@ -38,9 +35,7 @@ python3 scripts/sync.py --check
 
 脚本自动备份被替换的配置；有内容差异时先审阅，确认合并结果后用 `--apply --replace`。只链接个人配置、主题、字体及插件偏好，不链接整个应用目录。插件注册表仍由 Herdr 管理。
 
-Otty 的 Shell Integration 由应用提供，仓库 `.zshrc` 按 `OTTY_SHELL_INTEGRATION` 加载。不要复制临时目录中的 Otty CLI 或 integration 文件。
-
-当前字体依赖包括 `MesloLGS NF Herdr`、`MesloLGS NF Herdr Fit`、`JetBrains Mono Herdr`、`MesloLGL Nerd Font` 和 `JetBrains Mono`。这些字体的本机 Regular 文件已收录到 [`fonts/`](fonts/README.md)，并附校验值和许可证；按其中的恢复步骤安装到 `~/Library/Fonts/`。两个 Herdr 图标字体版本均保留，Otty 原有版本不重复存储。Otty 的应用内字体目录不会替 Herdr.app 安装字体。
+当前字体依赖包括 `MesloLGS NF Herdr`、`MesloLGS NF Herdr Fit`、`JetBrains Mono Herdr`、`MesloLGL Nerd Font` 和 `JetBrains Mono`。这些字体的本机 Regular 文件已收录到 [`fonts/`](fonts/README.md)，并附校验值和许可证；按其中的恢复步骤安装到 `~/Library/Fonts/`。两个 Herdr 图标字体版本均保留，其中 29 图标版本仅存档，不安装。
 
 ## Tern 配置
 

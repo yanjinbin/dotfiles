@@ -134,7 +134,7 @@
       "unicode_codepoints": 13821
     },
     {
-      "file": ".config/otty/fonts/HerdrAgentIconsMax-d77910ea.ttf",
+      "file": "fonts/archive/HerdrAgentIconsMax-d77910ea.ttf",
       "source": "Library/Fonts/HerdrAgentIconsMax-d77910ea.ttf",
       "sha256": "d77910ea4e70a86e4618ba5329f51830f39b830477c1fb809dea704ecc199f66",
       "bytes": 17248,
