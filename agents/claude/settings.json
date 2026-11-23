@@ -1,6 +1,7 @@
 {
   "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE": "1"
+    "CLAUDE_CODE_EXPERIMENTAL_CODE_MODE": "1",
+    "CLAUDE_CODE_SHELL": "/bin/zsh"
   },
   "model": "opus",
   "hooks": {
