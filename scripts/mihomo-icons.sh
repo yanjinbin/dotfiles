@@ -1,32 +1,36 @@
 #!/usr/bin/env bash
-# Point a mihomo/Clash config at jsDelivr icon URLs, and refresh their caches.
+# Keep jsDelivr icon URLs in mihomo/Clash configs on one explicit ref, and
+# refresh the CDN after pushing new icon bytes.
 #
-# jsDelivr resolves a branch ref to HEAD once and reuses that resolution for up
-# to 12 hours. Purging a file does not drop the resolution, so a freshly pushed
-# icon keeps returning 404 or stale bytes no matter how often it is purged.
-# Pinning the URL to a commit instead makes it immutable: new bytes mean a new
-# URL, so the dashboard never serves a stale copy.
+# jsDelivr resolves a ref to a commit and caches the result. Purging a file
+# drops the file cache only for URLs that name the ref explicitly
+# (`.../dotfiles@main/...`); an unversioned URL resolves through HEAD, keeps
+# the stale commit for up to 12 hours and cannot be purged. Measured on
+# 2026-11-23: after purge `@main` served the new 126 B icon immediately while
+# the unversioned URL kept serving the old 1610 B copy.
 #
-#   mihomo-icons.sh pin   <config.yaml>... [--ref <tag|commit|branch>] [--check]
-#   mihomo-icons.sh purge <config.yaml>...
+#   mihomo-icons.sh sync <config.yaml>... [--ref <ref>] [--check]
+#   mihomo-icons.sh pin  <config.yaml>... [--ref <ref>] [--check]
 #
-# pin rewrites every gh/yanjinbin/dotfiles.../mihomo/rules/icons URL to the
-# given ref (default: the current commit). purge asks jsDelivr to refetch
-# those URLs and is only useful for configs still on a branch ref.
+# sync rewrites every gh/yanjinbin/dotfiles.../mihomo/rules/icons URL to the
+# given ref (default: main), then purges each URL. Run it after pushing icons.
+# pin rewrites to an immutable commit instead (default: the current commit) and
+# skips the purge; the new URL simply misses the cache.
 set -euo pipefail
 
 repo=$(cd "$(dirname "$0")/.." && pwd)
 icons='gh/yanjinbin/dotfiles(@[^/]+)?/mihomo/rules/icons'
+purge_base='https://purge.jsdelivr.net'
 
 usage() {
-	echo "usage: ${0##*/} pin   <config.yaml>... [--ref <tag|commit|branch>] [--check]" >&2
-	echo "       ${0##*/} purge <config.yaml>..." >&2
+	echo "usage: ${0##*/} sync <config.yaml>... [--ref <ref>] [--check]" >&2
+	echo "       ${0##*/} pin  <config.yaml>... [--ref <ref>] [--check]" >&2
 	exit 2
 }
 
 cmd=${1:-}
 shift || true
-[[ $cmd == pin || $cmd == purge ]] || usage
+[[ $cmd == sync || $cmd == pin ]] || usage
 
 ref=""
 check=0
@@ -53,6 +57,23 @@ while (($# > 0)); do
 done
 ((${#configs[@]} > 0)) || usage
 
+if [[ -z $ref ]]; then
+	if [[ $cmd == sync ]]; then
+		ref=main
+	else
+		ref=$(git -C "$repo" rev-parse --short=12 HEAD)
+	fi
+fi
+
+for file in "${configs[@]}"; do
+	tmp=$(mktemp)
+	sed -E "s#${icons}/#gh/yanjinbin/dotfiles@${ref}/mihomo/rules/icons/#g" "$file" >"$tmp"
+	moved=$(diff -u "$file" "$tmp" | grep -c '^+[^+]' || true)
+	cat "$tmp" >"$file"
+	rm -f "$tmp"
+	echo "rewrote $moved icon URL(s) in $file to @${ref}"
+done
+
 urls() {
 	grep -hoE "https://[^/]*jsdelivr\.net/gh/[^\"'[:space:]]+" "$@" |
 		grep -F "/mihomo/rules/icons/" |
@@ -60,31 +81,17 @@ urls() {
 		awk '!seen[$0]++'
 }
 
-if [[ $cmd == pin ]]; then
-	if [[ -z $ref ]]; then
-		ref=$(git -C "$repo" rev-parse --short=12 HEAD)
-	fi
-	for file in "${configs[@]}"; do
-		tmp=$(mktemp)
-		sed -E "s#${icons}/#gh/yanjinbin/dotfiles@${ref}/mihomo/rules/icons/#g" "$file" >"$tmp"
-		moved=$(diff -u "$file" "$tmp" | grep -c '^+[^+]' || true)
-		cat "$tmp" >"$file"
-		rm -f "$tmp"
-		echo "pinned $moved icon URL(s) in $file to @${ref}"
-	done
-fi
-
-if [[ $cmd == purge ]]; then
+if [[ $cmd == sync ]]; then
 	fail=0
 	while IFS= read -r url; do
-		purge=${url/#https:\/\/[^\/]*jsdelivr.net/https:\/\/purge.jsdelivr.net}
+		purge=${url/#https:\/\/[^\/]*jsdelivr.net/$purge_base}
 		if curl -fsS --max-time 20 "$purge" >/dev/null; then
-			echo "ok   $purge"
+			echo "purged $purge"
 		else
-			echo "fail $purge" >&2
+			echo "purge failed $purge" >&2
 			fail=1
 		fi
-	done < <(urls "${configs[@]}" | sed -E "s#@latest/#@${ref:-main}/#")
+	done < <(urls "${configs[@]}")
 	((fail == 0)) || exit 1
 fi
 
