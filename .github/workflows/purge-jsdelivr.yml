@@ -1,7 +1,12 @@
 name: Purge jsDelivr cache
 
-# 当 mihomo/rules 下的 yaml 规则文件更新时，自动清除对应的 jsDelivr CDN 缓存，
-# 避免路由器 rule-provider 拉到旧版本（jsDelivr @latest 默认缓存最长 12h）。
+# 当 mihomo/rules 下的规则 yaml 或 icons 图标更新时，自动清除 jsDelivr CDN 缓存，
+# 避免客户端和路由器 rule-provider / icon 拉到旧版本。
+#
+# 只清 @main：jsDelivr 把「分支 → 提交」的解析结果单独缓存，带显式分支的 URL 能
+# 被 purge 掉，而 @latest / @HEAD / 不带 ref 的 URL 清完仍会返回旧内容（实测
+# 2026-11-23：purge 后 @main 立刻是新图，@latest 和 @HEAD 仍是旧图）。
+# 所以配置里的 icon URL 统一写 @main，本工作流也只 purge 并校验 @main。
 
 on:
   push:
@@ -10,6 +15,7 @@ on:
     paths:
       - 'mihomo/rules/**.yaml'
       - 'mihomo/rules/**.yml'
+      - 'mihomo/rules/icons/**'
   workflow_dispatch: {}
 
 permissions:
@@ -27,7 +33,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Collect changed rule files
+      - name: Collect changed files
         id: collect
         env:
           BEFORE: ${{ github.event.before }}
@@ -35,18 +41,19 @@ jobs:
           EVENT: ${{ github.event_name }}
         run: |
           set -euo pipefail
+          keep='\.ya?ml$|^mihomo/rules/icons/'
           if [ "$EVENT" = "workflow_dispatch" ] || ! git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
-            # 手动触发或拿不到 before（新分支/force-push）：清掉全部规则文件
-            files=$(git ls-files 'mihomo/rules/*.yaml' 'mihomo/rules/*.yml')
+            # 手动触发或拿不到 before（新分支/force-push）：清掉全部规则与图标
+            files=$(git ls-files 'mihomo/rules' | grep -E "$keep" || true)
           else
-            files=$(git diff --name-only --diff-filter=ACMR "$BEFORE" "$AFTER" -- 'mihomo/rules/*.yaml' 'mihomo/rules/*.yml')
+            files=$(git diff --name-only --diff-filter=ACMR "$BEFORE" "$AFTER" -- 'mihomo/rules' | grep -E "$keep" || true)
           fi
           {
             echo "files<<EOF"
             echo "$files"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
-          echo "Changed rule files:"; echo "$files"
+          echo "Changed files:"; echo "$files"
 
       - name: Purge jsDelivr
         env:
@@ -54,7 +61,7 @@ jobs:
         run: |
           set -uo pipefail
           if [ -z "${FILES//[$'\n\r\t ']/}" ]; then
-            echo "No rule yaml changed, nothing to purge."
+            echo "No rule yaml or icon changed, nothing to purge."
             exit 0
           fi
           fail=0
@@ -62,18 +69,16 @@ jobs:
           trap 'rm -f "$cache_file"' EXIT
           while IFS= read -r f; do
             [ -z "$f" ] && continue
-            for ref in HEAD main latest; do
-              url="https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@${ref}/${f}"
-              echo "Purge $ref: $f"
-              if ! curl -fsS --retry 3 --retry-delay 2 "$url" |
-                jq -e '.status == "finished" and ([.paths[]?.providers[]?] | length > 0 and all(. == true))' >/dev/null; then
-                echo "Purge failed: $ref/$f"
-                fail=1
-              fi
-            done
+            url="https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@main/${f}"
+            echo "Purge: $f"
+            if ! curl -fsS --retry 3 --retry-delay 2 "$url" |
+              jq -e '.status == "finished" and ([.paths[]?.providers[]?] | length > 0 and all(. == true))' >/dev/null; then
+              echo "Purge failed: $f"
+              fail=1
+            fi
             verified=0
             for attempt in 1 2 3 4 5 6; do
-              if curl -fsS --retry 2 "https://cdn.jsdelivr.net/gh/${GITHUB_REPOSITORY}@latest/${f}" -o "$cache_file" &&
+              if curl -fsS --retry 2 "https://cdn.jsdelivr.net/gh/${GITHUB_REPOSITORY}@main/${f}" -o "$cache_file" &&
                 cmp -s "$f" "$cache_file"; then
                 verified=1
                 break
