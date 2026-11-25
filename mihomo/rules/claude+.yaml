@@ -1,6 +1,14 @@
 # NAME: ClaudeSite
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles
+# UPDATED: 2026-11-25
+# DOMAIN: 8
+# DOMAIN-SUFFIX: 14
+# DOMAIN-KEYWORD: 4
+# IP-CIDR: 3
+# IP-CIDR6: 1
+# IP-ASN: 5
+# TOTAL: 35
 payload:
   # === Claude 域名族 ===
   # 一条 keyword 覆盖所有含 claude 的域名：claude.ai / claude.com / claude.dev /
@@ -31,11 +39,25 @@ payload:
   # 博客 / CMS 内容
   - DOMAIN,anthropic-com.ghost.io
 
+  # === KYC 身份核验 ===
+  # 位置解析；精确匹配，避免 Google Maps 全站被 Keyword/Suffix 带走
+  - DOMAIN,maps.googleapis.com
+  # 证件 / 自拍核验
+  - DOMAIN-SUFFIX,withpersona.com
+  # KYC 认证邮件通知
+  - DOMAIN-SUFFIX,frompersona.com
+
+  # === 登录风控挑战 ===
+  # claude.ai 登录页的 Cloudflare 挑战，出口需与主域名一致
+  - DOMAIN-SUFFIX,challenges.cloudflare.com
+
   # === 监控 & 遥测 ===
   # 功能开关 / AB 测试
   - DOMAIN-SUFFIX,statsigapi.net
   # Claude iOS 时间同步 (解决 App 超时问题)
   - DOMAIN-SUFFIX,datadog.pool.ntp.org
+  # Datadog RUM 当前接收端点：域名中间是连字符，suffix 抓不到，单列
+  - DOMAIN,browser-intake-us5-datadoghq.com
   # Datadog 各地区端点（us5/us3/eu1/ap1，含 datadoghq.com/.eu）
   - DOMAIN-KEYWORD,datadog
   # Sentry 通配兜底
@@ -58,9 +80,10 @@ payload:
   # === IP 兜底 ===
   # Anthropic 自有 IPv4 段，域名规则漏配时的最后防线
   - IP-CIDR,160.79.104.0/21,no-resolve
-  # 2026-11 新增：出站 153.61.208.0/20、入站 153.61.224.0/22
-  - IP-CIDR,153.61.208.0/20,no-resolve
-  - IP-CIDR,153.61.224.0/22,no-resolve
+  # Anthropic, PBC (AP-2440) 注册的整个 /16，取代原 153.61.208.0/20 + 153.61.224.0/22
+  - IP-CIDR,153.61.0.0/16,no-resolve
+  # AS60808 宣告段：不支持 IP-ASN 的客户端（iOS sing-box）靠这条兜底
+  - IP-CIDR,209.249.57.0/24,no-resolve
   - IP-CIDR6,2607:6bc0::/32,no-resolve
   # Anthropic 全量 ASNs (AS399358 / AS60808 / AS401551 / AS400243 / AS4167)
   - IP-ASN,399358,no-resolve
