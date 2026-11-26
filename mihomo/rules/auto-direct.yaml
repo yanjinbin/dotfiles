@@ -1,5 +1,13 @@
 payload:
 
+  # NTP 校时：必须直连，避免被 geolocation-!cn 分流到代理导致时间不准
+  - DOMAIN-SUFFIX,pool.ntp.org
+  - DOMAIN-SUFFIX,ntp.org
+  - DOMAIN-SUFFIX,ntp.aliyun.com
+  - DOMAIN-SUFFIX,ntp.tencent.com
+  - DOMAIN-SUFFIX,time.windows.com
+  - DOMAIN-SUFFIX,time.apple.com
+
   - DOMAIN-SUFFIX,xingkeele.com
   - DOMAIN-SUFFIX,deepseek.com
 
