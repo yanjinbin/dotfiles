@@ -1,0 +1,35 @@
+# NAME: mirouter
+# AUTHOR: yanjinbin
+# REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
+# DESCRIPTION: Xiaomi router (BE6500 Pro / BE3600 Pro) egress rules. Default DIRECT.
+# UPDATED: 2026-11-26
+#
+# Referenced only through SUB-RULE by source IP. Keep the trailing MATCH,DIRECT
+# so router-originated traffic never falls through to the global proxy rules.
+
+payload:
+  # ===== NTP =====
+  # Time sync must stay direct; proxying UDP/123 causes clock drift.
+  - DOMAIN-SUFFIX,pool.ntp.org
+  - DOMAIN-SUFFIX,ntp.org
+  - DOMAIN-SUFFIX,ntp.aliyun.com
+  - DOMAIN-SUFFIX,ntp.tencent.com
+  - DOMAIN-SUFFIX,time.windows.com
+  - DOMAIN-SUFFIX,time.apple.com
+
+  # ===== Xiaomi router cloud =====
+  # Management, OTA checks, Mijia IoT channel.
+  - DOMAIN-SUFFIX,miwifi.com
+  - DOMAIN-SUFFIX,miwifi.cn
+  - DOMAIN-SUFFIX,iot.mi.com
+
+  # ===== Observed bare-IP endpoints (no SNI) =====
+  # MiWiFi MQTT (8887) and Mijia Cloud (443). IPs may change; MATCH,DIRECT below
+  # keeps new endpoints direct even when these entries go stale.
+  - IP-CIDR,39.102.218.79/32,no-resolve
+  - IP-CIDR,124.251.34.69/32,no-resolve
+  - IP-CIDR,39.101.90.207/32,no-resolve
+  - IP-CIDR,120.92.65.240/32,no-resolve
+
+  # ===== Default =====
+  - MATCH,DIRECT
