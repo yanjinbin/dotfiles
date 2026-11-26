@@ -1,9 +1,9 @@
 # NAME: YouTubeMedia
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
-# UPDATED: 2026-11-25
-# DOMAIN: 2
-# DOMAIN-SUFFIX: 5
+# UPDATED: 2026-11-26
+# DOMAIN: 1
+# DOMAIN-SUFFIX: 6
 # TOTAL: 7
 #
 # YouTube 页面 / 缩略图 / 视频 CDN。放在 UDP/443 闸门之前，
@@ -14,5 +14,5 @@ payload:
   - DOMAIN-SUFFIX,youtube-nocookie.com
   - DOMAIN-SUFFIX,googlevideo.com
   - DOMAIN-SUFFIX,ytimg.com
-  - DOMAIN,yt3.ggpht.com
+  - DOMAIN-SUFFIX,ggpht.com
   - DOMAIN,yt3.googleusercontent.com
