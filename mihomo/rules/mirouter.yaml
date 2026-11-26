@@ -1,11 +1,11 @@
 # NAME: mirouter
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
-# DESCRIPTION: Xiaomi router (BE6500 Pro / BE3600 Pro) egress rules. Default DIRECT.
+# DESCRIPTION: Xiaomi router (BE6500 Pro / BE3600 Pro) egress rules. All entries DIRECT.
 # UPDATED: 2026-11-26
 #
-# Referenced only through SUB-RULE by source IP. Keep the trailing MATCH,DIRECT
-# so router-originated traffic never falls through to the global proxy rules.
+# Referenced as RULE-SET,mirouter,DIRECT. Keep entries policy-free: the
+# RULE-SET target applies DIRECT to every match.
 
 payload:
   # ===== NTP =====
@@ -24,12 +24,9 @@ payload:
   - DOMAIN-SUFFIX,iot.mi.com
 
   # ===== Observed bare-IP endpoints (no SNI) =====
-  # MiWiFi MQTT (8887) and Mijia Cloud (443). IPs may change; MATCH,DIRECT below
-  # keeps new endpoints direct even when these entries go stale.
+  # MiWiFi MQTT (8887) and Mijia Cloud (443). IPs may change; keep the list
+  # current or drop stale entries, since unmatched traffic falls through.
   - IP-CIDR,39.102.218.79/32,no-resolve
   - IP-CIDR,124.251.34.69/32,no-resolve
   - IP-CIDR,39.101.90.207/32,no-resolve
   - IP-CIDR,120.92.65.240/32,no-resolve
-
-  # ===== Default =====
-  - MATCH,DIRECT
