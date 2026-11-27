@@ -1,9 +1,9 @@
 # NAME: auto-proxy
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
-# UPDATED: 2026-10-28
-# DOMAIN-SUFFIX: 22
-# TOTAL: 22
+# UPDATED: 2026-11-28
+# DOMAIN-SUFFIX: 28
+# TOTAL: 28
 
 payload:
   # figma 服务
@@ -17,6 +17,13 @@ payload:
   - DOMAIN-SUFFIX,visualstudio.com
   - DOMAIN-SUFFIX,vsassets.io
   - DOMAIN-SUFFIX,vsmarketplacebadge.apphb.com
+  # gitlab
+  - DOMAIN-SUFFIX,gitlab-assets.oss-cn-hongkong.aliyuncs.com
+  - DOMAIN-SUFFIX,gitlab-static.net
+  - DOMAIN-SUFFIX,gitlab.com
+  - DOMAIN-SUFFIX,gitlab.net
+  - DOMAIN-SUFFIX,gitter-static.net
+  - DOMAIN-SUFFIX,gitter.im
   # microsoft ecosystem
   - DOMAIN-SUFFIX,microsoft.com
 
