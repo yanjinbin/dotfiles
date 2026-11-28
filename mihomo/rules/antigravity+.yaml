@@ -68,6 +68,7 @@ payload:
 
   - DOMAIN-SUFFIX,ai.google
   - DOMAIN-SUFFIX,generativeai.google
+  - DOMAIN-SUFFIX,gemma.ai
 
   # =====================================================
   # Google 用户资源
@@ -110,6 +111,8 @@ payload:
 
   - DOMAIN-SUFFIX,notebooklm.google
   - DOMAIN-SUFFIX,notebooklm.google.com
+  - DOMAIN-SUFFIX,notebook.google
+  - DOMAIN-SUFFIX,notebook.google.com
   - DOMAIN-SUFFIX,labs.google
   - DOMAIN-SUFFIX,labs.google.com
   - DOMAIN-SUFFIX,jules.google
