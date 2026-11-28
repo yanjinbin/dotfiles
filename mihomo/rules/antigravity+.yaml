@@ -1,7 +1,7 @@
 # NAME: antigravity+
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
-# UPDATED: 2026-10-04
+# UPDATED: 2026-11-28
 
 payload:
   # =====================================================
@@ -111,3 +111,9 @@ payload:
   - DOMAIN-KEYWORD,colab
   - DOMAIN-KEYWORD,developerprofiles
   - DOMAIN-KEYWORD,generativelanguage
+
+  # =====================================================
+  # Antigravity 直连 IP 段
+  # =====================================================
+
+  - IP-CIDR,172.217.112.0/21,no-resolve
