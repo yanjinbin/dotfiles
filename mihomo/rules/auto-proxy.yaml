@@ -2,17 +2,20 @@
 # AUTHOR: yanjinbin
 # REPO: https://github.com/yanjinbin/dotfiles/mihomo/rules
 # UPDATED: 2026-11-28
-# DOMAIN-SUFFIX: 28
-# TOTAL: 28
+# DOMAIN-SUFFIX: 31
+# TOTAL: 31
 
 payload:
   # figma 服务
   - DOMAIN-SUFFIX,prodregistryv2.org
   - DOMAIN-SUFFIX,figma.com
   - DOMAIN-SUFFIX,featureassets.org
-  # google play store
+  # google play store & recaptcha
   - DOMAIN-SUFFIX,xn--ngstr-lra8j.com
   - DOMAIN-SUFFIX,services.googleapis.cn
+  - DOMAIN-SUFFIX,recaptcha.net
+  - DOMAIN-SUFFIX,gstatic.com
+  - DOMAIN-SUFFIX,gstatic.cn
   # vscode / dev tools
   - DOMAIN-SUFFIX,visualstudio.com
   - DOMAIN-SUFFIX,vsassets.io
